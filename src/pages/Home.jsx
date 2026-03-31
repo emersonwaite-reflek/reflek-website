@@ -12,37 +12,51 @@ const slides = [
 ]
 
 const services = [
-  { icon: <FiShield />, title: 'Paint Protection', path: '/paint-protection', color: '#7ab929' },
-  { icon: <FiSun />, title: 'Solar Films', path: '/solar-films', color: '#2bb5b2' },
-  { icon: <FiDroplet />, title: 'Coatings', path: '/custom-coatings', color: '#666' },
-  { icon: <FiCpu />, title: 'Electronics', path: '/electronics', color: '#4a9e3f' },
+  {
+    icon: <FiShield />,
+    title: 'Paint Protection',
+    desc: 'Military-grade PPF films that guard against scratches, chips, and UV damage.',
+    path: '/paint-protection',
+  },
+  {
+    icon: <FiSun />,
+    title: 'Solar Films',
+    desc: 'High-performance window films that reduce heat, glare, and energy costs.',
+    path: '/solar-films',
+  },
+  {
+    icon: <FiDroplet />,
+    title: 'Custom Coatings',
+    desc: 'Precision-engineered specialty coatings for industrial and commercial use.',
+    path: '/custom-coatings',
+  },
+  {
+    icon: <FiCpu />,
+    title: 'Electronics',
+    desc: 'Flexible circuit and photovoltaic film solutions for modern electronics.',
+    path: '/electronics',
+  },
 ]
 
 const news = [
   {
-    title: 'Global Expansion & New Innovations: Exciting News from Reflek Technologies',
     date: 'December 6, 2024',
-    excerpt: 'Reflek Technologies Corporation, a global leader in advanced film manufacturing, is proud to share key updates about its ongoing growth and innovation. With major expansions...',
+    title: 'Global Expansion & New Innovations: Exciting News from Reflek Technologies',
+    excerpt:
+      'Reflek Technologies Corporation, a global leader in advanced film manufacturing, is proud to share key updates about its ongoing growth and innovation across 60+ countries.',
   },
   {
-    title: 'Reflek Technology Excites at FESPA Middle East 2024 in Dubai',
     date: 'February 1, 2024',
-    excerpt: 'We were thrilled to showcase at FESPA Middle East 2024, held from January 29th to 31st at the Dubai Exhibition Centre, Expo City, Dubai, UAE.',
+    title: 'FlexiShield Debuts Next-Gen PPF at FESPA Middle East 2024 in Dubai',
+    excerpt:
+      'Our FlexiShield team showcased breakthrough self-healing paint protection film at FESPA Middle East 2024, held at the Dubai Exhibition Centre, Expo City.',
   },
   {
-    title: 'Reflek Technology Makes a Splash at SEMA 2023',
     date: 'November 24, 2023',
-    excerpt: "We're thrilled to have connected with so many passionate car enthusiasts and industry professionals at the SEMA Show 2023.",
+    title: 'Luxo Films & Reflek Make a Splash at SEMA Show 2023',
+    excerpt:
+      "We connected with passionate car enthusiasts and industry professionals at SEMA 2023, unveiling Luxo's new ceramic solar series and FlexiShield's matte PPF lineup.",
   },
-]
-
-const partners = [
-  { src: 'https://reflektech.com/wp-content/uploads/2022/12/1.jpg', alt: 'Luxo Window Films' },
-  { src: 'https://reflektech.com/wp-content/uploads/2022/12/2-1.jpg', alt: 'FlexShield' },
-  { src: 'https://reflektech.com/wp-content/uploads/2022/12/3.jpg', alt: 'Partner 3' },
-  { src: 'https://reflektech.com/wp-content/uploads/2022/12/4.jpg', alt: 'Partner 4' },
-  { src: 'https://reflektech.com/wp-content/uploads/2022/12/5.jpg', alt: 'ASID' },
-  { src: 'https://reflektech.com/wp-content/uploads/2022/12/6.jpg', alt: 'NGA' },
 ]
 
 export default function Home() {
@@ -51,83 +65,104 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide(s => (s + 1) % slides.length)
-    }, 3000)
+    }, 4000)
     return () => clearInterval(timer)
   }, [])
 
   return (
-    <div className="m4-page">
-      {/* Hero */}
-      <section className="m4-hero">
-        <div className="m4-hero__slider">
-          {slides.map((src, i) => (
-            <div key={i} className={`m4-hero__slide ${i === currentSlide ? 'm4-hero__slide--active' : ''}`}>
-              <img src={src} alt={`Reflek slide ${i + 1}`} />
-            </div>
-          ))}
-        </div>
+    <div className="home-page">
 
-        <div className="m4-hero__geo-overlay">
-          <div className="m4-hero__geo-shape m4-hero__geo-shape--1" />
-          <div className="m4-hero__geo-shape m4-hero__geo-shape--2" />
-          <div className="m4-hero__geo-shape m4-hero__geo-shape--3" />
-          <div className="m4-hero__geo-shape m4-hero__geo-shape--4" />
-          <div className="m4-hero__geo-shape m4-hero__geo-shape--5" />
-        </div>
+      {/* ── HERO ─────────────────────────────────────── */}
+      <section className="home-hero">
+        <div className="home-hero__left">
+          <span className="home-mono-tag">Advanced Surface Technology</span>
 
-        <div className="m4-hero__content">
-          <span className="m4-hero__tag">Reflek Technologies</span>
-          <h1 className="m4-hero__headline">
-            Advanced Films &{' '}
-            <span className="m4-hero__headline-accent">Coatings</span>
-            <br />
-            for a Better World
+          <h1 className="home-hero__headline">
+            Advanced Films &amp; Coatings for a Better{' '}
+            <span className="home-accent">
+              World
+              <span className="home-accent__underline" />
+            </span>
           </h1>
-          <p className="m4-hero__sub">
+
+          <p className="home-hero__sub">
             High-performance protective films and precision coatings engineered
-            for the construction and transportation industries.
+            for the construction and transportation industries — made in the USA,
+            distributed worldwide.
           </p>
-          <Link to="/about-us" className="m4-hero__cta">
-            Discover More <FiArrowRight />
-          </Link>
+
+          <div className="home-hero__actions">
+            <Link to="/about-us" className="home-btn-primary">
+              Discover More
+            </Link>
+            <Link to="/products" className="home-btn-text">
+              View Products <FiArrowRight />
+            </Link>
+          </div>
         </div>
 
-        <div className="m4-hero__dots">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              className={`m4-hero__dot ${i === currentSlide ? 'm4-hero__dot--active' : ''}`}
-              onClick={() => setCurrentSlide(i)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
+        <div className="home-hero__right">
+          <div className="home-slider">
+            <div className="home-slider__frame">
+              {slides.map((src, i) => (
+                <div
+                  key={i}
+                  className={`home-slider__slide${i === currentSlide ? ' home-slider__slide--active' : ''}`}
+                >
+                  <img src={src} alt={`Reflek slide ${i + 1}`} />
+                </div>
+              ))}
+            </div>
 
-        <div className="m4-hero__counter">
-          <span className="m4-hero__counter-current">
-            {String(currentSlide + 1).padStart(2, '0')}
-          </span>{' '}
-          / {String(slides.length).padStart(2, '0')}
+            <div className="home-slider__dots">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  className={`home-slider__dot${i === currentSlide ? ' home-slider__dot--active' : ''}`}
+                  onClick={() => setCurrentSlide(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Services */}
-      <section className="m4-services">
-        <div className="m4-services__inner">
-          <p className="m4-section-label">// What We Do</p>
-          <h2 className="m4-section-title">
-            Our Core <span>Solutions</span>
-          </h2>
-          <div className="m4-services__grid">
+      {/* ── STATS BAR ────────────────────────────────── */}
+      <section className="home-stats">
+        <div className="home-container">
+          <div className="home-stats__grid">
+            {[
+              { num: '30+', label: 'Years' },
+              { num: '500+', label: 'Products' },
+              { num: '60+', label: 'Countries' },
+              { num: '100%', label: 'USA Made' },
+            ].map((s, i) => (
+              <div key={i} className="home-stats__item">
+                <div className="home-stats__num">{s.num}</div>
+                <div className="home-stats__label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES ─────────────────────────────────── */}
+      <section className="home-services">
+        <div className="home-container">
+          <span className="home-mono-tag">What We Make</span>
+          <h2 className="home-section-title">Our Core Solutions</h2>
+
+          <div className="home-services__grid">
             {services.map((s, i) => (
-              <Link to={s.path} key={i} className="m4-service-card" style={{ '--card-color': s.color }}>
-                <span className="m4-service-card__num">{String(i + 1).padStart(2, '0')}</span>
-                <div className="m4-service-card__icon" style={{ background: s.color }}>
+              <Link to={s.path} key={i} className="home-service-card">
+                <div className="home-service-card__icon">
                   {s.icon}
                 </div>
-                <h3 className="m4-service-card__title">{s.title}</h3>
-                <span className="m4-service-card__link">
-                  Learn More <FiArrowRight />
+                <h3 className="home-service-card__title">{s.title}</h3>
+                <p className="home-service-card__desc">{s.desc}</p>
+                <span className="home-service-card__link">
+                  Learn more <FiArrowRight />
                 </span>
               </Link>
             ))}
@@ -135,94 +170,151 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About */}
-      <section className="m4-about">
-        <div className="m4-about__inner">
-          <div className="m4-about__left">
-            <p className="m4-section-label">// About Reflek</p>
-            <h2 className="m4-section-title">
-              Engineering the <span>Future</span> of Protective Films
-            </h2>
-            <p className="m4-about__text">
-              Reflek Technologies Corporation is a major manufacturer and distributor of high-performance
-              finishes and coatings for the construction and transportation industries. Our product portfolio
-              is centered on integrated climatic technologies such as solar control window films, DC vacuum
-              sputtering and specialized precision coatings, photovoltaics and flexible circuit applications.
-            </p>
-            <div className="m4-about__stats">
-              <div>
-                <div className="m4-about__stat-num">50+</div>
-                <div className="m4-about__stat-label">Countries</div>
+      {/* ── ABOUT SNIPPET ────────────────────────────── */}
+      <section className="home-about">
+        <div className="home-container">
+          <div className="home-about__inner">
+            <div className="home-about__left">
+              <span className="home-mono-tag">About Reflek</span>
+              <h2 className="home-section-title home-section-title--sm">
+                Built in the USA.<br />Distributed Worldwide.
+              </h2>
+              <p className="home-about__text">
+                Reflek Technologies Corporation is a major manufacturer and distributor
+                of high-performance finishes and coatings for the construction and
+                transportation industries. Our product portfolio is centered on integrated
+                climatic technologies including solar control window films, DC vacuum
+                sputtering, specialized precision coatings, and flexible circuit applications.
+              </p>
+              <p className="home-about__text">
+                With over three decades of expertise, our products protect and enhance
+                surfaces across residential, commercial, and automotive markets. We operate
+                with a commitment to quality, innovation, and environmental responsibility.
+              </p>
+
+              <div className="home-about__inline-stats">
+                <div className="home-about__inline-stat">
+                  <span className="home-about__inline-num">30yr</span>
+                  <span className="home-about__inline-label">Industry Leader</span>
+                </div>
+                <div className="home-about__inline-stat">
+                  <span className="home-about__inline-num">60+</span>
+                  <span className="home-about__inline-label">Countries Served</span>
+                </div>
+                <div className="home-about__inline-stat">
+                  <span className="home-about__inline-num">USA</span>
+                  <span className="home-about__inline-label">Manufactured</span>
+                </div>
               </div>
-              <div>
-                <div className="m4-about__stat-num">200+</div>
-                <div className="m4-about__stat-label">Products</div>
-              </div>
-              <div>
-                <div className="m4-about__stat-num">15+</div>
-                <div className="m4-about__stat-label">Years</div>
+
+              <Link to="/about-us" className="home-btn-primary" style={{ marginTop: '32px' }}>
+                Learn More
+              </Link>
+            </div>
+
+            <div className="home-about__right">
+              <div className="home-about__image-wrap">
+                <img
+                  src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+                  alt="Reflek Technologies facility"
+                />
+                <div className="home-about__image-accent" />
               </div>
             </div>
-            <Link to="/about-us" className="m4-hero__cta" style={{ marginTop: 40 }}>
-              Learn More <FiArrowRight />
-            </Link>
-          </div>
-          <div className="m4-about__right">
-            <div className="m4-about__geo-accent" />
-            <div className="m4-about__image-wrapper">
-              <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
-                alt="Reflek Technologies Building"
-              />
-            </div>
-            <div className="m4-about__image-border" />
           </div>
         </div>
       </section>
 
-      {/* News */}
-      <section className="m4-news">
-        <div className="m4-news__inner">
-          <div className="m4-news__header">
-            <div className="m4-news__header-left">
-              <p className="m4-section-label">// Latest Updates</p>
-              <h2 className="m4-section-title">
-                News & <span>Insights</span>
-              </h2>
+      {/* ── SUB-BRANDS ───────────────────────────────── */}
+      <section className="home-brands">
+        <div className="home-container">
+          <span className="home-mono-tag">Our Brands</span>
+          <h2 className="home-section-title">Premium Sub-Brands</h2>
+
+          <div className="home-brands__grid">
+            <div className="home-brand-card">
+              <div className="home-brand-card__header">
+                <h3 className="home-brand-card__name">
+                  <em>FlexiShield</em>
+                </h3>
+                <span className="home-brand-card__tag">Paint Protection Film</span>
+              </div>
+              <p className="home-brand-card__desc">
+                FlexiShield is Reflek's premium paint protection film brand, engineered
+                with self-healing technology and optical clarity. Designed for automotive
+                enthusiasts and fleet operators who demand the highest standard of surface
+                protection against rock chips, scratches, and environmental contaminants.
+              </p>
+              <Link to="/paint-protection" className="home-brand-card__link">
+                Visit FlexiShield <FiArrowRight />
+              </Link>
             </div>
-            <Link to="/news" className="m4-news__view-all">
+
+            <div className="home-brand-card">
+              <div className="home-brand-card__header">
+                <h3 className="home-brand-card__name">
+                  <em>Luxo Films</em>
+                </h3>
+                <span className="home-brand-card__tag">Solar Window Films</span>
+              </div>
+              <p className="home-brand-card__desc">
+                Luxo Films delivers high-performance solar control and decorative window
+                films for residential, commercial, and automotive applications. With superior
+                heat rejection, UV blocking, and glare reduction, Luxo products create
+                comfortable, energy-efficient environments without compromising natural light.
+              </p>
+              <Link to="/solar-films" className="home-brand-card__link">
+                Visit Luxo Films <FiArrowRight />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEWS ─────────────────────────────────────── */}
+      <section className="home-news">
+        <div className="home-container">
+          <div className="home-news__header">
+            <div>
+              <span className="home-mono-tag">Latest News</span>
+              <h2 className="home-section-title home-section-title--no-mb">From the Lab</h2>
+            </div>
+            <Link to="/news" className="home-btn-text">
               View All News <FiArrowRight />
             </Link>
           </div>
-          <div className="m4-news__grid">
+
+          <div className="home-news__grid">
             {news.map((item, i) => (
-              <article key={i} className="m4-news-card">
-                <span className="m4-news-card__num">{String(i + 1).padStart(2, '0')}</span>
-                <div className="m4-news-card__body">
-                  <p className="m4-news-card__date">{item.date}</p>
-                  <h3 className="m4-news-card__title">{item.title}</h3>
-                  <p className="m4-news-card__excerpt">{item.excerpt}</p>
-                </div>
-                <div className="m4-news-card__bar" />
+              <article key={i} className="home-news-card">
+                <span className="home-news-card__date">{item.date}</span>
+                <h3 className="home-news-card__title">{item.title}</h3>
+                <p className="home-news-card__excerpt">{item.excerpt}</p>
+                <Link to="/news" className="home-news-card__link">
+                  Read more <FiArrowRight />
+                </Link>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Partners */}
-      <section className="m4-partners">
-        <div className="m4-partners__inner">
-          <p className="m4-section-label">// Trusted Partners</p>
-          <div className="m4-partners__grid">
-            {partners.map((p, i) => (
-              <div key={i} className="m4-partner-logo">
-                <img src={p.src} alt={p.alt} />
-              </div>
-            ))}
-          </div>
+      {/* ── CTA ──────────────────────────────────────── */}
+      <section className="home-cta">
+        <div className="home-container home-cta__inner">
+          <h2 className="home-cta__headline">
+            Ready to Protect What Matters?
+          </h2>
+          <p className="home-cta__sub">
+            Talk to our team about custom film and coating solutions tailored
+            to your industry — from automotive to architecture.
+          </p>
+          <Link to="/contact" className="home-btn-primary">
+            Get in Touch
+          </Link>
         </div>
       </section>
+
     </div>
   )
 }

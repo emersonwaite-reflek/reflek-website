@@ -1,35 +1,45 @@
 import './PageHero.css'
 
-export default function PageHero({ title, subtitle, image }) {
-  // Split title to make last word green accent
-  const words = title.split(' ')
+export default function PageHero({ title, subtitle, image, label }) {
+  // Split title — last word gets the green underline accent
+  const words = title ? title.split(' ') : []
   const lastWord = words.pop()
   const leadingWords = words.join(' ')
 
   return (
-    <section
-      className="page-hero"
-      style={{ backgroundImage: image ? `url(${image})` : undefined }}
-    >
-      <div className="page-hero-overlay" />
+    <section className="page-hero">
+      <div className="page-hero-inner container">
 
-      {/* Geometric decorative shapes */}
-      <div className="page-hero-geo page-hero-geo--1" />
-      <div className="page-hero-geo page-hero-geo--2" />
-      <div className="page-hero-geo page-hero-geo--3" />
-      <div className="page-hero-geo page-hero-geo--4" />
+        {/* Left: text content */}
+        <div className="page-hero-text">
+          {label && (
+            <span className="page-hero-label">{label}</span>
+          )}
+          <h1 className="page-hero-title">
+            {leadingWords && <>{leadingWords} </>}
+            <span className="accent">{lastWord}</span>
+          </h1>
+          {subtitle && (
+            <p className="page-hero-subtitle">{subtitle}</p>
+          )}
+        </div>
 
-      <div className="container page-hero-content">
-        <span className="page-hero-label">// {title}</span>
-        <h1>
-          {leadingWords ? <>{leadingWords} <span>{lastWord}</span></> : <span>{lastWord}</span>}
-        </h1>
-        {subtitle && <p>{subtitle}</p>}
-        <div className="page-hero-accent-bar" />
+        {/* Right: image with green offset border */}
+        {image && (
+          <div className="page-hero-image-wrap">
+            <div className="page-hero-image-border" aria-hidden="true" />
+            <img
+              src={image}
+              alt={title}
+              className="page-hero-image"
+            />
+          </div>
+        )}
+
       </div>
 
-      {/* Angled bottom edge */}
-      <div className="page-hero-angle" />
+      {/* Bottom divider */}
+      <div className="page-hero-divider" />
     </section>
   )
 }

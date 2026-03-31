@@ -1,110 +1,154 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { FiMenu, FiX, FiChevronDown, FiShield, FiSun, FiDroplet, FiCpu, FiArrowRight } from 'react-icons/fi'
+import { FiMenu, FiX, FiChevronDown } from 'react-icons/fi'
 import './Navbar.css'
 
 const services = [
-  {
-    name: 'Paint Protection',
-    path: '/paint-protection',
-    icon: <FiShield />,
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg',
-    desc: 'Advanced PPF films for ultimate vehicle protection',
-    color: '#7ab929',
-  },
-  {
-    name: 'Solar Films',
-    path: '/solar-films',
-    icon: <FiSun />,
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg',
-    desc: 'High-performance solar control window films',
-    color: '#2bb5b2',
-  },
-  {
-    name: 'Custom Coatings',
-    path: '/custom-coatings',
-    icon: <FiDroplet />,
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg',
-    desc: 'DC vacuum sputtering & precision coatings',
-    color: '#666',
-  },
-  {
-    name: 'Electronics',
-    path: '/electronics',
-    icon: <FiCpu />,
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg',
-    desc: 'Photovoltaics & flexible circuit applications',
-    color: '#4a9e3f',
-  },
+  { name: 'Paint Protection', path: '/paint-protection' },
+  { name: 'Solar Films', path: '/solar-films' },
+  { name: 'Custom Coatings', path: '/custom-coatings' },
+  { name: 'Electronics', path: '/electronics' },
 ]
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const location = useLocation()
+  const dropdownRef = useRef(null)
 
   const isActive = (path) => location.pathname === path
+  const isServicesActive = services.some((s) => location.pathname === s.path)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setServicesOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false)
+    setServicesOpen(false)
+  }, [location.pathname])
 
   return (
     <header className="navbar">
-      <div className="navbar-accent-line" />
-      <div className="container navbar-inner">
+      <div className="navbar-inner container">
+        {/* Logo */}
         <Link to="/" className="navbar-logo">
           <img
             src="https://reflektech.com/wp-content/uploads/2022/12/logo.png"
             alt="Reflek Technologies Corporation"
+            height="36"
           />
         </Link>
 
-        <nav className={`navbar-nav ${mobileOpen ? 'open' : ''}`}>
-          <Link to="/" className={isActive('/') ? 'active' : ''} onClick={() => setMobileOpen(false)}>Home</Link>
-          <Link to="/about-us" className={isActive('/about-us') ? 'active' : ''} onClick={() => setMobileOpen(false)}>About Us</Link>
+        {/* Desktop Nav */}
+        <nav className="navbar-nav" aria-label="Main navigation">
+          <Link to="/" className={`nav-link${isActive('/') ? ' active' : ''}`}>
+            Home
+          </Link>
+          <Link to="/about-us" className={`nav-link${isActive('/about-us') ? ' active' : ''}`}>
+            About Us
+          </Link>
 
+          {/* Services Dropdown */}
           <div
             className="nav-dropdown"
+            ref={dropdownRef}
             onMouseEnter={() => setServicesOpen(true)}
             onMouseLeave={() => setServicesOpen(false)}
           >
-            <button className="nav-dropdown-trigger" onClick={() => setServicesOpen(!servicesOpen)}>
-              Services <FiChevronDown size={14} />
+            <button
+              className={`nav-link nav-dropdown-trigger${isServicesActive ? ' active' : ''}`}
+              aria-expanded={servicesOpen}
+              onClick={() => setServicesOpen(!servicesOpen)}
+            >
+              Services
+              <FiChevronDown size={14} className={`chevron${servicesOpen ? ' open' : ''}`} />
             </button>
-            <div className={`mega-menu ${servicesOpen ? 'open' : ''}`}>
-              <div className="mega-menu__header">
-                <span className="dropdown-label">// Services</span>
-              </div>
-              <div className="mega-menu__grid">
-                {services.map(s => (
-                  <Link
-                    key={s.path}
-                    to={s.path}
-                    className={`mega-menu__item ${isActive(s.path) ? 'active' : ''}`}
-                    onClick={() => { setMobileOpen(false); setServicesOpen(false) }}
-                  >
-                    <div className="mega-menu__img-wrapper">
-                      <img src={s.image} alt={s.name} />
-                    </div>
-                    <div className="mega-menu__item-body">
-                      <div className="mega-menu__icon" style={{ background: s.color }}>{s.icon}</div>
-                      <h4 className="mega-menu__item-title">{s.name}</h4>
-                      <p className="mega-menu__item-desc">{s.desc}</p>
-                      <span className="mega-menu__item-link" style={{ color: s.color }}>
-                        Learn More <FiArrowRight size={12} />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+            <div className={`dropdown-panel${servicesOpen ? ' open' : ''}`} role="menu">
+              {services.map((s) => (
+                <Link
+                  key={s.path}
+                  to={s.path}
+                  className={`dropdown-item${isActive(s.path) ? ' active' : ''}`}
+                  role="menuitem"
+                  onClick={() => setServicesOpen(false)}
+                >
+                  <span className="dropdown-dot" aria-hidden="true" />
+                  {s.name}
+                </Link>
+              ))}
             </div>
           </div>
 
-          <Link to="/news" className={isActive('/news') ? 'active' : ''} onClick={() => setMobileOpen(false)}>News</Link>
-          <Link to="/distributors" className={isActive('/distributors') ? 'active' : ''} onClick={() => setMobileOpen(false)}>Distributors</Link>
-          <Link to="/contact-us" className={`nav-cta ${isActive('/contact-us') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Contact</Link>
+          <Link to="/news" className={`nav-link${isActive('/news') ? ' active' : ''}`}>
+            News
+          </Link>
+          <Link to="/distributors" className={`nav-link${isActive('/distributors') ? ' active' : ''}`}>
+            Distributors
+          </Link>
         </nav>
 
-        <button className="navbar-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
-          {mobileOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        {/* CTA */}
+        <Link
+          to="/contact-us"
+          className={`nav-cta${isActive('/contact-us') ? ' active' : ''}`}
+        >
+          Contact
+        </Link>
+
+        {/* Mobile Toggle */}
+        <button
+          className="navbar-toggle"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
+        >
+          {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
         </button>
+      </div>
+
+      {/* Mobile Panel */}
+      <div className={`mobile-panel${mobileOpen ? ' open' : ''}`} aria-hidden={!mobileOpen}>
+        <nav className="mobile-nav">
+          <Link to="/" className={`mobile-link${isActive('/') ? ' active' : ''}`}>Home</Link>
+          <Link to="/about-us" className={`mobile-link${isActive('/about-us') ? ' active' : ''}`}>About Us</Link>
+
+          <div className="mobile-dropdown">
+            <button
+              className={`mobile-link mobile-dropdown-trigger${isServicesActive ? ' active' : ''}`}
+              onClick={() => setServicesOpen(!servicesOpen)}
+              aria-expanded={servicesOpen}
+            >
+              Services
+              <FiChevronDown size={14} className={`chevron${servicesOpen ? ' open' : ''}`} />
+            </button>
+            <div className={`mobile-submenu${servicesOpen ? ' open' : ''}`}>
+              {services.map((s) => (
+                <Link
+                  key={s.path}
+                  to={s.path}
+                  className={`mobile-sublink${isActive(s.path) ? ' active' : ''}`}
+                >
+                  <span className="dropdown-dot" aria-hidden="true" />
+                  {s.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <Link to="/news" className={`mobile-link${isActive('/news') ? ' active' : ''}`}>News</Link>
+          <Link to="/distributors" className={`mobile-link${isActive('/distributors') ? ' active' : ''}`}>Distributors</Link>
+
+          <Link to="/contact-us" className="nav-cta mobile-cta">Contact</Link>
+        </nav>
       </div>
     </header>
   )

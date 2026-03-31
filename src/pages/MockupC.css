@@ -1,0 +1,514 @@
+/* ============================================================
+   MOCKUP C — SOFT CORPORATE MODERN
+   Inspired by Notion / Figma aesthetic.
+   Prefix: mc-
+   ============================================================ */
+
+/* ── Base ─────────────────────────────────────────────────── */
+.mc-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  color: #1a1a1a;
+  background: #ffffff;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── Shared typography utilities ─────────────────────────── */
+.mc-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7ab929;
+  margin-bottom: 10px;
+}
+
+.mc-section-title {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.mc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 13px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.mc-btn--primary {
+  background: #7ab929;
+  color: #ffffff;
+  border: 2px solid #7ab929;
+}
+
+.mc-btn--primary:hover {
+  background: #6aa520;
+  border-color: #6aa520;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(122, 185, 41, 0.3);
+}
+
+.mc-btn--outline {
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 2px solid #d0d0d0;
+}
+
+.mc-btn--outline:hover {
+  border-color: #7ab929;
+  color: #7ab929;
+  transform: translateY(-1px);
+}
+
+.mc-btn--white-outline {
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  padding: 14px 32px;
+}
+
+.mc-btn--white-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.mc-hero {
+  background: #f5f5f5;
+  padding: 100px 60px 80px;
+  text-align: center;
+}
+
+.mc-hero__inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.mc-hero__badge {
+  display: inline-block;
+  background: #eaf5d3;
+  color: #4d7a12;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid #c4e190;
+  margin-bottom: 28px;
+}
+
+.mc-hero__heading {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.mc-hero__heading-accent {
+  color: #7ab929;
+}
+
+.mc-hero__sub {
+  font-size: 1.1rem;
+  color: #555555;
+  max-width: 580px;
+  margin: 0 auto 36px;
+  line-height: 1.75;
+}
+
+.mc-hero__actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 64px;
+}
+
+/* Product image strip */
+.mc-hero__strip {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.mc-hero__strip-img {
+  flex: 1;
+  min-width: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.mc-hero__strip-img:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
+}
+
+.mc-hero__strip-img img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+   TRUST BAR
+   ============================================================ */
+.mc-trust {
+  background: #ffffff;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  padding: 48px 60px;
+}
+
+.mc-trust__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.mc-trust__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999999;
+}
+
+.mc-trust__logos {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.mc-trust__logo-box {
+  background: #f5f5f5;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  width: 140px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.mc-trust__logo-box:hover {
+  border-color: #7ab929;
+  background: #f5fbea;
+}
+
+.mc-trust__logo-box span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888888;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   SERVICES GRID
+   ============================================================ */
+.mc-services {
+  background: #f5f5f5;
+  padding: 96px 60px;
+}
+
+.mc-services__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.mc-services__inner .mc-section-title {
+  margin-bottom: 48px;
+}
+
+.mc-services__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.mc-service-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #ebebeb;
+  transition: transform 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mc-service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.10);
+}
+
+.mc-service-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.mc-service-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.mc-service-card__desc {
+  font-size: 0.93rem;
+  color: #666666;
+  line-height: 1.7;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.mc-service-card__link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7ab929;
+  text-decoration: none;
+  transition: color 0.2s;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.mc-service-card__link:hover {
+  color: #5f9620;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.mc-about {
+  background: #ffffff;
+  padding: 96px 60px;
+}
+
+.mc-about__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.mc-about__image-col {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10);
+  flex-shrink: 0;
+}
+
+.mc-about__img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+.mc-about__content-col .mc-section-title {
+  margin-bottom: 18px;
+}
+
+.mc-about__text {
+  font-size: 1rem;
+  color: #555555;
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.mc-about__stats {
+  display: flex;
+  gap: 0;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mc-about__stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  border-right: 1px solid #ebebeb;
+  background: #fafafa;
+}
+
+.mc-about__stat:last-child {
+  border-right: none;
+}
+
+.mc-about__stat-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #7ab929;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.mc-about__stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #999999;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.mc-cta {
+  background: linear-gradient(135deg, #7ab929 0%, #2bb5b2 100%);
+  padding: 96px 60px;
+  text-align: center;
+}
+
+.mc-cta__inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.mc-cta__overline {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 12px;
+}
+
+.mc-cta__heading {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.mc-cta__sub {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.75;
+  margin-bottom: 36px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .mc-about__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .mc-about__img {
+    height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mc-hero {
+    padding: 80px 24px 60px;
+  }
+
+  .mc-hero__strip {
+    flex-direction: column;
+  }
+
+  .mc-hero__strip-img img {
+    height: 180px;
+  }
+
+  .mc-trust {
+    padding: 40px 24px;
+  }
+
+  .mc-trust__logo-box {
+    width: 120px;
+    height: 48px;
+  }
+
+  .mc-services {
+    padding: 72px 24px;
+  }
+
+  .mc-services__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mc-about {
+    padding: 72px 24px;
+  }
+
+  .mc-about__stats {
+    flex-direction: column;
+  }
+
+  .mc-about__stat {
+    border-right: none;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .mc-about__stat:last-child {
+    border-bottom: none;
+  }
+
+  .mc-cta {
+    padding: 72px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mc-hero__heading {
+    font-size: 2rem;
+  }
+
+  .mc-hero__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mc-btn {
+    width: 100%;
+    justify-content: center;
+    max-width: 320px;
+  }
+}

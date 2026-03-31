@@ -1,23 +1,28 @@
-import { FiCpu, FiZap, FiCheckCircle, FiTrendingUp, FiArrowRight } from 'react-icons/fi'
+import { FiSun, FiZap, FiCpu, FiEye, FiArrowRight } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import './Services.css'
 
-const strengths = [
+const features = [
   {
-    icon: <FiTrendingUp />,
-    title: 'Cutting-Edge Technology',
-    desc: 'Ongoing commitment to the latest technologies and manufacturing processes.',
+    icon: <FiSun />,
+    title: 'Photovoltaics',
+    desc: 'Thin-film coatings and interlayers for photovoltaic modules — optimizing light transmission, anti-reflection performance, and long-term durability under outdoor conditions.',
   },
   {
-    icon: <FiCheckCircle />,
-    title: 'Quality Control',
-    desc: 'Deep understanding of advanced materials and rigorous quality control methodologies.',
+    icon: <FiCpu />,
+    title: 'Flexible Circuit Applications',
+    desc: 'Precision-coated substrates and functional layers for flexible printed circuits, enabling bend-tolerant electronics across wearable, medical, and consumer product categories.',
   },
   {
     icon: <FiZap />,
-    title: 'Innovation Culture',
-    desc: 'Highly trained team combined with a culture of openness to innovation.',
+    title: 'EMI Shielding',
+    desc: 'Conductive thin-film coatings that provide electromagnetic interference shielding for sensitive electronics — balancing attenuation performance with optical and structural requirements.',
+  },
+  {
+    icon: <FiEye />,
+    title: 'Optical Coatings',
+    desc: 'Anti-reflective, hard-coat, and spectrally selective optical coatings for lenses, displays, and sensor windows — engineered for specific transmission and reflectance profiles.',
   },
 ]
 
@@ -25,6 +30,7 @@ const stats = [
   { number: '100%', label: 'Quality Assurance' },
   { number: '24/7', label: 'Production Capacity' },
   { number: '50+', label: 'OEM Partners' },
+  { number: '20+', label: 'Years Experience' },
 ]
 
 export default function Electronics() {
@@ -36,52 +42,49 @@ export default function Electronics() {
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg"
       />
 
-      {/* Intro Section */}
+      {/* Intro */}
       <section className="svc-section svc-section--white">
         <div className="svc-container">
           <div className="svc-intro">
-            <div className="svc-intro-icon">
-              <FiCpu size={32} />
-            </div>
-            <span className="svc-section-label">// Electronics Division</span>
+            <span className="svc-section-tag">Electronics Division</span>
             <h2 className="svc-section-title">
-              Electronics <span>Division</span>
+              Precision Films for <span>Electronics</span>
             </h2>
             <div className="svc-accent-bar" />
             <p className="svc-desc">
-              Reflek is a trusted supporter of designers and original equipment manufacturers, delivering
+              Reflek is a trusted partner for designers and original equipment manufacturers, delivering
               high-quality, reliable products with consistent, timely delivery. We offer an extensive
               product portfolio supported by broad manufacturing capabilities and cutting-edge technological
               processes for precision components, advanced electronics, and other highly demanding industrial
               applications.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="svc-features-grid svc-features-grid--3">
-            {strengths.map((s, i) => (
+      {/* Application Areas */}
+      <section className="svc-section svc-section--gray">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-tag">Application Areas</span>
+            <h2 className="svc-section-title">Where Our <span>Technology</span> Works</h2>
+            <div className="svc-accent-bar" />
+          </div>
+          <div className="svc-feature-grid">
+            {features.map((f, i) => (
               <div key={i} className="svc-feature-card">
-                <span className="svc-feature-card__number">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div className="svc-feature-card__icon">{s.icon}</div>
-                <span className="svc-feature-card__label">// Strength {String(i + 1).padStart(2, '0')}</span>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
+                <div className="svc-feature-card__icon">{f.icon}</div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="svc-section svc-section--dark">
+      {/* Stats */}
+      <section className="svc-section svc-section--white">
         <div className="svc-container">
-          <div className="svc-intro">
-            <span className="svc-section-label">// Capabilities</span>
-            <h2 className="svc-section-title">
-              Precision <span>Manufacturing</span> at Scale
-            </h2>
-          </div>
           <div className="svc-stats-row">
             {stats.map((s, i) => (
               <div key={i} className="svc-stat">
@@ -93,15 +96,15 @@ export default function Electronics() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="svc-section svc-section--gray">
         <div className="svc-container">
-          <div className="svc-cta">
-            <span className="svc-cta__label">// Partner With Us</span>
-            <h3>Partner with us for your electronics needs</h3>
-            <p>Reliable, high-quality precision components with consistent delivery.</p>
+          <div className="svc-cta-box">
+            <span className="svc-section-tag">Partner With Us</span>
+            <h3>Ready to work with us?</h3>
+            <p>Reliable, high-quality precision components with consistent delivery for OEM partners worldwide.</p>
             <Link to="/contact-us" className="svc-cta-btn">
-              Get in Touch <FiArrowRight />
+              Get in Touch <FiArrowRight size={15} />
             </Link>
           </div>
         </div>

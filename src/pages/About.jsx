@@ -1,21 +1,34 @@
-import { FiCheck, FiAward, FiSettings, FiUsers, FiGlobe, FiLayers } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
+import { FiZap, FiCheckCircle, FiUsers } from 'react-icons/fi'
 import PageHero from '../components/PageHero'
 import './About.css'
 
-const strengths = [
-  { icon: <FiAward />, title: 'Strong R&D Team', desc: 'Continuous innovation through dedicated research and development.' },
-  { icon: <FiSettings />, title: 'State-of-the-Art Manufacturing', desc: 'Advanced production facilities with exclusive processes.' },
-  { icon: <FiGlobe />, title: 'Global Distribution', desc: 'Well-established distribution network reaching customers worldwide.' },
-  { icon: <FiLayers />, title: 'Flexible Structure', desc: 'Agile corporate structure enabling rapid response to market needs.' },
-  { icon: <FiUsers />, title: '30+ Years Experience', desc: 'Design and engineering team with over 30 years of combined expertise.' },
-  { icon: <FiCheck />, title: 'Quality Assurance', desc: 'Rigorous testing for solar control performance, clarity, and durability.' },
+const stats = [
+  { value: '30+', label: 'Years in Business' },
+  { value: '500+', label: 'SKUs Available' },
+  { value: '60+', label: 'Countries Served' },
+  { value: '100%', label: 'USA Manufactured' },
 ]
 
-const stats = [
-  { value: '30+', label: 'Years Experience' },
-  { value: '500+', label: 'Products Delivered' },
-  { value: '50+', label: 'Countries Served' },
-  { value: '100%', label: 'Quality Tested' },
+const values = [
+  {
+    letter: 'I',
+    icon: <FiZap />,
+    title: 'Innovation',
+    desc: 'We continuously invest in R&D and proprietary processes to stay ahead of industry demands, bringing new film technologies to market faster than anyone else.',
+  },
+  {
+    letter: 'Q',
+    icon: <FiCheckCircle />,
+    title: 'Quality',
+    desc: 'Every roll that leaves our Chandler facility passes rigorous solar control, clarity, and durability testing. We never ship product that doesn\'t meet our own standards.',
+  },
+  {
+    letter: 'P',
+    icon: <FiUsers />,
+    title: 'Partnership',
+    desc: 'We treat distributors and installers as long-term partners—providing training, marketing support, and dedicated account management so both sides grow together.',
+  },
 ]
 
 export default function About() {
@@ -23,110 +36,122 @@ export default function About() {
     <>
       <PageHero
         title="About Us"
-        subtitle="Leading manufacturer of high-performance finishes and coatings"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+        subtitle="Precision-engineered films and coatings since the 1990s"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
       />
 
-      {/* Who We Are - White background */}
-      <section className="about-section about-section--white">
-        <div className="container">
-          <div className="about-intro">
-            <div className="about-text">
-              <span className="about-label">// About Reflek</span>
-              <h2 className="about-title">Who We <span>Are</span></h2>
-              <p>
-                Reflek Technologies Corporation is a major manufacturer and distributor of high-performance
-                finishes and coatings for the construction and transportation industries. Our product portfolio
-                is centered on integrated climatic technologies such as solar control window films, DC vacuum
-                sputtering and specialized precision coatings, photovoltaics and flexible circuit applications.
+      {/* ── Mission ── */}
+      <section className="ab-section ab-section--white">
+        <div className="ab-container">
+          <div className="ab-mission">
+            <div className="ab-mission-text">
+              <span className="ab-tag">Our Mission</span>
+              <h2 className="ab-heading">
+                High-Performance Films,<br />Built to Last
+              </h2>
+              <p className="ab-body">
+                Reflek Technologies Corporation is a leading manufacturer and distributor of
+                high-performance window films, paint protection films, and precision coatings for
+                the construction and transportation industries. Founded in Chandler, Arizona,
+                Reflek has been engineering advanced film solutions since the early 1990s.
               </p>
-              <p>
-                We maintain the highest quality standards in the industry while delivering personalized
-                customer service and support. Our design and engineering team brings over 30 years of
-                combined experience in creating practical solutions.
+              <p className="ab-body">
+                Our product portfolio spans solar control window films, DC vacuum-sputtered
+                metallised films, polyurethane paint protection films, and flexible circuit
+                substrates. With over 30 years in the business and distribution reaching more
+                than 60 countries, we pair deep manufacturing expertise with a genuine commitment
+                to every partner in our network.
               </p>
             </div>
-            <div className="about-image-wrapper">
-              <div className="about-image-frame">
-                <img
-                  src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-Building.png"
-                  alt="Reflek Technologies Building"
-                />
-                {/* Geometric corner accents */}
-                <div className="about-image-corner about-image-corner--tl" />
-                <div className="about-image-corner about-image-corner--br" />
-              </div>
+            <div className="ab-mission-image">
+              <img
+                src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+                alt="Reflek Technologies manufacturing facility"
+              />
+              <div className="ab-image-accent" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats - Dark angled section */}
-      <section className="about-section about-section--dark">
-        <div className="container">
-          <div className="about-stats">
+      {/* ── Stats bar ── */}
+      <section className="ab-section ab-stats-section">
+        <div className="ab-container">
+          <div className="ab-stats">
             {stats.map((s, i) => (
-              <div key={i} className="about-stat">
-                <span className="about-stat-value">{s.value}</span>
-                <span className="about-stat-label">// {s.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Geometric decorations */}
-        <div className="about-dark-geo about-dark-geo--1" />
-        <div className="about-dark-geo about-dark-geo--2" />
-      </section>
-
-      {/* Our Strengths - Light gray background */}
-      <section className="about-section about-section--light">
-        <div className="container">
-          <div className="about-section-header">
-            <span className="about-label">// Our Strengths</span>
-            <h2 className="about-title">What Sets Us <span>Apart</span></h2>
-            <p className="about-section-subtitle">Industry-leading capabilities that drive our success</p>
-          </div>
-          <div className="strengths-grid">
-            {strengths.map((s, i) => (
-              <div key={i} className="strength-card">
-                <div className="strength-icon-hex">
-                  {s.icon}
-                </div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
+              <div key={i} className="ab-stat">
+                <span className="ab-stat-value">{s.value}</span>
+                <span className="ab-stat-label">{s.label}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Manufacturing - White background */}
-      <section className="about-section about-section--white">
-        <div className="container">
-          <div className="about-manufacturing">
-            <span className="about-label">// Operations</span>
-            <h2 className="about-title">Manufacturing & <span>Operations</span></h2>
-            <div className="about-manufacturing-content">
-              <div className="about-manufacturing-bar" />
-              <div className="about-manufacturing-text">
-                <p>
-                  Production occurs at our state-of-the-art production facility located in Chandler, Arizona.
-                  All products undergo rigorous quality control testing for solar control performance, clarity, and durability.
-                </p>
-                <p>
-                  We serve diverse markets including architectural, automotive, marine, safety and security, and
-                  paint protection applications. We provide professional services including industrial sputtering,
-                  coating, adhesives, and laminating.
-                </p>
-                <p>
-                  As a full-service provider, we offer integral design, manufacturing, and installation services
-                  as a complete package from project inception through completion.
-                </p>
+      {/* ── Values ── */}
+      <section className="ab-section ab-section--gray">
+        <div className="ab-container">
+          <div className="ab-section-header">
+            <span className="ab-tag">Our Values</span>
+            <h2 className="ab-heading">What Drives Us</h2>
+          </div>
+          <div className="ab-values-grid">
+            {values.map((v, i) => (
+              <div key={i} className="ab-value-card">
+                <div className="ab-value-icon">{v.letter}</div>
+                <h3 className="ab-value-title">{v.title}</h3>
+                <p className="ab-value-desc">{v.desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Manufacturing ── */}
+      <section className="ab-section ab-section--white">
+        <div className="ab-container">
+          <div className="ab-manufacturing">
+            <div className="ab-manufacturing-image">
+              <img
+                src="https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg"
+                alt="Reflek production line in Chandler, Arizona"
+              />
             </div>
-            <a href="/contact" className="about-cta">
-              Get In Touch
-            </a>
+            <div className="ab-manufacturing-text">
+              <span className="ab-tag">Manufacturing</span>
+              <h2 className="ab-heading">Made in Chandler, Arizona</h2>
+              <p className="ab-body">
+                Our 60,000 sq ft production campus in Chandler, AZ is where every Reflek,
+                FlexiShield, and Luxo-branded product begins its life. The facility houses
+                multi-lane slit-and-rewind lines, DC magnetron sputtering chambers, adhesive
+                lamination equipment, and a dedicated quality-control lab.
+              </p>
+              <p className="ab-body">
+                We produce over 10 million square feet of finished film annually and
+                stock more than 500 SKUs ready for same-week shipment. A second polyurethane
+                extrusion line is currently being commissioned, expanding our paint protection
+                film capacity to meet growing global demand.
+              </p>
+              <ul className="ab-mfg-list">
+                <li>DC vacuum sputtering &amp; precision coating</li>
+                <li>Adhesive lamination &amp; extrusion</li>
+                <li>In-house solar performance &amp; clarity testing</li>
+                <li>ISO-compliant quality management</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="ab-section ab-section--gray ab-cta-section">
+        <div className="ab-container">
+          <div className="ab-cta">
+            <h2 className="ab-cta-heading">Ready to Partner?</h2>
+            <p className="ab-cta-sub">
+              Whether you're a distributor, installer, or OEM—let's build something together.
+            </p>
+            <Link to="/contact-us" className="ab-btn">Get in Touch</Link>
           </div>
         </div>
       </section>

@@ -51,7 +51,7 @@ export default function PaintProtection() {
       <section className="svc-section svc-section--white">
         <div className="svc-container">
           <div className="svc-intro">
-            <span className="svc-section-label">// Paint Protection Film</span>
+            <span className="svc-section-tag">Paint Protection Film</span>
             <h2 className="svc-section-title">Engineered to <span>Protect</span></h2>
             <div className="svc-accent-bar" />
             <p className="svc-desc">
@@ -68,10 +68,10 @@ export default function PaintProtection() {
       <section className="svc-section svc-section--gray">
         <div className="svc-container">
           <div className="svc-subbrand-block">
-            <div className="svc-subbrand-block__content">
-              <span className="svc-section-label">// Our Premium PPF Brand</span>
-              <div className="svc-subbrand-block__wordmark">FlexiShield</div>
-              <p className="svc-subbrand-block__tagline">COVERAGE YOU CAN COUNT ON.</p>
+            <div>
+              <span className="svc-section-tag">Our Premium PPF Brand</span>
+              <div className="svc-subbrand-wordmark">FlexiShield</div>
+              <span className="svc-subbrand-tagline">Coverage You Can Count On.</span>
               <p className="svc-desc">
                 FlexiShield is Reflek's flagship paint protection film brand — available in clear PPF, color PPF,
                 windshield film, and window tint. With 85+ gloss, metallic, color-flip, and textured finish
@@ -87,7 +87,7 @@ export default function PaintProtection() {
                 Visit FlexiShield <FiExternalLink size={14} />
               </a>
             </div>
-            <div className="svc-subbrand-block__image">
+            <div className="svc-subbrand-image">
               <img
                 src="https://static.wixstatic.com/media/637ea8_9c33c1d89448456c88964c2bf7d70902f000.jpg"
                 alt="FlexiShield Color PPF"
@@ -101,16 +101,14 @@ export default function PaintProtection() {
       <section className="svc-section svc-section--white">
         <div className="svc-container">
           <div className="svc-intro">
-            <span className="svc-section-label">// What Sets It Apart</span>
+            <span className="svc-section-tag">What Sets It Apart</span>
             <h2 className="svc-section-title">Built to <span>Last</span></h2>
             <div className="svc-accent-bar" />
           </div>
-          <div className="svc-features-grid">
+          <div className="svc-feature-grid">
             {features.map((f, i) => (
               <div key={i} className="svc-feature-card">
-                <span className="svc-feature-card__number">{String(i + 1).padStart(2, '0')}</span>
                 <div className="svc-feature-card__icon">{f.icon}</div>
-                <span className="svc-feature-card__label">// Feature {String(i + 1).padStart(2, '0')}</span>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
               </div>
@@ -120,12 +118,8 @@ export default function PaintProtection() {
       </section>
 
       {/* Stats */}
-      <section className="svc-section svc-section--dark">
+      <section className="svc-section svc-section--gray">
         <div className="svc-container">
-          <div className="svc-intro">
-            <span className="svc-section-label">// Performance Metrics</span>
-            <h2 className="svc-section-title">Built for <span>Maximum</span> Defense</h2>
-          </div>
           <div className="svc-stats-row">
             {stats.map((s, i) => (
               <div key={i} className="svc-stat">
@@ -138,14 +132,14 @@ export default function PaintProtection() {
       </section>
 
       {/* CTA */}
-      <section className="svc-section svc-section--gray">
+      <section className="svc-section svc-section--white">
         <div className="svc-container">
-          <div className="svc-cta">
-            <span className="svc-cta__label">// Get Started</span>
+          <div className="svc-cta-box">
+            <span className="svc-section-tag">Get Started</span>
             <h3>Interested in FlexiShield?</h3>
             <p>Contact us to learn more about our paint protection solutions.</p>
             <Link to="/contact-us" className="svc-cta-btn">
-              Get in Touch <FiArrowRight />
+              Get in Touch <FiArrowRight size={15} />
             </Link>
           </div>
         </div>

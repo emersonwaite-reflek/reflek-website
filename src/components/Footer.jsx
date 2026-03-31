@@ -1,62 +1,61 @@
 import { Link } from 'react-router-dom'
-import { FiFacebook, FiYoutube, FiTwitter, FiRss, FiMapPin, FiPhone, FiMail } from 'react-icons/fi'
 import './Footer.css'
 
 export default function Footer() {
   return (
     <footer className="footer">
-      {/* Geometric decorative elements */}
-      <div className="footer-geo-accent" />
-
-      <div className="container">
+      <div className="footer-main container">
         <div className="footer-grid">
+
+          {/* Column 1: Brand */}
           <div className="footer-brand">
-            <img
-              src="https://reflektech.com/wp-content/uploads/2022/12/footer-logo.png"
-              alt="Reflek Technologies"
-              className="footer-logo"
-            />
-            <div className="footer-contact-item">
-              <FiMapPin size={16} />
-              <span>280 N Roosevelt Ave, Chandler, AZ 85226</span>
-            </div>
+            <Link to="/">
+              <img
+                src="https://reflektech.com/wp-content/uploads/2022/12/logo.png"
+                alt="Reflek Technologies Corporation"
+                className="footer-logo"
+                height="32"
+              />
+            </Link>
+            <p className="footer-tagline">
+              Precision-engineered films &amp; coatings.<br />
+              Manufactured in the USA.
+            </p>
           </div>
 
+          {/* Column 2: Quick Links */}
           <div className="footer-col">
-            <h4><span className="footer-label">// Contact</span></h4>
-            <div className="footer-contact-item">
-              <FiPhone size={16} />
-              <a href="tel:+18663129909">+1 866 312 9909</a>
-            </div>
-            <div className="footer-contact-item">
-              <FiMail size={16} />
+            <span className="footer-col-label">Quick Links</span>
+            <ul className="footer-links">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about-us">About</Link></li>
+              <li><Link to="/paint-protection">Paint Protection</Link></li>
+              <li><Link to="/solar-films">Solar Films</Link></li>
+              <li><Link to="/custom-coatings">Custom Coatings</Link></li>
+              <li><Link to="/electronics">Electronics</Link></li>
+              <li><Link to="/news">News</Link></li>
+              <li><Link to="/distributors">Distributors</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Contact */}
+          <div className="footer-col">
+            <span className="footer-col-label">Contact</span>
+            <address className="footer-contact">
+              <p>280 N Roosevelt Ave<br />Chandler, AZ 85226</p>
+              <a href="tel:+18663129909">+1 (866) 312-9909</a>
               <a href="mailto:contact@reflektech.com">contact@reflektech.com</a>
-            </div>
+            </address>
           </div>
 
-          <div className="footer-col">
-            <h4><span className="footer-label">// Quick Links</span></h4>
-            <Link to="/about-us"><span className="footer-link-marker" />About Us</Link>
-            <Link to="/paint-protection"><span className="footer-link-marker" />Paint Protection</Link>
-            <Link to="/solar-films"><span className="footer-link-marker" />Solar Films</Link>
-            <Link to="/custom-coatings"><span className="footer-link-marker" />Custom Coatings</Link>
-            <Link to="/electronics"><span className="footer-link-marker" />Electronics</Link>
-          </div>
-
-          <div className="footer-col">
-            <h4><span className="footer-label">// Connect With Us</span></h4>
-            <div className="footer-social">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="footer-social-hex"><FiFacebook size={18} /></a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="footer-social-hex"><FiYoutube size={18} /></a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="footer-social-hex"><FiTwitter size={18} /></a>
-              <a href="#" aria-label="RSS" className="footer-social-hex"><FiRss size={18} /></a>
-            </div>
-          </div>
         </div>
+      </div>
 
-        <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Reflek Technologies Corporation. All rights reserved.</p>
-          <Link to="#">Privacy Policy</Link>
+      {/* Copyright bar */}
+      <div className="footer-bottom">
+        <div className="footer-bottom-inner container">
+          <span>&copy; 2026 Reflek Technologies Corporation. All rights reserved.</span>
+          <Link to="/privacy-policy">Privacy Policy</Link>
         </div>
       </div>
     </footer>

@@ -1,0 +1,541 @@
+/* ============================================================
+   MOCKUP B — BOLD EDITORIAL
+   Black & White + Green (#7ab929) accent only.
+   Scoped with mb- prefix.
+   ============================================================ */
+
+/* ── TOKENS ── */
+:root {
+  --mb-black: #0a0a0a;
+  --mb-white: #ffffff;
+  --mb-green: #7ab929;
+  --mb-gray: #f2f2f0;
+  --mb-muted: #888888;
+  --mb-rule: rgba(0, 0, 0, 0.15);
+  --mb-max: 1340px;
+  --mb-pad: 72px;
+  --mb-font-display: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mb-font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ── BASE ── */
+.mb-page {
+  font-family: var(--mb-font-body);
+  color: var(--mb-black);
+  background: var(--mb-white);
+  overflow-x: hidden;
+}
+
+/* ── SHARED: HORIZONTAL RULE ── */
+.mb-rule {
+  border: none;
+  border-top: 1px solid var(--mb-black);
+  margin: 0;
+}
+
+.mb-rule--light {
+  border-top-color: var(--mb-rule);
+  margin: 0;
+}
+
+/* ── SHARED: EYEBROW LABEL ── */
+.mb-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mb-muted);
+  margin-bottom: 16px;
+}
+
+.mb-eyebrow--white {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.mb-eyebrow--dim {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── SHARED: GREEN ACCENT ── */
+.mb-accent {
+  color: var(--mb-green);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.mb-hero {
+  background: var(--mb-white);
+  padding: 80px var(--mb-pad) 60px;
+}
+
+.mb-hero__inner {
+  max-width: var(--mb-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 35%;
+  gap: 64px;
+  align-items: start;
+}
+
+/* Top rule sits above everything */
+.mb-hero .mb-rule:first-of-type {
+  grid-column: 1 / -1;
+}
+
+.mb-hero__text-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mb-hero__display {
+  font-family: var(--mb-font-display);
+  font-size: clamp(52px, 6.5vw, 96px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--mb-black);
+  margin: 28px 0;
+}
+
+/* Rule below the headline */
+.mb-hero__text-col .mb-rule:last-of-type {
+  margin-bottom: 28px;
+}
+
+.mb-hero__footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 0;
+}
+
+.mb-hero__sub {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: #555;
+  max-width: 460px;
+  margin: 0;
+}
+
+/* ── CTA ARROW BUTTON ── */
+.mb-cta-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--mb-green);
+  color: var(--mb-white);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.mb-cta-btn:hover {
+  background: #5e9212;
+  transform: scale(1.08);
+}
+
+.mb-cta-btn__arrow {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* ── HERO IMAGE ── */
+.mb-hero__image-col {
+  padding-top: 0;
+  align-self: stretch;
+}
+
+.mb-hero__img {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  display: block;
+  /* slight desaturation for editorial feel — keeps black-and-white palette */
+  filter: grayscale(20%) contrast(1.05);
+}
+
+/* ============================================================
+   TICKER / MARQUEE
+   ============================================================ */
+.mb-ticker {
+  background: var(--mb-black);
+  overflow: hidden;
+  padding: 18px 0;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+  white-space: nowrap;
+}
+
+.mb-ticker__track {
+  display: inline-flex;
+  gap: 0;
+  animation: mb-marquee 28s linear infinite;
+}
+
+.mb-ticker__set {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mb-white);
+}
+
+.mb-ticker__dot {
+  color: var(--mb-green);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+@keyframes mb-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+/* ============================================================
+   SERVICES — NUMBERED LIST
+   ============================================================ */
+.mb-services {
+  background: var(--mb-white);
+  padding: 100px var(--mb-pad) 120px;
+}
+
+.mb-services__inner {
+  max-width: var(--mb-max);
+  margin: 0 auto;
+}
+
+.mb-services__header {
+  margin-bottom: 48px;
+  border-top: 1px solid var(--mb-black);
+  padding-top: 32px;
+}
+
+.mb-services__title {
+  font-family: var(--mb-font-display);
+  font-size: clamp(2.2rem, 3.5vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  color: var(--mb-black);
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* ── SERVICE ROW ── */
+.mb-services__list {
+  display: flex;
+  flex-direction: column;
+  /* rule at bottom of list */
+  border-bottom: 1px solid var(--mb-rule);
+}
+
+.mb-service-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 2fr;
+  gap: 40px;
+  align-items: baseline;
+  padding: 40px 0;
+  border-top: 1px solid var(--mb-rule);
+  transition: background 0.2s;
+}
+
+.mb-service-row:hover {
+  background: #fafafa;
+}
+
+.mb-service-row__num {
+  font-family: var(--mb-font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--mb-muted);
+  align-self: start;
+  padding-top: 4px;
+}
+
+.mb-service-row__name {
+  font-family: var(--mb-font-display);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 800;
+  color: var(--mb-black);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.mb-service-row__desc {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: #555;
+  margin: 0;
+}
+
+/* ── Remove the inline divider — we use border-top on rows instead ── */
+.mb-service-row .mb-rule--light {
+  display: none;
+}
+
+/* ============================================================
+   FEATURE HIGHLIGHT — FULL BLEED IMAGE WITH TEXT OVERLAY
+   ============================================================ */
+.mb-feature {
+  position: relative;
+  min-height: 620px;
+  background-image: url('https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.mb-feature__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.72) 45%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  z-index: 1;
+}
+
+.mb-feature__content {
+  position: relative;
+  z-index: 2;
+  max-width: var(--mb-max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 80px var(--mb-pad);
+  max-width: 700px;
+  /* left-align by overriding auto margin on right */
+  margin-left: calc((100vw - var(--mb-max)) / 2);
+  margin-right: auto;
+}
+
+.mb-feature__headline {
+  font-family: var(--mb-font-display);
+  font-size: clamp(2.6rem, 4.5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--mb-white);
+  margin: 0 0 28px 0;
+}
+
+.mb-feature__body {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 480px;
+  margin: 0 0 48px 0;
+}
+
+.mb-feature__stats {
+  display: flex;
+  gap: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding-top: 36px;
+}
+
+.mb-feature__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mb-feature__stat-num {
+  font-family: var(--mb-font-display);
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--mb-white);
+  line-height: 1;
+}
+
+.mb-feature__stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================================
+   CTA STRIP
+   ============================================================ */
+.mb-cta-strip {
+  background: var(--mb-black);
+  padding: 100px var(--mb-pad);
+}
+
+.mb-cta-strip__inner {
+  max-width: var(--mb-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.mb-cta-strip__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-cta-strip__headline {
+  font-family: var(--mb-font-display);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--mb-white);
+  margin: 0;
+}
+
+.mb-cta-strip__btn {
+  flex-shrink: 0;
+  display: inline-block;
+  background: var(--mb-green);
+  color: var(--mb-white);
+  font-family: var(--mb-font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 18px 44px;
+  white-space: nowrap;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.mb-cta-strip__btn:hover {
+  background: #5e9212;
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  :root {
+    --mb-pad: 48px;
+  }
+
+  .mb-feature__content {
+    margin-left: var(--mb-pad);
+  }
+}
+
+@media (max-width: 900px) {
+  .mb-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .mb-hero__image-col {
+    order: -1;
+  }
+
+  .mb-hero__img {
+    min-height: 300px;
+    height: 340px;
+  }
+
+  .mb-service-row {
+    grid-template-columns: 52px 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px 20px;
+    padding: 32px 0;
+  }
+
+  .mb-service-row__num {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .mb-service-row__name {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .mb-service-row__desc {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    padding-left: 72px;
+  }
+
+  .mb-feature__stats {
+    gap: 32px;
+  }
+
+  .mb-cta-strip__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --mb-pad: 28px;
+  }
+
+  .mb-hero {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .mb-hero__footer {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .mb-hero__display {
+    font-size: clamp(40px, 10vw, 60px);
+    margin: 22px 0;
+  }
+
+  .mb-services {
+    padding: 64px var(--mb-pad) 80px;
+  }
+
+  .mb-service-row__desc {
+    padding-left: 0;
+  }
+
+  .mb-feature {
+    min-height: 520px;
+  }
+
+  .mb-feature__headline {
+    font-size: clamp(2.2rem, 7vw, 3rem);
+  }
+
+  .mb-feature__stats {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .mb-cta-strip {
+    padding: 64px var(--mb-pad);
+  }
+
+  .mb-cta-strip__btn {
+    width: 100%;
+    text-align: center;
+  }
+}

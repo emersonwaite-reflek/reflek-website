@@ -50,7 +50,7 @@ export default function SolarFilms() {
       <section className="svc-section svc-section--white">
         <div className="svc-container">
           <div className="svc-intro">
-            <span className="svc-section-label">// Solar Film Solutions</span>
+            <span className="svc-section-tag">Solar Film Solutions</span>
             <h2 className="svc-section-title">Smarter <span>Glass</span> for Every Space</h2>
             <div className="svc-accent-bar" />
             <p className="svc-desc">
@@ -67,14 +67,14 @@ export default function SolarFilms() {
       <section className="svc-section svc-section--gray">
         <div className="svc-container">
           <div className="svc-subbrand-block svc-subbrand-block--reverse">
-            <div className="svc-subbrand-block__content">
-              <span className="svc-section-label">// Our Premium Window Film Brand</span>
+            <div>
+              <span className="svc-section-tag">Our Premium Window Film Brand</span>
               <img
                 src="https://static.wixstatic.com/media/637ea8_65fff5f7729b40e4b29075fec092ce58~mv2.png"
                 alt="Luxo Performance Films"
-                className="svc-subbrand-block__logo svc-subbrand-block__logo--bg"
+                className="svc-subbrand-logo svc-subbrand-logo--pill"
               />
-              <p className="svc-subbrand-block__tagline">PROTECTION WITHOUT COMPROMISE.</p>
+              <span className="svc-subbrand-tagline" style={{ marginTop: '14px' }}>Protection Without Compromise.</span>
               <p className="svc-desc">
                 Luxo is Reflek's premium window film brand — covering automotive, residential, commercial,
                 and marine applications. Built on a highly resistant PET base film and coated with precision
@@ -90,7 +90,7 @@ export default function SolarFilms() {
                 Visit Luxo Films <FiExternalLink size={14} />
               </a>
             </div>
-            <div className="svc-subbrand-block__image">
+            <div className="svc-subbrand-image">
               <img
                 src="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
                 alt="Luxo Solar Films"
@@ -104,20 +104,16 @@ export default function SolarFilms() {
       <section className="svc-section svc-section--white">
         <div className="svc-container">
           <div className="svc-intro">
-            <span className="svc-section-label">// Applications</span>
+            <span className="svc-section-tag">Applications</span>
             <h2 className="svc-section-title">Solar Control for <span>Every Environment</span></h2>
             <div className="svc-accent-bar" />
           </div>
           <div className="svc-applications-grid">
             {applications.map((app, i) => (
               <div key={i} className="svc-app-card">
-                <span className="svc-app-card__number">{String(i + 1).padStart(2, '0')}</span>
                 <div className="svc-app-card__header">
                   <div className="svc-feature-card__icon">{app.icon}</div>
-                  <div className="svc-app-card__title-group">
-                    <span className="svc-app-card__label">// Application {String(i + 1).padStart(2, '0')}</span>
-                    <h3>{app.title}</h3>
-                  </div>
+                  <h3>{app.title}</h3>
                 </div>
                 <p>{app.desc}</p>
                 <div className="svc-highlights">
@@ -132,12 +128,8 @@ export default function SolarFilms() {
       </section>
 
       {/* Stats */}
-      <section className="svc-section svc-section--dark">
+      <section className="svc-section svc-section--gray">
         <div className="svc-container">
-          <div className="svc-intro">
-            <span className="svc-section-label">// Performance Data</span>
-            <h2 className="svc-section-title">Engineered for <span>Peak</span> Performance</h2>
-          </div>
           <div className="svc-stats-row">
             {stats.map((s, i) => (
               <div key={i} className="svc-stat">
@@ -150,14 +142,14 @@ export default function SolarFilms() {
       </section>
 
       {/* CTA */}
-      <section className="svc-section svc-section--gray">
+      <section className="svc-section svc-section--white">
         <div className="svc-container">
-          <div className="svc-cta">
-            <span className="svc-cta__label">// Get Started</span>
+          <div className="svc-cta-box">
+            <span className="svc-section-tag">Get Started</span>
             <h3>Ready to upgrade your windows?</h3>
             <p>Contact us to find the right Luxo solar film for your application.</p>
             <Link to="/contact-us" className="svc-cta-btn">
-              Get in Touch <FiArrowRight />
+              Get in Touch <FiArrowRight size={15} />
             </Link>
           </div>
         </div>

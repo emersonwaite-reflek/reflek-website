@@ -1,333 +1,257 @@
 /* =============================================
-   CONTACT PAGE — Geometric Tech Design
+   CONTACT PAGE — Clean White Minimal
    ============================================= */
 
-/* ---------- Container ---------- */
 .ct-container {
-  max-width: 1200px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 48px;
 }
 
-/* ---------- Section Headers ---------- */
-.ct-section-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.ct-mono-label {
+/* ---- Shared tag ---- */
+.ct-tag {
   display: inline-block;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: 0.8rem;
-  letter-spacing: 3px;
+  font-family: SFMono-Regular, 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gray, #666);
+  color: #7ab929;
   margin-bottom: 12px;
 }
 
-.ct-mono-label--green {
-  color: var(--green, #7ab929);
+/* ---- Main section ---- */
+.ct-main-section {
+  background: #ffffff;
+  padding: 80px 0;
 }
 
-.ct-section-title {
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 800;
-  color: var(--dark, #1a1a2e);
-  margin: 0;
+/* ---- Two-column layout ---- */
+.ct-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 72px;
+  align-items: start;
+}
+
+/* ---- Shared column heading ---- */
+.ct-col-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  margin: 0 0 32px;
   line-height: 1.2;
 }
 
-.ct-section-title span {
-  color: var(--green, #7ab929);
-}
-
-.ct-section-title--light {
-  color: var(--white, #fff);
-}
-
-.ct-title-bar {
-  width: 60px;
-  height: 4px;
-  background: var(--green, #7ab929);
-  margin: 16px auto 0;
-  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 100%, 4px 100%);
-}
-
 /* =============================================
-   FORM SECTION
+   FORM COLUMN
    ============================================= */
-.ct-form-section {
-  padding: 80px 0;
-  background: var(--light-gray, #f4f5f7);
-  position: relative;
-}
-
-.ct-form-section::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: var(--dark, #1a1a2e);
-  clip-path: polygon(0 100%, 100% 0, 100% 100%);
-}
-
-/* Form Card */
-.ct-form-card {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  background: var(--white, #fff);
-  padding: 48px;
-  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-}
-
-.ct-form-accent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--green, #7ab929);
-}
-
-/* Form Layout */
 .ct-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .ct-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 20px;
 }
 
-/* Form Groups */
 .ct-form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  position: relative;
+  gap: 6px;
 }
 
 .ct-label {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 2px;
+  font-family: SFMono-Regular, 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gray, #666);
-  transition: color 0.3s ease;
+  color: #aaaaaa;
 }
 
-.ct-form-group.ct-focused .ct-label {
-  color: var(--green, #7ab929);
-}
-
-/* Inputs & Textarea */
 .ct-form-group input,
+.ct-form-group select,
 .ct-form-group textarea {
-  padding: 14px 16px;
-  border: 2px solid #d0d0d8;
-  background: var(--light-gray, #f4f5f7);
-  font-size: 0.95rem;
-  font-family: inherit;
-  color: var(--dark, #1a1a2e);
-  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #0f0f0f;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 12px 16px;
   outline: none;
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  transition: border-color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .ct-form-group input::placeholder,
 .ct-form-group textarea::placeholder {
-  color: #999;
-  font-size: 0.9rem;
+  color: #aaaaaa;
+}
+
+.ct-form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaaaaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
 }
 
 .ct-form-group input:focus,
+.ct-form-group select:focus,
 .ct-form-group textarea:focus {
-  border-color: var(--green, #7ab929);
-  box-shadow: 0 0 0 3px rgba(122, 185, 41, 0.15), 0 0 16px rgba(122, 185, 41, 0.08);
-  background: var(--white, #fff);
+  border-color: #7ab929;
 }
 
 .ct-form-group textarea {
   resize: vertical;
   min-height: 140px;
+  line-height: 1.6;
 }
 
-/* Submit Button */
 .ct-submit-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 16px 40px;
-  background: var(--green, #7ab929);
-  color: var(--white, #fff);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  background: #7ab929;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-  transition: all 0.3s ease;
-  align-self: flex-start;
+  transition: background 0.2s ease;
 }
 
 .ct-submit-btn:hover {
-  background: var(--green-dark, #5a9a10);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(122, 185, 41, 0.3);
-}
-
-.ct-submit-btn:active {
-  transform: translateY(0);
+  background: #6aa31f;
 }
 
 /* =============================================
-   OFFICES SECTION
+   INFO COLUMN
    ============================================= */
-.ct-offices-section {
-  padding: 100px 0 80px;
-  background: var(--dark, #1a1a2e);
-  position: relative;
-  clip-path: polygon(0 0, 100% 40px, 100% 100%, 0 100%);
-  margin-top: -40px;
+.ct-info-block {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
 }
 
-.ct-offices-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
+.ct-info-block:last-child {
+  margin-bottom: 0;
 }
 
-/* Office Card */
-.ct-office-card {
-  position: relative;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.ct-office-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(122, 185, 41, 0.3);
-  transform: translateY(-4px);
-}
-
-.ct-office-accent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--green, #7ab929);
-}
-
-.ct-office-content {
-  padding: 28px 28px 28px 32px;
-}
-
-.ct-office-index {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  color: var(--green, #7ab929);
-  margin-bottom: 8px;
-  opacity: 0.8;
-}
-
-.ct-office-title {
-  font-size: 1.05rem;
+.ct-info-block-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: var(--white, #fff);
-  margin: 0 0 6px;
-  line-height: 1.4;
+  color: #0f0f0f;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.ct-office-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 0 12px;
-}
-
-.ct-office-details {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.ct-office-detail {
+.ct-info-row {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.55);
-  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #666666;
+  line-height: 1.55;
+  margin-bottom: 12px;
 }
 
-.ct-detail-icon {
+.ct-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.ct-info-row--sm {
+  font-size: 0.825rem;
+  margin-bottom: 8px;
+}
+
+.ct-info-icon {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(122, 185, 41, 0.1);
-  color: var(--green, #7ab929);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  margin-top: 2px;
+  color: #7ab929;
 }
 
-.ct-office-detail a {
-  color: var(--green, #7ab929);
+.ct-info-row a,
+.ct-info-row--sm a {
+  color: #7ab929;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
 
-.ct-office-detail a:hover {
-  color: var(--teal, #2bb5b2);
+.ct-info-row a:hover,
+.ct-info-row--sm a:hover {
+  text-decoration: underline;
+}
+
+.ct-intl-region {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 8px;
+}
+
+.ct-intl-region--mt {
+  margin-top: 18px;
 }
 
 /* =============================================
-   RESPONSIVE — 900px breakpoint
+   MAP PLACEHOLDER
    ============================================= */
-@media (max-width: 900px) {
-  .ct-form-section {
-    padding: 60px 0;
+.ct-map-placeholder {
+  background: #e8e8e8;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ct-map-label {
+  font-family: SFMono-Regular, 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 960px) {
+  .ct-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ct-container {
+    padding: 0 24px;
   }
 
-  .ct-form-card {
-    padding: 32px 24px;
+  .ct-main-section {
+    padding: 60px 0;
   }
 
   .ct-form-row {
     grid-template-columns: 1fr;
-  }
-
-  .ct-submit-btn {
-    align-self: stretch;
-  }
-
-  .ct-offices-section {
-    padding: 80px 0 60px;
-  }
-
-  .ct-offices-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .ct-section-header {
-    margin-bottom: 36px;
   }
 }

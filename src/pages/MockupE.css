@@ -1,0 +1,553 @@
+/* ============================================================
+   MockupE.css — "Technical Grid Minimal"
+   Prefix: me-
+   Palette: #fff bg, #7ab929 green, #111 text, #f4f4f4 surface
+   Typefaces: system sans-serif + monospace
+   ============================================================ */
+
+/* ── Reset / Base ── */
+.me-page {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #111111;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Shared label style ── */
+.me-section-label {
+  display: block;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #7ab929;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ── Primary button ── */
+.me-btn-primary {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #7ab929;
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.me-btn-primary:hover {
+  background: #689f22;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.me-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 60px;
+  border-bottom: 1px solid #e4e4e4;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.me-nav-logo {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: #111111;
+  text-transform: uppercase;
+}
+
+.me-nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 36px;
+}
+
+.me-nav-links li {
+  font-size: 13px;
+  color: #555555;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+}
+
+.me-nav-links li:hover {
+  color: #7ab929;
+}
+
+.me-nav-cta {
+  padding: 8px 20px;
+  background: transparent;
+  color: #7ab929;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid #7ab929;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.me-nav-cta:hover {
+  background: #7ab929;
+  color: #ffffff;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.me-hero {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+}
+
+/* Subtle technical grid overlay */
+.me-hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+}
+
+.me-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 48px;
+  box-sizing: border-box;
+}
+
+.me-hero-left {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.me-hero-label {
+  display: block;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #7ab929;
+  margin-bottom: 20px;
+}
+
+.me-hero-headline {
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #111111;
+  margin: 0 0 20px 0;
+}
+
+.me-hero-sub {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #555555;
+  max-width: 480px;
+  margin: 0 0 32px 0;
+}
+
+.me-hero-right {
+  flex: 0 0 440px;
+}
+
+.me-hero-img-wrap {
+  border-left: 3px solid #7ab929;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.me-hero-img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(10%);
+}
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+.me-ticker {
+  background: #f4f4f4;
+  border-top: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
+  overflow: hidden;
+  height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.me-ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: me-marquee 30s linear infinite;
+}
+
+@keyframes me-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.me-ticker-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.me-ticker-item {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #555555;
+  padding: 0 18px;
+}
+
+.me-ticker-dot {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  color: #7ab929;
+  user-select: none;
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.me-services {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 48px;
+  box-sizing: border-box;
+}
+
+.me-section-header {
+  margin-bottom: 40px;
+}
+
+.me-section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.me-services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid #e4e4e4;
+}
+
+.me-service-card {
+  position: relative;
+  padding: 32px 28px 28px;
+  background: #ffffff;
+  border-right: 1px solid #e4e4e4;
+  box-sizing: border-box;
+}
+
+.me-service-card:last-child {
+  border-right: none;
+}
+
+.me-card-num {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #cccccc;
+}
+
+.me-card-icon {
+  margin-bottom: 20px;
+  line-height: 0;
+}
+
+.me-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.me-card-desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #666666;
+  margin: 0;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.me-about {
+  background: #f9f9f9;
+  border-top: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.me-about-inner {
+  display: flex;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 48px;
+  box-sizing: border-box;
+  align-items: flex-start;
+}
+
+.me-about-left {
+  flex: 0 0 280px;
+  padding-right: 60px;
+  border-right: 1px solid #e4e4e4;
+}
+
+.me-stat-row {
+  padding: 24px 0;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.me-stat-row:first-of-type {
+  border-top: 1px solid #e4e4e4;
+}
+
+.me-stat-value {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 40px;
+  font-weight: 700;
+  color: #7ab929;
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.me-stat-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888888;
+}
+
+.me-about-right {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 60px;
+}
+
+.me-about-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.me-about-body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #555555;
+  margin: 0 0 16px 0;
+}
+
+.me-about-img-wrap {
+  margin-top: 28px;
+  border-left: 3px solid #7ab929;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.me-about-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%);
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+.me-cta {
+  background: #ffffff;
+  border-top: 2px solid #7ab929;
+}
+
+.me-cta-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 80px 48px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.me-cta-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.me-cta-sub {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0 0 32px 0;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.me-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 48px;
+  border-top: 1px solid #e4e4e4;
+  background: #ffffff;
+}
+
+.me-footer-logo {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #333333;
+}
+
+.me-footer-copy {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #aaaaaa;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .me-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .me-service-card:nth-child(2) {
+    border-right: none;
+  }
+
+  .me-service-card:nth-child(1),
+  .me-service-card:nth-child(2) {
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  .me-hero-right {
+    flex: 0 0 340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .me-nav {
+    padding: 0 24px;
+  }
+
+  .me-nav-links {
+    display: none;
+  }
+
+  .me-hero-inner {
+    flex-direction: column;
+    padding: 48px 24px;
+    gap: 40px;
+  }
+
+  .me-hero-right {
+    flex: none;
+    width: 100%;
+  }
+
+  .me-hero-img {
+    height: 240px;
+  }
+
+  .me-services {
+    padding: 56px 24px;
+  }
+
+  .me-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .me-service-card {
+    border-right: none;
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  .me-about-inner {
+    flex-direction: column;
+    padding: 56px 24px;
+    gap: 40px;
+  }
+
+  .me-about-left {
+    flex: none;
+    width: 100%;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid #e4e4e4;
+    padding-bottom: 32px;
+  }
+
+  .me-about-right {
+    padding-left: 0;
+  }
+
+  .me-cta-inner {
+    padding: 56px 24px;
+  }
+
+  .me-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 20px 24px;
+  }
+}
