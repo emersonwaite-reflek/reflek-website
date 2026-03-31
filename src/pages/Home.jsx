@@ -67,8 +67,8 @@ export default function Home() {
           />
         ))}
         <div className="hero-overlay" />
-        <div className="hero-content container">
-          <h1>Advanced Film &<br />Coating Solutions</h1>
+        <div className="hero-content">
+          <h1><span>Advanced</span> Film &amp; Coating Solutions</h1>
           <p>High-performance finishes and coatings for the construction and transportation industries.</p>
           <div className="hero-buttons">
             <Link to="/about-us" className="btn btn-primary">Learn More <FiArrowRight /></Link>
