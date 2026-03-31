@@ -43,7 +43,7 @@ export default function SolarFilms() {
       <PageHero
         title="Solar Films"
         subtitle="Luxo Window Films - Advanced solar control for every environment"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
       />
 
       {/* Intro Section */}

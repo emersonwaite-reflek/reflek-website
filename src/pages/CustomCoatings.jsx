@@ -22,7 +22,7 @@ export default function CustomCoatings() {
       <PageHero
         title="Custom Coatings"
         subtitle="Specialized coating solutions powered by world-class R&D"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg"
       />
 
       {/* Intro Section */}

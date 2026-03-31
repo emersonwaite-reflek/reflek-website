@@ -43,7 +43,7 @@ export default function PaintProtection() {
       <PageHero
         title="Paint Protection"
         subtitle="FlexiShield - One of the leading polyurethane paint protection films on the market"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
       />
 
       {/* Intro Section */}
