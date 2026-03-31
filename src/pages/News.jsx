@@ -60,7 +60,7 @@ const articles = [
     date: 'SEP 2022',
     excerpt:
       'At Automechanika Frankfurt, Reflek displayed the full 2023 film roadmap to buyers from 28 countries, securing distribution agreements across Europe and the Middle East.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg',
+    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg',
     href: '#',
   },
 ]
@@ -78,7 +78,7 @@ export default function News() {
       <PageHero
         title="News & Updates"
         subtitle="Product launches, company updates, and industry insights"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
       />
 
       {/* ── Featured article ── */}

@@ -44,7 +44,7 @@ export default function Navbar() {
           <img
             src="https://reflektech.com/wp-content/uploads/2022/12/logo.png"
             alt="Reflek Technologies Corporation"
-            height="36"
+            height="72"
           />
         </Link>
 

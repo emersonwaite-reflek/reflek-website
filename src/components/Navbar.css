@@ -29,7 +29,7 @@
 }
 
 .navbar-logo img {
-  height: 36px;
+  height: 72px;
   width: auto;
 }
 
@@ -71,6 +71,7 @@
 /* ---- Services Dropdown ---- */
 .nav-dropdown {
   position: relative;
+  padding-bottom: 10px;
 }
 
 .nav-dropdown-trigger {
@@ -86,7 +87,7 @@
 
 .dropdown-panel {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   background: #ffffff;
