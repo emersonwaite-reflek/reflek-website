@@ -1,4 +1,4 @@
-import { FiShield, FiRefreshCw, FiStar, FiLayers, FiTool, FiArrowRight } from 'react-icons/fi'
+import { FiShield, FiRefreshCw, FiStar, FiLayers, FiTool, FiArrowRight, FiExternalLink } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import './Services.css'
@@ -7,34 +7,35 @@ const features = [
   {
     icon: <FiShield />,
     title: 'Superior Protection',
-    desc: 'The top-coat guards against bug squirts, bird droppings, road tar, sap, and other outdoor impurities.',
+    desc: 'Guards against rock chips, bug splatter, bird droppings, road tar, sap, and environmental damage — keeping paint factory-fresh.',
   },
   {
     icon: <FiRefreshCw />,
     title: 'Self-Healing Technology',
-    desc: 'FlexiShield features technology allowing it to recover from minor scratches and road damage.',
+    desc: 'Engineered TPU layer automatically rebinds and heals minor scratches and swirls with heat, restoring a smooth paint-like finish.',
   },
   {
     icon: <FiStar />,
-    title: 'Smooth Finish',
-    desc: 'Avoids the "orange peel" texture while providing optimal clarity and protection.',
+    title: 'Optical Clarity',
+    desc: 'No orange peel texture. The high-gloss top coat provides crystal-clear protection that enhances rather than alters your paint.',
   },
   {
     icon: <FiLayers />,
-    title: 'Advanced Adhesive',
-    desc: 'Our formula prevents lifting or peeling issues found in earlier products.',
+    title: 'Advanced TPU Construction',
+    desc: 'A sophisticated blend of hard and soft co-polymers delivers remarkable elasticity and long-term film integrity across all conditions.',
   },
   {
     icon: <FiTool />,
-    title: 'Easy Installation',
-    desc: 'The thermoplastic polyurethane material enables quick, straightforward application.',
+    title: 'Dry-Apply Technology',
+    desc: 'Proprietary dry-apply system enables fast, clean installs with no disassembly required for most panels — reducing shop downtime.',
   },
 ]
 
 const stats = [
-  { number: '99.9%', label: 'UV Protection' },
-  { number: '10yr', label: 'Warranty Coverage' },
-  { number: '8mil', label: 'Film Thickness' },
+  { number: '99%', label: 'UV Rejection' },
+  { number: '12yr', label: 'Max Warranty' },
+  { number: '85+', label: 'Color Options' },
+  { number: '10mil', label: 'Max Thickness' },
 ]
 
 export default function PaintProtection() {
@@ -42,33 +43,72 @@ export default function PaintProtection() {
     <>
       <PageHero
         title="Paint Protection"
-        subtitle="FlexiShield - One of the leading polyurethane paint protection films on the market"
+        subtitle="Advanced polyurethane paint protection films engineered for lasting vehicle defense"
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
       />
 
-      {/* Intro Section */}
+      {/* Intro */}
       <section className="svc-section svc-section--white">
         <div className="svc-container">
           <div className="svc-intro">
             <span className="svc-section-label">// Paint Protection Film</span>
-            <h2 className="svc-section-title">
-              FlexiShield <span>Paint Protection</span> Film
-            </h2>
+            <h2 className="svc-section-title">Engineered to <span>Protect</span></h2>
             <div className="svc-accent-bar" />
             <p className="svc-desc">
-              Discovering scratches on a new vehicle is distressing for any owner. That's why we developed
-              FlexiShield Paint Protection Film, one of the leading polyurethane paint protection films
-              on the market. Nearly invisible, it provides lasting defense against road hazards and maintains
-              vehicle appearance, giving you the feeling of driving a brand-new car every day for years to come.
+              Reflek Technologies manufactures premium paint protection films built around thermoplastic
+              polyurethane (TPU) — a highly flexible and resilient material that sets the standard in PPF.
+              From entry-level fleet protection to 12-year optical-grade films, every roll is produced
+              at our facility in Chandler, Arizona, and backed by real manufacturer support.
             </p>
           </div>
+        </div>
+      </section>
 
+      {/* FlexiShield Brand Section */}
+      <section className="svc-section svc-section--gray">
+        <div className="svc-container">
+          <div className="svc-subbrand-block">
+            <div className="svc-subbrand-block__content">
+              <span className="svc-section-label">// Our Premium PPF Brand</span>
+              <div className="svc-subbrand-block__wordmark">FlexiShield</div>
+              <p className="svc-subbrand-block__tagline">COVERAGE YOU CAN COUNT ON.</p>
+              <p className="svc-desc">
+                FlexiShield is Reflek's flagship paint protection film brand — available in clear PPF, color PPF,
+                windshield film, and window tint. With 85+ gloss, metallic, color-flip, and textured finish
+                options and warranties of up to 12 years, FlexiShield gives installers and vehicle owners
+                the performance and confidence they need. Made in the USA.
+              </p>
+              <a
+                href="https://www.flexishieldusa.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="svc-external-btn"
+              >
+                Visit FlexiShield <FiExternalLink size={14} />
+              </a>
+            </div>
+            <div className="svc-subbrand-block__image">
+              <img
+                src="https://static.wixstatic.com/media/637ea8_9c33c1d89448456c88964c2bf7d70902f000.jpg"
+                alt="FlexiShield Color PPF"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="svc-section svc-section--white">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// What Sets It Apart</span>
+            <h2 className="svc-section-title">Built to <span>Last</span></h2>
+            <div className="svc-accent-bar" />
+          </div>
           <div className="svc-features-grid">
             {features.map((f, i) => (
               <div key={i} className="svc-feature-card">
-                <span className="svc-feature-card__number">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+                <span className="svc-feature-card__number">{String(i + 1).padStart(2, '0')}</span>
                 <div className="svc-feature-card__icon">{f.icon}</div>
                 <span className="svc-feature-card__label">// Feature {String(i + 1).padStart(2, '0')}</span>
                 <h3>{f.title}</h3>
@@ -79,14 +119,12 @@ export default function PaintProtection() {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats */}
       <section className="svc-section svc-section--dark">
         <div className="svc-container">
           <div className="svc-intro">
             <span className="svc-section-label">// Performance Metrics</span>
-            <h2 className="svc-section-title">
-              Built for <span>Maximum</span> Defense
-            </h2>
+            <h2 className="svc-section-title">Built for <span>Maximum</span> Defense</h2>
           </div>
           <div className="svc-stats-row">
             {stats.map((s, i) => (
@@ -99,7 +137,7 @@ export default function PaintProtection() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="svc-section svc-section--gray">
         <div className="svc-container">
           <div className="svc-cta">
