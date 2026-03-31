@@ -1,0 +1,93 @@
+.about-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-text p {
+  color: var(--gray);
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+
+.about-image-wrapper img {
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+}
+
+.about-strengths {
+  background: var(--light-gray);
+}
+
+.strengths-subtitle {
+  text-align: center;
+  color: var(--gray);
+  margin-bottom: 48px;
+  font-size: 1.1rem;
+}
+
+.about-strengths .section-title::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.strengths-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.strength-card {
+  background: var(--white);
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  transition: all 0.3s;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.strength-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.strength-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(122, 185, 41, 0.1);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin: 0 auto 16px;
+}
+
+.strength-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.strength-card p {
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.about-manufacturing p {
+  color: var(--gray);
+  margin-bottom: 16px;
+  line-height: 1.8;
+  max-width: 800px;
+}
+
+@media (max-width: 900px) {
+  .about-intro { grid-template-columns: 1fr; }
+  .strengths-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .strengths-grid { grid-template-columns: 1fr; }
+}
