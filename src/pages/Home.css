@@ -117,7 +117,8 @@
 /* Slider Nav Arrows */
 .slider-btn {
   position: absolute;
-  bottom: 40px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 3;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(10px);
@@ -132,9 +133,6 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  /* Position them bottom-right instead of sides */
-  top: auto;
-  transform: none;
 }
 
 .slider-btn:hover {
@@ -143,8 +141,7 @@
 }
 
 .slider-prev {
-  right: 80px;
-  left: auto;
+  left: 24px;
 }
 
 .slider-next {
@@ -154,8 +151,9 @@
 /* Slide indicator pills */
 .slider-dots {
   position: absolute;
-  bottom: 52px;
-  right: 148px;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3;
   display: flex;
   align-items: center;
@@ -396,10 +394,6 @@
   .hero-slider::before {
     left: 48px;
   }
-  .slider-dots {
-    right: 120px;
-  }
-  .slider-prev { right: 60px; }
 }
 
 @media (max-width: 900px) {
@@ -418,21 +412,12 @@
     max-width: none;
   }
 
-  .slider-dots {
-    left: 32px;
-    right: auto;
-    bottom: 28px;
-  }
-
   .slider-btn {
-    bottom: auto;
-    top: 50%;
-    transform: translateY(-50%);
     width: 40px;
     height: 40px;
   }
 
-  .slider-prev { left: 16px; right: auto; }
+  .slider-prev { left: 16px; }
   .slider-next { right: 16px; }
 
   .services-bar {
@@ -477,8 +462,6 @@
   }
 
   .slider-dots {
-    left: 50%;
-    transform: translateX(-50%);
     bottom: 16px;
   }
 
