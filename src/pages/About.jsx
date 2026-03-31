@@ -37,7 +37,7 @@ export default function About() {
       <PageHero
         title="About Us"
         subtitle="Precision-engineered films and coatings since the 1990s"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-5.jpg"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg"
       />
 
       {/* ── Mission ── */}
