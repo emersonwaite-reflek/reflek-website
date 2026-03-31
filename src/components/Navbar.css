@@ -71,7 +71,6 @@
 /* ---- Services Dropdown ---- */
 .nav-dropdown {
   position: relative;
-  padding-bottom: 10px;
 }
 
 .nav-dropdown-trigger {
@@ -85,9 +84,18 @@
   transform: rotate(180deg);
 }
 
+.dropdown-panel::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+
 .dropdown-panel {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);
   left: 50%;
   transform: translateX(-50%);
   background: #ffffff;
