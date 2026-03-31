@@ -59,14 +59,6 @@ export default function Home() {
     <>
       {/* Hero Slider */}
       <section className="hero-slider">
-        {slides.map((src, i) => (
-          <div
-            key={i}
-            className={`hero-slide ${i === currentSlide ? 'active' : ''}`}
-            style={{ backgroundImage: `url(${src})` }}
-          />
-        ))}
-        <div className="hero-overlay" />
         <div className="hero-content">
           <h1><span>Advanced</span> Film &amp; Coating Solutions</h1>
           <p>High-performance finishes and coatings for the construction and transportation industries.</p>
@@ -75,10 +67,19 @@ export default function Home() {
             <Link to="/contact-us" className="btn btn-outline">Contact Us</Link>
           </div>
         </div>
-        <div className="slider-dots">
-          {slides.map((_, i) => (
-            <button key={i} className={`dot ${i === currentSlide ? 'active' : ''}`} onClick={() => setCurrentSlide(i)} />
+        <div className="hero-image-area">
+          {slides.map((src, i) => (
+            <div
+              key={i}
+              className={`hero-slide ${i === currentSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${src})` }}
+            />
           ))}
+          <div className="slider-dots">
+            {slides.map((_, i) => (
+              <button key={i} className={`dot ${i === currentSlide ? 'active' : ''}`} onClick={() => setCurrentSlide(i)} />
+            ))}
+          </div>
         </div>
       </section>
 
