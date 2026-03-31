@@ -48,23 +48,44 @@ export default function News() {
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
       />
 
-      <section className="section">
+      <section className="news-section">
+        <div className="news-section-bg-shape" />
         <div className="container">
+          <div className="news-section-header">
+            <span className="news-section-label">// LATEST UPDATES</span>
+            <h2 className="news-section-title">Company <span>News</span></h2>
+          </div>
+
           <div className="news-page-grid">
             {articles.map((article, i) => (
-              <article key={i} className={`news-article ${i === 0 ? 'featured' : ''}`}>
-                <div className="news-article-content">
-                  <time className="news-date">{article.date}</time>
-                  <h2>{article.title}</h2>
-                  <p>{article.excerpt}</p>
-                  {article.highlights.length > 0 && (
-                    <ul className="news-highlights">
-                      {article.highlights.map((h, j) => (
-                        <li key={j}>{h}</li>
-                      ))}
-                    </ul>
-                  )}
+              <article
+                key={i}
+                className={`news-card ${i === 0 ? 'news-card--featured' : ''}`}
+              >
+                <div className="news-card-inner">
+                  <span className="news-card-number">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div className="news-card-content">
+                    <div className="news-card-date">
+                      <span className="news-date-dash" />
+                      <time>{article.date}</time>
+                    </div>
+                    <h2 className="news-card-title">{article.title}</h2>
+                    <p className="news-card-excerpt">{article.excerpt}</p>
+                    {article.highlights.length > 0 && (
+                      <ul className="news-highlights">
+                        {article.highlights.map((h, j) => (
+                          <li key={j}>
+                            <span className="news-highlight-icon" />
+                            {h}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
+                <div className="news-card-bottom-bar" />
               </article>
             ))}
           </div>

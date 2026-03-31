@@ -1,97 +1,337 @@
+/* =============================================
+   DISTRIBUTORS PAGE — Geometric Tech Style
+   ============================================= */
+
+/* ---- Intro Section ---- */
+
+.dist-intro-section {
+  position: relative;
+  padding: 80px 0 60px;
+  background: var(--white, #fff);
+  overflow: hidden;
+}
+
+.dist-intro-bg-hex {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(122, 185, 41, 0.03), rgba(43, 181, 178, 0.03));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  pointer-events: none;
+}
+
 .dist-intro {
   text-align: center;
   max-width: 700px;
-  margin: 0 auto 60px;
+  margin: 0 auto;
+}
+
+/* Hexagonal icon container */
+.dist-intro-icon-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .dist-intro-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  background: rgba(122, 185, 41, 0.1);
-  color: var(--green);
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  background: linear-gradient(135deg, var(--green, #7ab929), var(--teal, #2bb5b2));
+  color: var(--white, #fff);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
-.dist-intro p {
-  color: var(--gray);
+.dist-intro-label {
+  display: block;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal, #2bb5b2);
+  margin-bottom: 12px;
+}
+
+.dist-intro-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--dark, #1a1a2e);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.dist-intro-title span {
+  color: var(--green, #7ab929);
+}
+
+.dist-intro-desc {
   font-size: 1.05rem;
-  line-height: 1.7;
+  line-height: 1.75;
+  color: var(--gray, #666);
 }
 
-.dist-intro .section-title::after {
-  margin-left: auto;
-  margin-right: auto;
+/* ---- Grid Section ---- */
+
+.dist-grid-section {
+  padding: 0 0 100px;
+  background: var(--white, #fff);
 }
 
 .dist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 28px;
 }
 
+/* ---- Region Card ---- */
+
 .dist-region {
-  background: var(--light-gray);
-  border-radius: 16px;
+  position: relative;
+  background: var(--light-gray, #f4f5f7);
+  clip-path: polygon(
+    0 0,
+    calc(100% - 24px) 0,
+    100% 24px,
+    100% 100%,
+    24px 100%,
+    0 calc(100% - 24px)
+  );
+  border-left: 4px solid var(--green, #7ab929);
   overflow: hidden;
-  border: 1px solid transparent;
-  transition: all 0.3s;
+  transition: border-left-width 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dist-region:hover {
-  border-color: var(--green);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border-left-width: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
+.dist-region-inner {
+  position: relative;
+  padding: 28px 28px 32px;
+}
+
+/* Ghost number */
+.dist-region-number {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(122, 185, 41, 0.06);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Header */
 .dist-region-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.dist-region-header h3 {
-  font-size: 1.1rem;
-}
-
-.dist-type {
-  font-size: 0.75rem;
+.dist-region-name {
+  font-size: 1.15rem;
   font-weight: 700;
-  color: var(--green);
+  color: var(--dark, #1a1a2e);
+}
+
+/* Type badge */
+.dist-type-badge {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--green, #7ab929);
   background: rgba(122, 185, 41, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
+  padding: 5px 14px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
 }
 
-.dist-card {
-  padding: 20px 24px;
+.dist-type-badge--teal {
+  color: var(--teal, #2bb5b2);
+  background: rgba(43, 181, 178, 0.1);
 }
 
-.dist-card h4 {
+/* Location block */
+.dist-location {
+  margin-top: 4px;
+}
+
+.dist-location-name {
   font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dark, #1a1a2e);
   margin-bottom: 10px;
 }
 
+/* Detail rows */
 .dist-detail {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 0.88rem;
-  color: var(--gray);
-  margin-bottom: 6px;
+  color: var(--gray, #666);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.dist-detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  background: rgba(122, 185, 41, 0.08);
+  color: var(--green, #7ab929);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .dist-detail a {
-  color: var(--green);
-  transition: color 0.2s;
+  color: var(--green, #7ab929);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .dist-detail a:hover {
-  color: var(--green-dark);
+  color: var(--green-dark, #5a9a10);
+}
+
+/* Bottom gradient bar */
+.dist-region-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--green, #7ab929), var(--teal, #2bb5b2));
+  transition: width 0.4s ease;
+}
+
+.dist-region:hover .dist-region-bottom-bar {
+  width: 100%;
+}
+
+/* ---- Variant: HQ / Factory Direct ---- */
+
+.dist-region--hq {
+  background: linear-gradient(
+    135deg,
+    rgba(122, 185, 41, 0.04),
+    rgba(43, 181, 178, 0.03)
+  );
+  border-left-width: 5px;
+}
+
+/* ---- Variant: Coming Soon / New ---- */
+
+.dist-region--new {
+  border-left-color: var(--teal, #2bb5b2);
+}
+
+.dist-region--new .dist-region-number {
+  color: rgba(43, 181, 178, 0.08);
+}
+
+.dist-region--new .dist-detail-icon {
+  background: rgba(43, 181, 178, 0.08);
+  color: var(--teal, #2bb5b2);
+}
+
+/* =============================================
+   RESPONSIVE — 1024px
+   ============================================= */
+
+@media (max-width: 1024px) {
+  .dist-intro-section {
+    padding: 60px 0 48px;
+  }
+
+  .dist-grid-section {
+    padding: 0 0 80px;
+  }
+
+  .dist-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .dist-region-inner {
+    padding: 24px 24px 28px;
+  }
+
+  .dist-region-number {
+    font-size: 2.8rem;
+  }
+}
+
+/* =============================================
+   RESPONSIVE — 768px
+   ============================================= */
+
+@media (max-width: 768px) {
+  .dist-intro-section {
+    padding: 48px 0 36px;
+  }
+
+  .dist-intro-bg-hex {
+    width: 300px;
+    height: 300px;
+    top: -50px;
+  }
+
+  .dist-grid-section {
+    padding: 0 0 64px;
+  }
+
+  .dist-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .dist-region-inner {
+    padding: 20px 20px 24px;
+  }
+
+  .dist-region-number {
+    font-size: 2.2rem;
+    top: 8px;
+    right: 14px;
+  }
+
+  .dist-region-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .dist-intro-title {
+    font-size: 1.8rem;
+  }
+
+  .dist-intro-desc {
+    font-size: 0.95rem;
+  }
 }

@@ -11,20 +11,29 @@ const strengths = [
   { icon: <FiCheck />, title: 'Quality Assurance', desc: 'Rigorous testing for solar control performance, clarity, and durability.' },
 ]
 
+const stats = [
+  { value: '30+', label: 'Years Experience' },
+  { value: '500+', label: 'Products Delivered' },
+  { value: '50+', label: 'Countries Served' },
+  { value: '100%', label: 'Quality Tested' },
+]
+
 export default function About() {
   return (
     <>
       <PageHero
         title="About Us"
         subtitle="Leading manufacturer of high-performance finishes and coatings"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
+        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
       />
 
-      <section className="section">
+      {/* Who We Are - White background */}
+      <section className="about-section about-section--white">
         <div className="container">
           <div className="about-intro">
             <div className="about-text">
-              <h2 className="section-title">Who We Are</h2>
+              <span className="about-label">// About Reflek</span>
+              <h2 className="about-title">Who We <span>Are</span></h2>
               <p>
                 Reflek Technologies Corporation is a major manufacturer and distributor of high-performance
                 finishes and coatings for the construction and transportation industries. Our product portfolio
@@ -38,23 +47,51 @@ export default function About() {
               </p>
             </div>
             <div className="about-image-wrapper">
-              <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-Building.png"
-                alt="Reflek Technologies Building"
-              />
+              <div className="about-image-frame">
+                <img
+                  src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-Building.png"
+                  alt="Reflek Technologies Building"
+                />
+                {/* Geometric corner accents */}
+                <div className="about-image-corner about-image-corner--tl" />
+                <div className="about-image-corner about-image-corner--br" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section about-strengths">
+      {/* Stats - Dark angled section */}
+      <section className="about-section about-section--dark">
         <div className="container">
-          <h2 className="section-title" style={{ textAlign: 'center' }}>Our Strengths</h2>
-          <p className="strengths-subtitle">What sets us apart in the industry</p>
+          <div className="about-stats">
+            {stats.map((s, i) => (
+              <div key={i} className="about-stat">
+                <span className="about-stat-value">{s.value}</span>
+                <span className="about-stat-label">// {s.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Geometric decorations */}
+        <div className="about-dark-geo about-dark-geo--1" />
+        <div className="about-dark-geo about-dark-geo--2" />
+      </section>
+
+      {/* Our Strengths - Light gray background */}
+      <section className="about-section about-section--light">
+        <div className="container">
+          <div className="about-section-header">
+            <span className="about-label">// Our Strengths</span>
+            <h2 className="about-title">What Sets Us <span>Apart</span></h2>
+            <p className="about-section-subtitle">Industry-leading capabilities that drive our success</p>
+          </div>
           <div className="strengths-grid">
             {strengths.map((s, i) => (
               <div key={i} className="strength-card">
-                <div className="strength-icon">{s.icon}</div>
+                <div className="strength-icon-hex">
+                  {s.icon}
+                </div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
               </div>
@@ -63,23 +100,33 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section">
+      {/* Manufacturing - White background */}
+      <section className="about-section about-section--white">
         <div className="container">
           <div className="about-manufacturing">
-            <h2 className="section-title">Manufacturing & Operations</h2>
-            <p>
-              Production occurs at our state-of-the-art production facility located in Chandler, Arizona.
-              All products undergo rigorous quality control testing for solar control performance, clarity, and durability.
-            </p>
-            <p>
-              We serve diverse markets including architectural, automotive, marine, safety and security, and
-              paint protection applications. We provide professional services including industrial sputtering,
-              coating, adhesives, and laminating.
-            </p>
-            <p>
-              As a full-service provider, we offer integral design, manufacturing, and installation services
-              as a complete package from project inception through completion.
-            </p>
+            <span className="about-label">// Operations</span>
+            <h2 className="about-title">Manufacturing & <span>Operations</span></h2>
+            <div className="about-manufacturing-content">
+              <div className="about-manufacturing-bar" />
+              <div className="about-manufacturing-text">
+                <p>
+                  Production occurs at our state-of-the-art production facility located in Chandler, Arizona.
+                  All products undergo rigorous quality control testing for solar control performance, clarity, and durability.
+                </p>
+                <p>
+                  We serve diverse markets including architectural, automotive, marine, safety and security, and
+                  paint protection applications. We provide professional services including industrial sputtering,
+                  coating, adhesives, and laminating.
+                </p>
+                <p>
+                  As a full-service provider, we offer integral design, manufacturing, and installation services
+                  as a complete package from project inception through completion.
+                </p>
+              </div>
+            </div>
+            <a href="/contact" className="about-cta">
+              Get In Touch
+            </a>
           </div>
         </div>
       </section>

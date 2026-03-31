@@ -55,31 +55,86 @@ export default function Distributors() {
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
       />
 
-      <section className="section">
+      {/* Intro section */}
+      <section className="dist-intro-section">
+        <div className="dist-intro-bg-hex" />
         <div className="container">
           <div className="dist-intro">
-            <div className="dist-intro-icon"><FiGlobe size={36} /></div>
-            <h2 className="section-title">Our Global Presence</h2>
-            <p>Reflek Technologies operates distribution centers strategically located around the world to serve our growing network of dealers and partners.</p>
-          </div>
-
-          <div className="dist-grid">
-            {regions.map((r, i) => (
-              <div key={i} className="dist-region">
-                <div className="dist-region-header">
-                  <h3>{r.name}</h3>
-                  <span className="dist-type">{r.type}</span>
-                </div>
-                {r.locations.map((loc, j) => (
-                  <div key={j} className="dist-card">
-                    <h4>{loc.name}</h4>
-                    <div className="dist-detail"><FiMapPin size={14} /> {loc.address}</div>
-                    {loc.phone && <div className="dist-detail"><FiPhone size={14} /> <a href={`tel:${loc.phone}`}>{loc.phone}</a></div>}
-                    {loc.email && <div className="dist-detail"><FiMail size={14} /> <a href={`mailto:${loc.email}`}>{loc.email}</a></div>}
-                  </div>
-                ))}
+            <div className="dist-intro-icon-wrap">
+              <div className="dist-intro-icon">
+                <FiGlobe size={28} />
               </div>
-            ))}
+            </div>
+            <span className="dist-intro-label">// GLOBAL NETWORK</span>
+            <h2 className="dist-intro-title">Our Global <span>Presence</span></h2>
+            <p className="dist-intro-desc">
+              Reflek Technologies operates distribution centers strategically located around the world to serve our growing network of dealers and partners.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Regions grid */}
+      <section className="dist-grid-section">
+        <div className="container">
+          <div className="dist-grid">
+            {regions.map((r, i) => {
+              const isNew = r.type === 'Coming Soon'
+              const isHQ = r.type === 'Factory Direct'
+              return (
+                <div
+                  key={i}
+                  className={`dist-region ${isNew ? 'dist-region--new' : ''} ${isHQ ? 'dist-region--hq' : ''}`}
+                >
+                  <div className="dist-region-inner">
+                    {/* Ghost number */}
+                    <span className="dist-region-number">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+
+                    {/* Header */}
+                    <div className="dist-region-header">
+                      <h3 className="dist-region-name">{r.name}</h3>
+                      <span className={`dist-type-badge ${isNew ? 'dist-type-badge--teal' : ''}`}>
+                        {r.type}
+                      </span>
+                    </div>
+
+                    {/* Locations */}
+                    {r.locations.map((loc, j) => (
+                      <div key={j} className="dist-location">
+                        <h4 className="dist-location-name">{loc.name}</h4>
+                        <div className="dist-detail">
+                          <span className="dist-detail-icon">
+                            <FiMapPin size={14} />
+                          </span>
+                          <span>{loc.address}</span>
+                        </div>
+                        {loc.phone && (
+                          <div className="dist-detail">
+                            <span className="dist-detail-icon">
+                              <FiPhone size={14} />
+                            </span>
+                            <a href={`tel:${loc.phone}`}>{loc.phone}</a>
+                          </div>
+                        )}
+                        {loc.email && (
+                          <div className="dist-detail">
+                            <span className="dist-detail-icon">
+                              <FiMail size={14} />
+                            </span>
+                            <a href={`mailto:${loc.email}`}>{loc.email}</a>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bottom gradient bar */}
+                  <div className="dist-region-bottom-bar" />
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>

@@ -30,6 +30,13 @@ const applications = [
   },
 ]
 
+const stats = [
+  { number: '89%', label: 'IR Heat Rejection' },
+  { number: '99.9%', label: 'UV Block' },
+  { number: '73%', label: 'Visible Light Transmission' },
+  { number: '65%', label: 'Solar Rejection' },
+]
+
 export default function SolarFilms() {
   return (
     <>
@@ -39,38 +46,77 @@ export default function SolarFilms() {
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
       />
 
-      <section className="section">
-        <div className="container">
-          <div className="service-intro">
-            <h2 className="section-title">Luxo Solar Film Solutions</h2>
-            <p className="service-desc">
+      {/* Intro Section */}
+      <section className="svc-section svc-section--white">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// Solar Film Solutions</span>
+            <h2 className="svc-section-title">
+              Luxo <span>Solar Film</span> Solutions
+            </h2>
+            <div className="svc-accent-bar" />
+            <p className="svc-desc">
               Our comprehensive range of solar films delivers exceptional performance across commercial,
               residential, automotive, and marine applications. Each product is engineered for maximum
               heat rejection, UV protection, and optical clarity.
             </p>
           </div>
 
-          <div className="applications-grid">
+          <div className="svc-applications-grid">
             {applications.map((app, i) => (
-              <div key={i} className="application-card">
-                <div className="application-header">
-                  <div className="feature-icon">{app.icon}</div>
-                  <h3>{app.title}</h3>
+              <div key={i} className="svc-app-card">
+                <span className="svc-app-card__number">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="svc-app-card__header">
+                  <div className="svc-feature-card__icon">{app.icon}</div>
+                  <div className="svc-app-card__title-group">
+                    <span className="svc-app-card__label">// Application {String(i + 1).padStart(2, '0')}</span>
+                    <h3>{app.title}</h3>
+                  </div>
                 </div>
                 <p>{app.desc}</p>
-                <div className="application-highlights">
+                <div className="svc-highlights">
                   {app.highlights.map((h, j) => (
-                    <span key={j} className="highlight-tag">{h}</span>
+                    <span key={j} className="svc-highlight-tag">{h}</span>
                   ))}
                 </div>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="service-cta">
+      {/* Stats Section */}
+      <section className="svc-section svc-section--dark">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// Performance Data</span>
+            <h2 className="svc-section-title">
+              Engineered for <span>Peak</span> Performance
+            </h2>
+          </div>
+          <div className="svc-stats-row">
+            {stats.map((s, i) => (
+              <div key={i} className="svc-stat">
+                <div className="svc-stat__number">{s.number}</div>
+                <div className="svc-stat__label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="svc-section svc-section--gray">
+        <div className="svc-container">
+          <div className="svc-cta">
+            <span className="svc-cta__label">// Get Started</span>
             <h3>Ready to upgrade your windows?</h3>
             <p>Contact us to find the right solar film for your needs.</p>
-            <Link to="/contact-us" className="btn btn-primary">Get in Touch <FiArrowRight /></Link>
+            <Link to="/contact-us" className="svc-cta-btn">
+              Get in Touch <FiArrowRight />
+            </Link>
           </div>
         </div>
       </section>

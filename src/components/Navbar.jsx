@@ -19,6 +19,7 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
+      <div className="navbar-accent-line" />
       <div className="container navbar-inner">
         <Link to="/" className="navbar-logo">
           <img
@@ -40,6 +41,7 @@ export default function Navbar() {
               Services <FiChevronDown size={14} />
             </button>
             <div className={`nav-dropdown-menu ${servicesOpen ? 'open' : ''}`}>
+              <span className="dropdown-label">// Services</span>
               {services.map(s => (
                 <Link
                   key={s.path}
@@ -47,6 +49,7 @@ export default function Navbar() {
                   className={isActive(s.path) ? 'active' : ''}
                   onClick={() => { setMobileOpen(false); setServicesOpen(false) }}
                 >
+                  <span className="dropdown-link-marker" />
                   {s.name}
                 </Link>
               ))}

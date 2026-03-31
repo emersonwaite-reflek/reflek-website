@@ -10,6 +10,12 @@ const capabilities = [
   { icon: <FiTarget />, title: 'Laminating Technologies', desc: 'Expert laminating processes for multi-layer product construction.' },
 ]
 
+const stats = [
+  { number: '20+', label: 'Years of R&D' },
+  { number: '4', label: 'Core Processes' },
+  { number: '100%', label: 'Custom Solutions' },
+]
+
 export default function CustomCoatings() {
   return (
     <>
@@ -19,37 +25,74 @@ export default function CustomCoatings() {
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
       />
 
-      <section className="section">
-        <div className="container">
-          <div className="service-intro">
-            <h2 className="section-title">Specialized Coating Services</h2>
-            <p className="service-desc">
+      {/* Intro Section */}
+      <section className="svc-section svc-section--white">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// Custom Coatings</span>
+            <h2 className="svc-section-title">
+              Specialized <span>Coating</span> Services
+            </h2>
+            <div className="svc-accent-bar" />
+            <p className="svc-desc">
               Reflek has invested years of research and development into creating many of the industry's
               leading manufacturing processes. Our state-of-the-art facilities in Phoenix, Arizona house
               world-class scientists, researchers, and engineers dedicated to delivering advanced, safe,
               and effective coating solutions.
             </p>
-            <p className="service-desc">
+            <p className="svc-desc">
               Our coatings and functional interlayers integrate into products including touch-enabled surfaces,
               protective films, electronic components, and security solutions. These specialized coatings
               function across manufacturing stages, often invisibly to end users.
             </p>
           </div>
 
-          <div className="features-grid">
+          <div className="svc-features-grid">
             {capabilities.map((c, i) => (
-              <div key={i} className="feature-card">
-                <div className="feature-icon">{c.icon}</div>
+              <div key={i} className="svc-feature-card">
+                <span className="svc-feature-card__number">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="svc-feature-card__icon">{c.icon}</div>
+                <span className="svc-feature-card__label">// Capability {String(i + 1).padStart(2, '0')}</span>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="service-cta">
+      {/* Stats Section */}
+      <section className="svc-section svc-section--dark">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// By the Numbers</span>
+            <h2 className="svc-section-title">
+              World-Class <span>Manufacturing</span>
+            </h2>
+          </div>
+          <div className="svc-stats-row">
+            {stats.map((s, i) => (
+              <div key={i} className="svc-stat">
+                <div className="svc-stat__number">{s.number}</div>
+                <div className="svc-stat__label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="svc-section svc-section--gray">
+        <div className="svc-container">
+          <div className="svc-cta">
+            <span className="svc-cta__label">// Get Started</span>
             <h3>Need a custom coating solution?</h3>
             <p>We deliver customized solutions for industrial, commercial, and residential use.</p>
-            <Link to="/contact-us" className="btn btn-primary">Contact Us <FiArrowRight /></Link>
+            <Link to="/contact-us" className="svc-cta-btn">
+              Contact Us <FiArrowRight />
+            </Link>
           </div>
         </div>
       </section>

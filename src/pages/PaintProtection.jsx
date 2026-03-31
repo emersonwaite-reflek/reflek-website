@@ -1,4 +1,4 @@
-import { FiShield, FiRefreshCw, FiStar, FiLayers, FiTool } from 'react-icons/fi'
+import { FiShield, FiRefreshCw, FiStar, FiLayers, FiTool, FiArrowRight } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import './Services.css'
@@ -31,6 +31,12 @@ const features = [
   },
 ]
 
+const stats = [
+  { number: '99.9%', label: 'UV Protection' },
+  { number: '10yr', label: 'Warranty Coverage' },
+  { number: '8mil', label: 'Film Thickness' },
+]
+
 export default function PaintProtection() {
   return (
     <>
@@ -40,11 +46,16 @@ export default function PaintProtection() {
         image="https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg"
       />
 
-      <section className="section">
-        <div className="container">
-          <div className="service-intro">
-            <h2 className="section-title">FlexiShield Paint Protection Film</h2>
-            <p className="service-desc">
+      {/* Intro Section */}
+      <section className="svc-section svc-section--white">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// Paint Protection Film</span>
+            <h2 className="svc-section-title">
+              FlexiShield <span>Paint Protection</span> Film
+            </h2>
+            <div className="svc-accent-bar" />
+            <p className="svc-desc">
               Discovering scratches on a new vehicle is distressing for any owner. That's why we developed
               FlexiShield Paint Protection Film, one of the leading polyurethane paint protection films
               on the market. Nearly invisible, it provides lasting defense against road hazards and maintains
@@ -52,20 +63,52 @@ export default function PaintProtection() {
             </p>
           </div>
 
-          <div className="features-grid">
+          <div className="svc-features-grid">
             {features.map((f, i) => (
-              <div key={i} className="feature-card">
-                <div className="feature-icon">{f.icon}</div>
+              <div key={i} className="svc-feature-card">
+                <span className="svc-feature-card__number">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="svc-feature-card__icon">{f.icon}</div>
+                <span className="svc-feature-card__label">// Feature {String(i + 1).padStart(2, '0')}</span>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="service-cta">
+      {/* Stats Section */}
+      <section className="svc-section svc-section--dark">
+        <div className="svc-container">
+          <div className="svc-intro">
+            <span className="svc-section-label">// Performance Metrics</span>
+            <h2 className="svc-section-title">
+              Built for <span>Maximum</span> Defense
+            </h2>
+          </div>
+          <div className="svc-stats-row">
+            {stats.map((s, i) => (
+              <div key={i} className="svc-stat">
+                <div className="svc-stat__number">{s.number}</div>
+                <div className="svc-stat__label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="svc-section svc-section--gray">
+        <div className="svc-container">
+          <div className="svc-cta">
+            <span className="svc-cta__label">// Get Started</span>
             <h3>Interested in FlexiShield?</h3>
             <p>Contact us to learn more about our paint protection solutions.</p>
-            <Link to="/contact-us" className="btn btn-primary">Get in Touch</Link>
+            <Link to="/contact-us" className="svc-cta-btn">
+              Get in Touch <FiArrowRight />
+            </Link>
           </div>
         </div>
       </section>

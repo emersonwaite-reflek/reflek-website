@@ -1,9 +1,28 @@
+/* ===== GEOMETRIC TECH FOOTER ===== */
+
 .footer {
-  background: #1a1a1a;
+  background: #0a0b10;
   color: #ccc;
-  padding: 60px 0 0;
+  padding: 80px 0 0;
+  position: relative;
+  overflow: hidden;
+  /* Angled top edge */
+  clip-path: polygon(0 40px, 100% 0, 100% 100%, 0 100%);
+  margin-top: -40px;
 }
 
+/* Decorative green accent line at top */
+.footer-geo-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #7ab929 30%, #2bb5b2 70%, transparent);
+  z-index: 1;
+}
+
+/* ---- Grid ---- */
 .footer-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1fr;
@@ -11,96 +30,173 @@
   padding-bottom: 40px;
 }
 
+/* ---- Brand / Logo ---- */
 .footer-logo {
   height: 36px;
   margin-bottom: 20px;
   filter: brightness(10);
 }
 
-.footer-col h4 {
-  color: var(--white);
-  font-size: 1rem;
-  margin-bottom: 16px;
-  font-weight: 600;
+/* ---- Section labels (monospace with // prefix) ---- */
+.footer-label {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #7ab929;
 }
 
+.footer-col h4 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(122, 185, 41, 0.15);
+}
+
+/* ---- Links ---- */
 .footer-col a {
-  display: block;
-  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.55);
   font-size: 0.9rem;
-  padding: 4px 0;
-  transition: color 0.2s;
+  padding: 6px 0;
+  transition: color 0.25s, gap 0.25s;
 }
 
 .footer-col a:hover {
-  color: var(--green);
+  color: #7ab929;
+  gap: 12px;
 }
 
+/* Diamond link markers */
+.footer-link-marker {
+  width: 5px;
+  height: 5px;
+  min-width: 5px;
+  background: rgba(122, 185, 41, 0.3);
+  transform: rotate(45deg);
+  transition: background 0.25s;
+  display: inline-block;
+}
+
+.footer-col a:hover .footer-link-marker {
+  background: #7ab929;
+}
+
+/* ---- Contact items ---- */
 .footer-contact-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   font-size: 0.9rem;
-  margin-bottom: 10px;
-  color: #aaa;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer-contact-item svg {
+  color: #7ab929;
+  margin-top: 2px;
+  flex-shrink: 0;
 }
 
 .footer-contact-item a {
   padding: 0;
   display: inline;
+  gap: 0;
 }
 
+/* ---- Social icons (hexagonal) ---- */
 .footer-social {
   display: flex;
   gap: 12px;
 }
 
-.footer-social a {
-  display: flex;
+.footer-social-hex {
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  color: #ccc;
-  transition: all 0.2s;
+  width: 42px;
+  height: 42px;
+  background: rgba(122, 185, 41, 0.08);
+  border: 1px solid rgba(122, 185, 41, 0.2);
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.3s !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  /* Hexagonal shape */
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
-.footer-social a:hover {
-  background: var(--green);
-  color: var(--white);
-  transform: translateY(-2px);
+.footer-social-hex:hover {
+  background: #7ab929 !important;
+  color: #fff !important;
+  border-color: #7ab929;
+  transform: translateY(-3px) scale(1.05);
 }
 
+/* ---- Bottom bar ---- */
 .footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.1);
+  position: relative;
   padding: 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Gradient separator line */
+.footer-bottom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(122, 185, 41, 0.3) 20%, rgba(43, 181, 178, 0.3) 80%, transparent);
+}
+
+.footer-bottom p {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
 }
 
 .footer-bottom a {
-  color: #aaa;
+  color: rgba(255, 255, 255, 0.4);
   transition: color 0.2s;
+  font-size: 0.82rem;
 }
 
 .footer-bottom a:hover {
-  color: var(--green);
+  color: #7ab929;
 }
 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
+  .footer {
+    clip-path: polygon(0 24px, 100% 0, 100% 100%, 0 100%);
+    padding-top: 60px;
+    margin-top: -24px;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 600px) {
+  .footer {
+    clip-path: polygon(0 16px, 100% 0, 100% 100%, 0 100%);
+    margin-top: -16px;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
+
   .footer-bottom {
     flex-direction: column;
     gap: 8px;
