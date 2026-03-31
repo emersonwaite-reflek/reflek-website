@@ -155,7 +155,7 @@
 
 @media (max-width: 560px) {
   .footer-main {
-    padding: 48px 0 40px;
+    padding: 48px 24px 40px;
   }
 
   .footer-grid {
@@ -171,6 +171,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    padding: 20px 24px;
   }
 }
 
