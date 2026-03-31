@@ -117,6 +117,19 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--dark);
 }
 
+/* Page transitions */
+.page-transition {
+  transition: opacity 0.25s ease;
+}
+
+.page-enter {
+  opacity: 1;
+}
+
+.page-exit {
+  opacity: 0;
+}
+
 @media (max-width: 768px) {
   .section { padding: 50px 0; }
   .section-title { font-size: 1.8rem; }
