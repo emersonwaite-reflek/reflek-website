@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FiShield, FiSun, FiDroplet, FiCpu, FiArrowRight, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FiShield, FiSun, FiDroplet, FiCpu, FiArrowRight } from 'react-icons/fi'
 import './Home.css'
 
 const slides = [
@@ -75,12 +75,6 @@ export default function Home() {
             <Link to="/contact-us" className="btn btn-outline">Contact Us</Link>
           </div>
         </div>
-        <button className="slider-btn slider-prev" onClick={() => setCurrentSlide(s => (s - 1 + slides.length) % slides.length)}>
-          <FiChevronLeft size={24} />
-        </button>
-        <button className="slider-btn slider-next" onClick={() => setCurrentSlide(s => (s + 1) % slides.length)}>
-          <FiChevronRight size={24} />
-        </button>
         <div className="slider-dots">
           {slides.map((_, i) => (
             <button key={i} className={`dot ${i === currentSlide ? 'active' : ''}`} onClick={() => setCurrentSlide(i)} />
