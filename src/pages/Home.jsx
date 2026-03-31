@@ -171,7 +171,7 @@ export default function Home() {
             <div className="m4-about__geo-accent" />
             <div className="m4-about__image-wrapper">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-Building.png"
+                src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
                 alt="Reflek Technologies Building"
               />
             </div>
