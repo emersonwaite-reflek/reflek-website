@@ -43,7 +43,7 @@ export default function SolarFilms() {
       <PageHero
         title="Solar Films"
         subtitle="High-performance solar control window films for every application"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
+        image="/images/slider-1.jpg"
       />
 
       {/* Intro */}
@@ -70,7 +70,7 @@ export default function SolarFilms() {
             <div>
               <span className="svc-section-tag">Our Premium Window Film Brand</span>
               <img
-                src="https://static.wixstatic.com/media/637ea8_65fff5f7729b40e4b29075fec092ce58~mv2.png"
+                src="/images/luxo-logo.png"
                 alt="Luxo Performance Films"
                 className="svc-subbrand-logo svc-subbrand-logo--pill"
               />
@@ -92,7 +92,7 @@ export default function SolarFilms() {
             </div>
             <div className="svc-subbrand-image">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg"
+                src="/images/slider-1.jpg"
                 alt="Luxo Solar Films"
               />
             </div>

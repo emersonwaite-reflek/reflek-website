@@ -27,7 +27,7 @@ export default function Contact() {
       <PageHero
         title="Contact Us"
         subtitle="Get in touch with our team in Chandler, Arizona"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+        image="/images/slider-2.jpg"
       />
 
       {/* Main contact layout */}

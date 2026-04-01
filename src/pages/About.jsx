@@ -37,7 +37,7 @@ export default function About() {
       <PageHero
         title="About Us"
         subtitle="Precision-engineered films and coatings since the 1990s"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg"
+        image="/images/slider-4.jpg"
       />
 
       {/* ── Mission ── */}
@@ -65,7 +65,7 @@ export default function About() {
             </div>
             <div className="ab-mission-image">
               <img
-                src="https://media.licdn.com/dms/image/v2/C511BAQELLZu6Eh2GGg/company-background_1536_768/company-background_1536_768/0/1583904593480?e=2147483647&v=beta&t=AZFhTNmGvWOvFvLpBw-goFXgODLJayZCFDsyXz8TZHY"
+                src="/images/reflek-building.jpg"
                 alt="Reflek Technologies headquarters in Chandler, Arizona"
               />
               <div className="ab-image-accent" />
@@ -96,11 +96,11 @@ export default function About() {
           </div>
           <div className="ab-assoc-logos">
             {[
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/3.jpg', alt: 'SIMA — Specialty Films Association' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/5.jpg', alt: 'ASID — American Society of Interior Designers' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/6.jpg', alt: 'NGA — National Glass Association' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/1.jpg', alt: 'Luxo Window Films' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/2-1.jpg', alt: 'FlexiShield' },
+              { src: '/images/3.jpg', alt: 'SIMA — Specialty Films Association' },
+              { src: '/images/5.jpg', alt: 'ASID — American Society of Interior Designers' },
+              { src: '/images/6.jpg', alt: 'NGA — National Glass Association' },
+              { src: '/images/1.jpg', alt: 'Luxo Window Films' },
+              { src: '/images/2-1.jpg', alt: 'FlexiShield' },
             ].map((logo, i) => (
               <div key={i} className="ab-assoc-logo">
                 <img src={logo.src} alt={logo.alt} />
@@ -135,7 +135,7 @@ export default function About() {
           <div className="ab-manufacturing">
             <div className="ab-manufacturing-image">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg"
+                src="/images/slider-6.jpg"
                 alt="Reflek production line in Chandler, Arizona"
               />
             </div>

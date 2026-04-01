@@ -293,7 +293,7 @@
 .mb-feature {
   position: relative;
   min-height: 620px;
-  background-image: url('https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg');
+  background-image: url('/images/slider-1.jpg');
   background-size: cover;
   background-position: center;
   display: flex;

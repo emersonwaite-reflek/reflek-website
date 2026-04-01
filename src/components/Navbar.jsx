@@ -42,7 +42,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="navbar-logo">
           <img
-            src="https://reflektech.com/wp-content/uploads/2022/12/logo.png"
+            src="/images/logo.png"
             alt="Reflek Technologies Corporation"
             height="72"
           />

@@ -94,7 +94,7 @@ const MockupE = () => {
           <div className="me-hero-right">
             <div className="me-hero-img-wrap">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+                src="/images/slider-3.jpg"
                 alt="Reflek film application"
                 className="me-hero-img"
               />
@@ -173,7 +173,7 @@ const MockupE = () => {
             </p>
             <div className="me-about-img-wrap">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+                src="/images/slider-3.jpg"
                 alt="Reflek manufacturing facility"
                 className="me-about-img"
               />

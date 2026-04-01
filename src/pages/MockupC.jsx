@@ -2,15 +2,15 @@ import './MockupC.css'
 
 const productImages = [
   {
-    src: 'https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg',
+    src: '/images/slider-1.jpg',
     alt: 'Reflek Paint Protection Film',
   },
   {
-    src: 'https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg',
+    src: '/images/slider-3.jpg',
     alt: 'Reflek Solar Control Films',
   },
   {
-    src: 'https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg',
+    src: '/images/slider-4.jpg',
     alt: 'Reflek Precision Coatings',
   },
 ]
@@ -156,7 +156,7 @@ export default function MockupC() {
         <div className="mc-about__inner">
           <div className="mc-about__image-col">
             <img
-              src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+              src="/images/slider-2.jpg"
               alt="Reflek Technologies manufacturing facility"
               className="mc-about__img"
             />

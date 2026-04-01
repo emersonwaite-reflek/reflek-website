@@ -4,11 +4,11 @@ import { FiShield, FiSun, FiDroplet, FiCpu, FiArrowRight } from 'react-icons/fi'
 import './Home.css'
 
 const slides = [
-  'https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg',
-  'https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg',
-  'https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg',
-  'https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg',
-  'https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg',
+  '/images/slider-1.jpg',
+  '/images/slider-2.jpg',
+  '/images/slider-3.jpg',
+  '/images/slider-4.jpg',
+  '/images/slider-6.jpg',
 ]
 
 const services = [
@@ -215,7 +215,7 @@ export default function Home() {
             <div className="home-about__right">
               <div className="home-about__image-wrap">
                 <img
-                  src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-768x431.png"
+                  src="/images/Reflek-768x431.png"
                   alt="Reflek Technologies headquarters in Chandler, Arizona"
                 />
                 <div className="home-about__image-accent" />
@@ -277,11 +277,11 @@ export default function Home() {
           <span className="home-mono-tag">Industry Memberships &amp; Partners</span>
           <div className="home-assoc__logos">
             {[
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/3.jpg', alt: 'SIMA — Specialty Films Association' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/5.jpg', alt: 'ASID — American Society of Interior Designers' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/6.jpg', alt: 'NGA — National Glass Association' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/1.jpg', alt: 'Luxo Window Films' },
-              { src: 'https://reflektech.com/wp-content/uploads/2022/12/2-1.jpg', alt: 'FlexiShield' },
+              { src: '/images/3.jpg', alt: 'SIMA — Specialty Films Association' },
+              { src: '/images/5.jpg', alt: 'ASID — American Society of Interior Designers' },
+              { src: '/images/6.jpg', alt: 'NGA — National Glass Association' },
+              { src: '/images/1.jpg', alt: 'Luxo Window Films' },
+              { src: '/images/2-1.jpg', alt: 'FlexiShield' },
             ].map((logo, i) => (
               <div key={i} className="home-assoc__logo">
                 <img src={logo.src} alt={logo.alt} />

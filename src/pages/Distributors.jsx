@@ -29,7 +29,7 @@ export default function Distributors() {
       <PageHero
         title="International Distributors"
         subtitle="Authorized Reflek distribution partners worldwide"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg"
+        image="/images/slider-6.jpg"
       />
 
       {/* Intro */}

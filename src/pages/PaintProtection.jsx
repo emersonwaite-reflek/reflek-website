@@ -44,7 +44,7 @@ export default function PaintProtection() {
       <PageHero
         title="Paint Protection"
         subtitle="Advanced polyurethane paint protection films engineered for lasting vehicle defense"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+        image="/images/slider-3.jpg"
       />
 
       {/* Intro */}
@@ -89,7 +89,7 @@ export default function PaintProtection() {
             </div>
             <div className="svc-subbrand-image">
               <img
-                src="https://static.wixstatic.com/media/637ea8_9c33c1d89448456c88964c2bf7d70902f000.jpg"
+                src="/images/flexishield-ppf.jpg"
                 alt="FlexiShield Color PPF"
               />
             </div>

@@ -10,7 +10,7 @@ const featured = {
   month: 'DEC 2024',
   excerpt:
     'Reflek Technologies announces a $10 million investment in a new 120,000 sq ft manufacturing facility in Ganzhou, China, alongside a new polyurethane extrusion line at our Chandler, Arizona campus. The company now produces over 10 million square feet of window film annually, with revenues exceeding $50 million USD and a new brand—Polarie—targeting Asian, Middle Eastern, and Latin American markets.',
-  image: 'https://reflektech.com/wp-content/uploads/2024/12/shanghai_03_saturation-1024x767.png',
+  image: '/images/shanghai-facility.png',
   href: '#',
 }
 
@@ -20,7 +20,7 @@ const articles = [
     date: 'FEB 2024',
     excerpt:
       'Our FlexiShield Cosmetic paint protection film drew strong interest at the Dubai Exhibition Centre, with distributors from 14 countries placing first orders on the show floor.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg',
+    image: '/images/slider-3.jpg',
     href: '#',
   },
   {
@@ -28,7 +28,7 @@ const articles = [
     date: 'NOV 2023',
     excerpt:
       'We showcased the latest FlexiShield and Luxo product lines at SEMA 2023, connecting with car enthusiasts and professional installers from across North America.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/SEMA-2022.png',
+    image: '/images/SEMA-2022.png',
     href: '#',
   },
   {
@@ -36,7 +36,7 @@ const articles = [
     date: 'SEP 2023',
     excerpt:
       'The Luxo AR70 and AR50 series bring dual-reflective sputtered technology to high-rise commercial projects, offering SHGC values as low as 0.22 without sacrificing visible light.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-5.jpg',
+    image: '/images/slider-5.jpg',
     href: '#',
   },
   {
@@ -44,7 +44,7 @@ const articles = [
     date: 'APR 2023',
     excerpt:
       'Reflek Technologies exhibited its comprehensive automotive film portfolio at CIAACE Beijing, one of the premier aftermarket trade fairs in the Asia-Pacific region.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg',
+    image: '/images/slider-6.jpg',
     href: '#',
   },
   {
@@ -52,7 +52,7 @@ const articles = [
     date: 'MAR 2023',
     excerpt:
       'Independent testing confirms that FlexiShield Ultra and FlexiShield Matte do not interfere with forward-facing radar or camera ADAS systems—a key milestone for OEM partnerships.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg',
+    image: '/images/slider-2.jpg',
     href: '#',
   },
   {
@@ -60,7 +60,7 @@ const articles = [
     date: 'SEP 2022',
     excerpt:
       'At Automechanika Frankfurt, Reflek displayed the full 2023 film roadmap to buyers from 28 countries, securing distribution agreements across Europe and the Middle East.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg',
+    image: '/images/slider-4.jpg',
     href: '#',
   },
 ]
@@ -78,7 +78,7 @@ export default function News() {
       <PageHero
         title="News & Updates"
         subtitle="Product launches, company updates, and industry insights"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+        image="/images/slider-3.jpg"
       />
 
       {/* ── Featured article ── */}

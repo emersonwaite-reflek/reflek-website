@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="footer-brand">
             <Link to="/">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/logo.png"
+                src="/images/logo.png"
                 alt="Reflek Technologies Corporation"
                 className="footer-logo"
               />

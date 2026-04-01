@@ -56,7 +56,7 @@ export default function MockupB() {
           </div>
           <div className="mb-hero__image-col">
             <img
-              src="https://reflektech.com/wp-content/uploads/2022/12/slider-3.jpg"
+              src="/images/slider-3.jpg"
               alt="Reflek Technologies manufacturing facility"
               className="mb-hero__img"
             />

@@ -39,7 +39,7 @@ export default function Electronics() {
       <PageHero
         title="Electronics"
         subtitle="Precision components for advanced electronics and demanding industrial applications"
-        image="https://reflektech.com/wp-content/uploads/2022/12/slider-6.jpg"
+        image="/images/slider-6.jpg"
       />
 
       {/* Intro */}

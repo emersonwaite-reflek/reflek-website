@@ -99,7 +99,7 @@ export default function MockupD() {
         <div className="md-hero-right">
           <div className="md-hero-img-wrap">
             <img
-              src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+              src="/images/slider-2.jpg"
               alt="Reflek Technologies film manufacturing"
               className="md-hero-img"
             />
@@ -175,7 +175,7 @@ export default function MockupD() {
           <div className="md-about-media">
             <div className="md-about-img-wrap">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
+                src="/images/slider-2.jpg"
                 alt="Reflek Technologies USA manufacturing facility"
                 className="md-about-img"
               />
