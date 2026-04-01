@@ -36,7 +36,7 @@ const articles = [
     date: 'SEP 2023',
     excerpt:
       'The Luxo AR70 and AR50 series bring dual-reflective sputtered technology to high-rise commercial projects, offering SHGC values as low as 0.22 without sacrificing visible light.',
-    image: '/images/slider-5.jpg',
+    image: '/images/slider-1.jpg',
     href: '#',
   },
   {
