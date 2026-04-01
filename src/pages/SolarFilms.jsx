@@ -92,7 +92,7 @@ export default function SolarFilms() {
             </div>
             <div className="svc-subbrand-image">
               <img
-                src="/images/slider-1.jpg"
+                src="/images/slider-3.jpg"
                 alt="Luxo Solar Films"
               />
             </div>
