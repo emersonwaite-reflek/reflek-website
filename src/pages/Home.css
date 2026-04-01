@@ -692,10 +692,19 @@
   }
 
   .home-hero {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     min-height: auto;
     padding: 100px 24px 60px;
-    gap: 48px;
+    gap: 40px;
+  }
+
+  .home-hero__left,
+  .home-hero__right {
+    width: 100%;
+  }
+
+  .home-slider__frame {
+    aspect-ratio: 16 / 9;
   }
 
   .home-stats__grid {

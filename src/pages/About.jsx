@@ -65,7 +65,7 @@ export default function About() {
             </div>
             <div className="ab-mission-image">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-Building.png"
+                src="https://media.licdn.com/dms/image/v2/C511BAQELLZu6Eh2GGg/company-background_1536_768/company-background_1536_768/0/1583904593480?e=2147483647&v=beta&t=AZFhTNmGvWOvFvLpBw-goFXgODLJayZCFDsyXz8TZHY"
                 alt="Reflek Technologies headquarters in Chandler, Arizona"
               />
               <div className="ab-image-accent" />
