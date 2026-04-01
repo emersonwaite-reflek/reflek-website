@@ -500,6 +500,54 @@
 }
 
 /* ============================================
+   ASSOCIATIONS / TRUST BAR
+   ============================================ */
+.home-assoc {
+  padding: 56px 0;
+  background: #ffffff;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.home-assoc .home-mono-tag {
+  display: block;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.home-assoc__logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.home-assoc__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.65;
+  transition: opacity 0.2s;
+}
+
+.home-assoc__logo:hover {
+  opacity: 1;
+}
+
+.home-assoc__logo img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.2s;
+}
+
+.home-assoc__logo:hover img {
+  filter: grayscale(0%);
+}
+
+/* ============================================
    NEWS
    ============================================ */
 .home-news {
@@ -678,9 +726,14 @@
   .home-services,
   .home-about,
   .home-brands,
+  .home-assoc,
   .home-news,
   .home-cta {
     padding: 64px 0;
+  }
+
+  .home-assoc__logos {
+    gap: 28px;
   }
 
   .home-services__grid {

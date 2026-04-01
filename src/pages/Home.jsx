@@ -215,8 +215,8 @@ export default function Home() {
             <div className="home-about__right">
               <div className="home-about__image-wrap">
                 <img
-                  src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
-                  alt="Reflek Technologies facility"
+                  src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-768x431.png"
+                  alt="Reflek Technologies headquarters in Chandler, Arizona"
                 />
                 <div className="home-about__image-accent" />
               </div>
@@ -267,6 +267,26 @@ export default function Home() {
                 Visit Luxo Films <FiArrowRight />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ASSOCIATIONS ─────────────────────────────── */}
+      <section className="home-assoc">
+        <div className="home-container">
+          <span className="home-mono-tag">Industry Memberships &amp; Partners</span>
+          <div className="home-assoc__logos">
+            {[
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/3.jpg', alt: 'SIMA — Specialty Films Association' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/5.jpg', alt: 'ASID — American Society of Interior Designers' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/6.jpg', alt: 'NGA — National Glass Association' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/1.jpg', alt: 'Luxo Window Films' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/2-1.jpg', alt: 'FlexiShield' },
+            ].map((logo, i) => (
+              <div key={i} className="home-assoc__logo">
+                <img src={logo.src} alt={logo.alt} />
+              </div>
+            ))}
           </div>
         </div>
       </section>

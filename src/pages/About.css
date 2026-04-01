@@ -252,6 +252,52 @@
   background: #7ab929;
 }
 
+/* ── Associations ── */
+
+.ab-assoc-section {
+  padding: 56px 0;
+  background: #ffffff;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.ab-assoc-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.ab-assoc-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.ab-assoc-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.ab-assoc-logo:hover {
+  opacity: 1;
+}
+
+.ab-assoc-logo img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.2s;
+}
+
+.ab-assoc-logo:hover img {
+  filter: grayscale(0%);
+}
+
 /* ── CTA ── */
 
 .ab-cta-section {

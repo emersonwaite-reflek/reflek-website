@@ -65,8 +65,8 @@ export default function About() {
             </div>
             <div className="ab-mission-image">
               <img
-                src="https://reflektech.com/wp-content/uploads/2022/12/slider-2.jpg"
-                alt="Reflek Technologies manufacturing facility"
+                src="https://reflektech.com/wp-content/uploads/2022/12/Reflek-Building.png"
+                alt="Reflek Technologies headquarters in Chandler, Arizona"
               />
               <div className="ab-image-accent" />
             </div>
@@ -82,6 +82,28 @@ export default function About() {
               <div key={i} className="ab-stat">
                 <span className="ab-stat-value">{s.value}</span>
                 <span className="ab-stat-label">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Associations ── */}
+      <section className="ab-section ab-assoc-section">
+        <div className="ab-container">
+          <div className="ab-assoc-header">
+            <span className="ab-tag">Industry Memberships &amp; Partners</span>
+          </div>
+          <div className="ab-assoc-logos">
+            {[
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/3.jpg', alt: 'SIMA — Specialty Films Association' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/5.jpg', alt: 'ASID — American Society of Interior Designers' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/6.jpg', alt: 'NGA — National Glass Association' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/1.jpg', alt: 'Luxo Window Films' },
+              { src: 'https://reflektech.com/wp-content/uploads/2022/12/2-1.jpg', alt: 'FlexiShield' },
+            ].map((logo, i) => (
+              <div key={i} className="ab-assoc-logo">
+                <img src={logo.src} alt={logo.alt} />
               </div>
             ))}
           </div>

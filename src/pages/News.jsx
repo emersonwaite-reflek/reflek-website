@@ -10,7 +10,7 @@ const featured = {
   month: 'DEC 2024',
   excerpt:
     'Reflek Technologies announces a $10 million investment in a new 120,000 sq ft manufacturing facility in Ganzhou, China, alongside a new polyurethane extrusion line at our Chandler, Arizona campus. The company now produces over 10 million square feet of window film annually, with revenues exceeding $50 million USD and a new brand—Polarie—targeting Asian, Middle Eastern, and Latin American markets.',
-  image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-1.jpg',
+  image: 'https://reflektech.com/wp-content/uploads/2024/12/shanghai_03_saturation-1024x767.png',
   href: '#',
 }
 
@@ -28,7 +28,7 @@ const articles = [
     date: 'NOV 2023',
     excerpt:
       'We showcased the latest FlexiShield and Luxo product lines at SEMA 2023, connecting with car enthusiasts and professional installers from across North America.',
-    image: 'https://reflektech.com/wp-content/uploads/2022/12/slider-4.jpg',
+    image: 'https://reflektech.com/wp-content/uploads/2022/12/SEMA-2022.png',
     href: '#',
   },
   {
