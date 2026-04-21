@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { geoEqualEarth, geoPath } from 'd3-geo'
+import { geoEquirectangular, geoPath } from 'd3-geo'
 import { feature } from 'topojson-client'
 import './GlobalMap.css'
 
@@ -69,13 +69,13 @@ const LOCATIONS = [
     city: 'Nanjing',
     country: 'China',
     flag: '🇨🇳',
-    type: 'factory',
-    typeLabel: 'East Asia D.O. & Factory',
+    type: 'do',
+    typeLabel: 'East Asia D.O.',
     coords: [118.80, 32.06],
     offset: [-22, -18],
     since: 2016,
     size: '9,300 m²',
-    role: 'Global supply of Polarie-branded and Reflek Private Labelled China-manufactured products. Asia Pacific & China distribution.',
+    role: 'Asia Pacific & China distribution hub. Global supply of Polarie-branded and Reflek Private Labelled products.',
   },
   {
     id: 'ganzhou',
@@ -115,9 +115,9 @@ const LOCATIONS = [
 ]
 
 const TYPE_META = {
-  hq:      { label: 'HQ & Factory',        color: '#7ab929', radius: 9 },
-  factory: { label: 'Manufacturing',       color: '#7ab929', radius: 7 },
-  do:      { label: 'Distribution Office', color: '#ffffff', stroke: '#7ab929', radius: 7 },
+  hq:      { label: 'HQ & Factory',         color: '#7ab929', radius: 13.5,                         shape: 'circle' },
+  factory: { label: 'Global Manufacturing', color: '#7ab929', radius: 10.5,                         shape: 'square' },
+  do:      { label: 'Distribution Office',  color: '#ffffff', stroke: '#7ab929', radius: 7,          shape: 'circle' },
 }
 
 const WIDTH = 900
@@ -177,6 +177,9 @@ export default function GlobalMap() {
       .then((topology) => {
         if (cancelled) return
         const geo = feature(topology, topology.objects.countries)
+        geo.features = geo.features.filter(
+          (f) => f.id !== '010' && f.properties?.name !== 'Antarctica'
+        )
         setCountries(geo)
       })
     return () => { cancelled = true }
@@ -197,10 +200,10 @@ export default function GlobalMap() {
   }, [])
 
   const projection = useMemo(
-    () => geoEqualEarth()
-      .scale(180)
-      .translate([WIDTH / 2, HEIGHT / 2])
-      .center([10, 15]),
+    () => geoEquirectangular()
+      .scale(143)
+      .translate([WIDTH / 2, HEIGHT / 2 + 40])
+      .center([10, 10]),
     []
   )
 
@@ -350,13 +353,27 @@ export default function GlobalMap() {
                   className="gm-marker-halo"
                   opacity={isActive ? 0.3 : 0.15}
                 />
-                <circle
-                  r={meta.radius}
-                  fill={meta.color}
-                  stroke={meta.stroke || meta.color}
-                  strokeWidth={meta.stroke ? 2.5 : 0}
-                  className={`gm-marker ${isActive ? 'is-active' : ''}`}
-                />
+                {meta.shape === 'square' ? (
+                  <rect
+                    x={-meta.radius}
+                    y={-meta.radius}
+                    width={meta.radius * 2}
+                    height={meta.radius * 2}
+                    rx={2.5}
+                    fill={meta.color}
+                    stroke={meta.stroke || meta.color}
+                    strokeWidth={meta.stroke ? 2.5 : 0}
+                    className={`gm-marker ${isActive ? 'is-active' : ''}`}
+                  />
+                ) : (
+                  <circle
+                    r={meta.radius}
+                    fill={meta.color}
+                    stroke={meta.stroke || meta.color}
+                    strokeWidth={meta.stroke ? 2.5 : 0}
+                    className={`gm-marker ${isActive ? 'is-active' : ''}`}
+                  />
+                )}
               </g>
             )
           })}
@@ -404,7 +421,7 @@ export default function GlobalMap() {
         {Object.entries(TYPE_META).map(([key, m]) => (
           <div key={key} className="gm-legend-item">
             <span
-              className="gm-legend-dot"
+              className={`gm-legend-dot gm-legend-dot--${m.shape}`}
               style={{
                 background: m.color,
                 border: m.stroke ? `2px solid ${m.stroke}` : `2px solid ${m.color}`,

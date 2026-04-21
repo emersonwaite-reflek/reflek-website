@@ -38,7 +38,11 @@ export default function About() {
       <section className="ab-hero">
         <div className="ab-hero-text">
           <div className="ab-hero-text-inner">
-            <span className="ab-hero-eyebrow">About Reflek</span>
+            <span className="ab-hero-kicker">
+              <span className="ab-hero-kicker-line" aria-hidden="true" />
+              About Reflek
+              <span className="ab-hero-kicker-line" aria-hidden="true" />
+            </span>
             <h1 className="ab-hero-title">
               Global Reach.{' '}
               <span className="ab-hero-title-accent">Factory-Direct Precision.</span>
@@ -47,12 +51,6 @@ export default function About() {
               A centrally owned network of manufacturing and distribution hubs across
               four continents — serving partners in 95+ countries.
             </p>
-            <div className="ab-hero-chips">
-              <span className="ab-hero-chip"><strong>3</strong> Factories</span>
-              <span className="ab-hero-chip"><strong>6</strong> Distribution Centers</span>
-              <span className="ab-hero-chip"><strong>30+</strong> Years</span>
-              <span className="ab-hero-chip"><strong>95+</strong> Countries</span>
-            </div>
           </div>
         </div>
         <div className="ab-hero-map-wrap">
@@ -125,6 +123,7 @@ export default function About() {
               { src: '/images/6.jpg', alt: 'NGA — National Glass Association' },
               { src: '/images/1.jpg', alt: 'Luxo Window Films' },
               { src: '/images/2-1.jpg', alt: 'FlexiShield' },
+              { src: '/images/shell-logo.svg', alt: 'Shell' },
             ].map((logo, i) => (
               <div key={i} className="ab-assoc-logo">
                 <img src={logo.src} alt={logo.alt} />
