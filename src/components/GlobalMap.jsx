@@ -115,10 +115,17 @@ const LOCATIONS = [
 ]
 
 const TYPE_META = {
-  hq:      { label: 'HQ & Factory',         color: '#7ab929', radius: 13.5,                         shape: 'circle' },
-  factory: { label: 'Global Manufacturing', color: '#7ab929', radius: 10.5,                         shape: 'square' },
+  hq:      { label: 'US Headquarters',      color: '#7ab929', radius: 14,                           shape: 'hq' },
+  factory: { label: 'Global Manufacturing', color: '#7ab929', radius: 11,                           shape: 'factory' },
   do:      { label: 'Distribution Office',  color: '#ffffff', stroke: '#7ab929', radius: 7,          shape: 'circle' },
 }
+
+// Factory silhouette — sawtooth roof with chimney, centered at (0,0).
+const FACTORY_PATH = 'M -10 7 L -10 0 L -5 -4 L -5 0 L 0 -4 L 0 0 L 5 -4 L 5 -8 L 8 -8 L 8 7 Z'
+
+// Five-point star, centered at (0,0), outer radius ~7.
+const STAR_PATH =
+  'M 0 -7 L 1.7 -2.2 L 6.7 -2.2 L 2.7 0.9 L 4.1 5.7 L 0 2.8 L -4.1 5.7 L -2.7 0.9 L -6.7 -2.2 L -1.7 -2.2 Z'
 
 const WIDTH = 900
 const HEIGHT = 440
@@ -353,18 +360,24 @@ export default function GlobalMap() {
                   className="gm-marker-halo"
                   opacity={isActive ? 0.3 : 0.15}
                 />
-                {meta.shape === 'square' ? (
-                  <rect
-                    x={-meta.radius}
-                    y={-meta.radius}
-                    width={meta.radius * 2}
-                    height={meta.radius * 2}
-                    rx={2.5}
+                {meta.shape === 'factory' ? (
+                  <path
+                    d={FACTORY_PATH}
                     fill={meta.color}
-                    stroke={meta.stroke || meta.color}
-                    strokeWidth={meta.stroke ? 2.5 : 0}
                     className={`gm-marker ${isActive ? 'is-active' : ''}`}
                   />
+                ) : meta.shape === 'hq' ? (
+                  <g className={`gm-marker ${isActive ? 'is-active' : ''}`}>
+                    <circle
+                      r={meta.radius + 3}
+                      fill="none"
+                      stroke={meta.color}
+                      strokeWidth={1.5}
+                      opacity={0.55}
+                    />
+                    <circle r={meta.radius} fill={meta.color} />
+                    <path d={STAR_PATH} fill="#ffffff" />
+                  </g>
                 ) : (
                   <circle
                     r={meta.radius}
@@ -420,13 +433,24 @@ export default function GlobalMap() {
       <div className="gm-legend">
         {Object.entries(TYPE_META).map(([key, m]) => (
           <div key={key} className="gm-legend-item">
-            <span
-              className={`gm-legend-dot gm-legend-dot--${m.shape}`}
-              style={{
-                background: m.color,
-                border: m.stroke ? `2px solid ${m.stroke}` : `2px solid ${m.color}`,
-              }}
-            />
+            {m.shape === 'factory' ? (
+              <svg className="gm-legend-icon" viewBox="-11 -9 22 18" aria-hidden="true">
+                <path d={FACTORY_PATH} fill={m.color} />
+              </svg>
+            ) : m.shape === 'hq' ? (
+              <svg className="gm-legend-icon" viewBox="-9 -9 18 18" aria-hidden="true">
+                <circle r={8} fill={m.color} />
+                <path d={STAR_PATH} fill="#ffffff" />
+              </svg>
+            ) : (
+              <span
+                className="gm-legend-dot"
+                style={{
+                  background: m.color,
+                  border: m.stroke ? `2px solid ${m.stroke}` : `2px solid ${m.color}`,
+                }}
+              />
+            )}
             <span>{m.label}</span>
           </div>
         ))}
