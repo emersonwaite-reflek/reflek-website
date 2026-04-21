@@ -94,7 +94,7 @@ export default function About() {
         <div className="ab-container">
           <div className="ab-section-header">
             <span className="ab-tag">Global Footprint</span>
-            <h2 className="ab-heading">Seamless Worldwide Logistics</h2>
+            <h2 className="ab-heading">Full-Range Manufacturing Capabilities</h2>
             <p className="ab-body" style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
               A strategic network of centrally owned, managed, and operated manufacturing
               and distribution hubs across four continents — serving partners in 95+ countries.
