@@ -32,7 +32,7 @@
 }
 
 .ab-hero-text {
-  padding: 72px 24px 40px;
+  padding: calc(var(--nav-height) + 40px) 24px 40px;
   text-align: center;
   color: #0f0f0f;
 }
@@ -139,7 +139,7 @@
   }
 
   .ab-hero-text {
-    padding: 56px 20px 28px;
+    padding: calc(var(--nav-height) + 24px) 20px 28px;
   }
 
   .ab-hero-title {
@@ -172,7 +172,7 @@
 
 @media (max-width: 480px) {
   .ab-hero-text {
-    padding: 48px 16px 24px;
+    padding: calc(var(--nav-height) + 20px) 16px 24px;
   }
 
   .ab-hero-kicker {
