@@ -47,9 +47,7 @@
   width: min(100%, 1400px);
   height: clamp(420px, 58vh, 640px);
   margin: 0 auto;
-  background: #fafafa;
-  border-top: 1px solid #e8e8e8;
-  border-bottom: 1px solid #e8e8e8;
+  background: transparent;
   overflow: hidden;
 }
 
