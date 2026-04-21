@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import { FiZap, FiCheckCircle, FiUsers } from 'react-icons/fi'
 import PageHero from '../components/PageHero'
+import GlobalMap from '../components/GlobalMap'
 import './About.css'
 
 const stats = [
   { value: '30+', label: 'Years in Business' },
-  { value: '500+', label: 'SKUs Available' },
-  { value: '60+', label: 'Countries Served' },
-  { value: '100%', label: 'USA Manufactured' },
+  { value: '3', label: 'Global Manufacturing Sites' },
+  { value: '95+', label: 'Countries Served' },
+  { value: '6', label: 'Global Distribution Centers' },
 ]
 
 const values = [
@@ -59,7 +60,7 @@ export default function About() {
                 Our product portfolio spans solar control window films, DC vacuum-sputtered
                 metallised films, polyurethane paint protection films, and flexible circuit
                 substrates. With over 30 years in the business and distribution reaching more
-                than 60 countries, we pair deep manufacturing expertise with a genuine commitment
+                than 95 countries, we pair deep manufacturing expertise with a genuine commitment
                 to every partner in our network.
               </p>
             </div>
@@ -85,6 +86,21 @@ export default function About() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Global Footprint ── */}
+      <section className="ab-section ab-section--white">
+        <div className="ab-container">
+          <div className="ab-section-header">
+            <span className="ab-tag">Global Footprint</span>
+            <h2 className="ab-heading">Seamless Worldwide Logistics</h2>
+            <p className="ab-body" style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
+              A strategic network of centrally owned, managed, and operated manufacturing
+              and distribution hubs across four continents — serving partners in 95+ countries.
+            </p>
+          </div>
+          <GlobalMap />
         </div>
       </section>
 
