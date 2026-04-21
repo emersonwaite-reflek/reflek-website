@@ -72,6 +72,7 @@ const LOCATIONS = [
     type: 'factory',
     typeLabel: 'East Asia D.O. & Factory',
     coords: [118.80, 32.06],
+    offset: [-22, -18],
     since: 2016,
     size: '9,300 m²',
     role: 'Global supply of Polarie-branded and Reflek Private Labelled China-manufactured products. Asia Pacific & China distribution.',
@@ -84,6 +85,7 @@ const LOCATIONS = [
     type: 'factory',
     typeLabel: 'Clear PPF + WF Manufacturing Site',
     coords: [114.94, 25.83],
+    offset: [-20, 16],
     since: 2025,
     role: 'Clear paint protection film and window film manufacturing.',
   },
@@ -95,6 +97,7 @@ const LOCATIONS = [
     type: 'factory',
     typeLabel: 'Color PPF Manufacturing Site',
     coords: [120.58, 31.30],
+    offset: [24, 6],
     since: 2026,
     role: 'Color paint protection film manufacturing.',
   },
@@ -205,15 +208,14 @@ export default function GlobalMap() {
   const project = useCallback((lonlat) => projection(lonlat) || [0, 0], [projection])
 
   /**
-   * Convert a marker's viewBox coordinates to pixel coordinates inside the frame.
-   * Works regardless of preserveAspectRatio (meet / slice) because we use
-   * the SVG's own getScreenCTM to ask the browser where the point actually lives.
+   * Convert viewBox coordinates (either a [lon,lat] pair or a raw [x,y])
+   * to pixel coordinates inside the frame, respecting the SVG's actual
+   * preserveAspectRatio transform via getScreenCTM.
    */
-  const projectToFrame = useCallback((lonlat) => {
+  const viewBoxToFrame = useCallback((vx, vy) => {
     const svg = svgRef.current
     const frame = frameRef.current
     if (!svg || !frame) return null
-    const [vx, vy] = project(lonlat)
     const pt = svg.createSVGPoint()
     pt.x = vx; pt.y = vy
     const ctm = svg.getScreenCTM()
@@ -221,6 +223,12 @@ export default function GlobalMap() {
     const screen = pt.matrixTransform(ctm)
     const frameRect = frame.getBoundingClientRect()
     return { x: screen.x - frameRect.left, y: screen.y - frameRect.top }
+  }, [])
+
+  const markerViewBox = useCallback((loc) => {
+    const [gx, gy] = project(loc.coords)
+    const [dx, dy] = loc.offset || [0, 0]
+    return { gx, gy, mx: gx + dx, my: gy + dy }
   }, [project])
 
   const hoverLoc = LOCATIONS.find((l) => l.id === hoverId)
@@ -230,8 +238,9 @@ export default function GlobalMap() {
     if (!hoverLoc) return null
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     frameSize
-    return projectToFrame(hoverLoc.coords)
-  }, [hoverLoc, projectToFrame, frameSize])
+    const { mx, my } = markerViewBox(hoverLoc)
+    return viewBoxToFrame(mx, my)
+  }, [hoverLoc, markerViewBox, viewBoxToFrame, frameSize])
 
   // Measure the tooltip so we can clamp its position inside the frame.
   useLayoutEffect(() => {
@@ -297,14 +306,35 @@ export default function GlobalMap() {
             />
           ))}
 
+          {/* Leader lines + anchor dots (rendered first so markers sit on top) */}
+          {LOCATIONS.filter((l) => l.offset).map((loc) => {
+            const { gx, gy, mx, my } = markerViewBox(loc)
+            return (
+              <g key={`leader-${loc.id}`} className="gm-leader" pointerEvents="none">
+                <line
+                  x1={gx} y1={gy} x2={mx} y2={my}
+                  stroke="#7ab929"
+                  strokeWidth={1}
+                  strokeDasharray="2 2"
+                  opacity={0.55}
+                />
+                <circle
+                  cx={gx} cy={gy}
+                  r={2}
+                  fill="#7ab929"
+                />
+              </g>
+            )
+          })}
+
           {LOCATIONS.map((loc) => {
             const meta = TYPE_META[loc.type]
-            const [x, y] = project(loc.coords)
+            const { mx, my } = markerViewBox(loc)
             const isActive = loc.id === hoverId
             return (
               <g
                 key={loc.id}
-                transform={`translate(${x}, ${y})`}
+                transform={`translate(${mx}, ${my})`}
                 className="gm-marker-group"
                 onMouseEnter={() => openMarker(loc.id)}
                 onMouseLeave={scheduleClose}
