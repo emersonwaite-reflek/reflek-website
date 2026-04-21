@@ -134,9 +134,9 @@ export default function Home() {
           <div className="home-stats__grid">
             {[
               { num: '30+', label: 'Years' },
-              { num: '500+', label: 'Products' },
-              { num: '60+', label: 'Countries' },
-              { num: '100%', label: 'USA Made' },
+              { num: '3', label: 'Global Manufacturing Sites' },
+              { num: '95+', label: 'Countries' },
+              { num: '6', label: 'Global Distribution Centers' },
             ].map((s, i) => (
               <div key={i} className="home-stats__item">
                 <div className="home-stats__num">{s.num}</div>
