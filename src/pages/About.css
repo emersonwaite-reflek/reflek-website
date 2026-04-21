@@ -26,8 +26,7 @@
 .ab-hero {
   position: relative;
   width: 100%;
-  background:
-    radial-gradient(ellipse at top, #141414 0%, #0a0a0a 60%);
+  background: #ffffff;
   padding-bottom: 28px;
   isolation: isolate;
 }
@@ -35,7 +34,7 @@
 .ab-hero-text {
   padding: 72px 24px 40px;
   text-align: center;
-  color: #ffffff;
+  color: #0f0f0f;
 }
 
 .ab-hero-text-inner {
@@ -48,9 +47,9 @@
   width: min(100%, 1400px);
   height: clamp(420px, 58vh, 640px);
   margin: 0 auto;
-  background: #0a0a0a;
-  border-top: 1px solid rgba(122, 185, 41, 0.14);
-  border-bottom: 1px solid rgba(122, 185, 41, 0.14);
+  background: #fafafa;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
   overflow: hidden;
 }
 
@@ -70,8 +69,8 @@
   color: #7ab929;
   margin-bottom: 20px;
   padding: 6px 12px;
-  background: rgba(122, 185, 41, 0.12);
-  border: 1px solid rgba(122, 185, 41, 0.35);
+  background: rgba(122, 185, 41, 0.08);
+  border: 1px solid rgba(122, 185, 41, 0.3);
   border-radius: 4px;
 }
 
@@ -82,12 +81,11 @@
   line-height: 1.05;
   letter-spacing: -0.02em;
   margin: 0 0 20px;
-  color: #ffffff;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  color: #0f0f0f;
 }
 
 .ab-hero-title-accent {
-  background: linear-gradient(120deg, #a6e055 0%, #7ab929 100%);
+  background: linear-gradient(120deg, #7ab929 0%, #5d9120 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -97,10 +95,9 @@
   font-family: Inter, system-ui, sans-serif;
   font-size: clamp(0.95rem, 1.2vw, 1.1rem);
   line-height: 1.6;
-  color: #d5d5d5;
+  color: #666666;
   margin: 0 0 28px;
-  max-width: 520px;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  max-width: 560px;
 }
 
 .ab-hero-chips {
@@ -121,19 +118,18 @@
   align-items: baseline;
   gap: 6px;
   padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #f5f5f5;
+  border: 1px solid #e8e8e8;
   border-radius: 999px;
-  backdrop-filter: blur(8px);
   font-family: Inter, system-ui, sans-serif;
   font-size: 0.82rem;
-  color: #e5e5e5;
+  color: #333333;
   letter-spacing: 0.02em;
 }
 
 .ab-hero-chip strong {
   font-weight: 700;
-  color: #a6e055;
+  color: #7ab929;
   font-size: 0.95rem;
 }
 
@@ -145,7 +141,7 @@
   padding: 20px 24px 8px;
   font-family: SFMono-Regular, Consolas, monospace;
   font-size: 11px;
-  color: #888;
+  color: #999;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }

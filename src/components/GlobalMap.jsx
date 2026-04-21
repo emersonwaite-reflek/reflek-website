@@ -47,7 +47,7 @@ const LOCATIONS = [
     country: 'Netherlands',
     flag: '🇳🇱',
     type: 'do',
-    typeLabel: 'Europe / Central Asia B.O.',
+    typeLabel: 'Europe / Central Asia D.O.',
     coords: [4.71, 52.02],
     size: '2,000 m²',
     role: 'Warehouse in one of Europe\'s logistics hubs. Continental Europe, UK, Turkey distribution.',
@@ -57,8 +57,8 @@ const LOCATIONS = [
     city: 'Dubai',
     country: 'UAE',
     flag: '🇦🇪',
-    type: 'bo',
-    typeLabel: 'Middle East & Africa B.O.',
+    type: 'do',
+    typeLabel: 'Middle East & Africa D.O.',
     coords: [55.27, 25.20],
     since: 2024,
     size: '1,200 m²',
@@ -103,19 +103,18 @@ const LOCATIONS = [
     city: 'Hyderabad',
     country: 'India',
     flag: '🇮🇳',
-    type: 'bo',
-    typeLabel: 'South Asia-Pacific B.O.',
+    type: 'do',
+    typeLabel: 'South Asia-Pacific D.O.',
     coords: [78.49, 17.39],
     since: 2024,
-    role: 'South Asia-Pacific branch office and distribution center.',
+    role: 'South Asia-Pacific distribution office.',
   },
 ]
 
 const TYPE_META = {
   hq:      { label: 'HQ & Factory',        color: '#7ab929', radius: 9 },
   factory: { label: 'Manufacturing',       color: '#7ab929', radius: 7 },
-  do:      { label: 'Distribution Office', color: '#0a0a0a', stroke: '#7ab929', radius: 7 },
-  bo:      { label: 'Branch Office',       color: '#0a0a0a', stroke: '#7ab929', radius: 5 },
+  do:      { label: 'Distribution Office', color: '#ffffff', stroke: '#7ab929', radius: 7 },
 }
 
 const WIDTH = 900
@@ -260,8 +259,8 @@ export default function GlobalMap() {
             <path
               key={i}
               d={pathGen(f)}
-              fill="#1c1c1c"
-              stroke="#2c2c2c"
+              fill="#ececec"
+              stroke="#d8d8d8"
               strokeWidth={0.5}
             />
           ))}
@@ -343,8 +342,8 @@ export default function GlobalMap() {
             <span
               className="gm-legend-dot"
               style={{
-                background: m.color === '#0a0a0a' ? '#ffffff' : m.color,
-                border: m.stroke ? `2px solid ${m.stroke}` : 'none',
+                background: m.color,
+                border: m.stroke ? `2px solid ${m.stroke}` : `2px solid ${m.color}`,
               }}
             />
             <span>{m.label}</span>
