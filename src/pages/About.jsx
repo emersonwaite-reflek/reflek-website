@@ -153,38 +153,67 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Manufacturing ── */}
+      {/* ── Manufacturing: three strategically positioned facilities ── */}
       <section className="ab-section ab-section--white">
         <div className="ab-container">
-          <div className="ab-manufacturing">
-            <div className="ab-manufacturing-image">
-              <img
-                src="/images/slider-6.jpg"
-                alt="Reflek production line in Chandler, Arizona"
-              />
-            </div>
-            <div className="ab-manufacturing-text">
-              <span className="ab-tag">Manufacturing</span>
-              <h2 className="ab-heading">Made in Chandler, Arizona</h2>
-              <p className="ab-body">
-                Our 60,000 sq ft production campus in Chandler, AZ is where every Reflek,
-                FlexiShield, and Luxo-branded product begins its life. The facility houses
-                multi-lane slit-and-rewind lines, DC magnetron sputtering chambers, adhesive
-                lamination equipment, and a dedicated quality-control lab.
-              </p>
-              <p className="ab-body">
-                We produce over 10 million square feet of finished film annually and
-                stock more than 500 SKUs ready for same-week shipment. A second polyurethane
-                extrusion line is currently being commissioned, expanding our paint protection
-                film capacity to meet growing global demand.
-              </p>
-              <ul className="ab-mfg-list">
-                <li>DC vacuum sputtering &amp; precision coating</li>
-                <li>Adhesive lamination &amp; extrusion</li>
-                <li>In-house solar performance &amp; clarity testing</li>
-                <li>ISO-compliant quality management</li>
-              </ul>
-            </div>
+          <div className="ab-section-header ab-mfg-header">
+            <span className="ab-tag">Global Manufacturing Capacity</span>
+            <h2 className="ab-heading">
+              Three Strategically Positioned Facilities
+            </h2>
+            <p className="ab-body ab-mfg-intro">
+              A high-end US production center for premium TPU paint protection and
+              advanced window films, and two specialized facilities in China for
+              commercial-grade PPF and color PPF — together covering every segment
+              from entry-level commercial installations to flagship premium projects.
+            </p>
+          </div>
+
+          <div className="ab-facilities">
+            {[
+              {
+                city: 'Chandler, Arizona',
+                country: 'USA',
+                since: '2013',
+                size: '60,000 sq ft (5,600 m²)',
+                img: '/images/facility-chandler.png',
+                alt: 'Reflek coating and lamination facility in Chandler, Arizona',
+                desc: 'State-of-the-art coating and lamination facility at 280 N Roosevelt Ave. Home of premium TPU paint protection and advanced window films engineered for maximum clarity, durability, and long-term performance.',
+              },
+              {
+                city: 'Ganzhou',
+                country: 'China',
+                since: '2025',
+                size: '100,000 sq ft (9,300 m²)',
+                img: '/images/facility-ganzhou.png',
+                alt: 'Reflek manufacturing facility in Ganzhou, China',
+                desc: "Specialized manufacturing for commercial-grade PPF and high-quality films. Combines Reflek's US technology with China's production scale — scalable, cost-efficient supply for volume markets.",
+              },
+              {
+                city: 'Suzhou',
+                country: 'China',
+                since: '2026',
+                size: '120,000 sq ft (11,150 m²)',
+                img: '/images/facility-suzhou.png',
+                alt: 'Reflek Color PPF manufacturing facility in Suzhou, China',
+                desc: 'Fully dedicated to Color PPF. With 4 coating lines and 2 extrusion lines, this is the largest Color PPF manufacturing facility in the world — inaugurated in early 2026.',
+              },
+            ].map((f) => (
+              <article key={f.city} className="ab-facility">
+                <div className="ab-facility-image">
+                  <img src={f.img} alt={f.alt} />
+                </div>
+                <div className="ab-facility-body">
+                  <div className="ab-facility-meta">
+                    <span className="ab-facility-country">{f.country}</span>
+                    <span className="ab-facility-since">Since {f.since}</span>
+                  </div>
+                  <h3 className="ab-facility-city">{f.city}</h3>
+                  <div className="ab-facility-size">{f.size}</div>
+                  <p className="ab-facility-desc">{f.desc}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>

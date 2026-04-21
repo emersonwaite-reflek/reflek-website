@@ -390,56 +390,111 @@
   flex-direction: column;
 }
 
-/* ── Manufacturing ── */
+/* ── Manufacturing: three-facility grid ── */
 
-.ab-manufacturing {
+.ab-mfg-header {
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ab-mfg-intro {
+  color: #555;
+}
+
+.ab-facilities {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 72px;
-  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
 }
 
-.ab-manufacturing-text {
+.ab-facility {
   display: flex;
   flex-direction: column;
-}
-
-.ab-manufacturing-image img {
-  width: 100%;
-  display: block;
-  border-radius: 4px;
+  background: #ffffff;
   border: 1px solid #e8e8e8;
-  object-fit: cover;
-  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.ab-mfg-list {
-  list-style: none;
-  padding: 0;
-  margin: 24px 0 0;
+.ab-facility:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  border-color: rgba(122, 185, 41, 0.35);
+}
+
+.ab-facility-image {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.ab-facility-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.ab-facility:hover .ab-facility-image img {
+  transform: scale(1.03);
+}
+
+.ab-facility-body {
+  padding: 24px 26px 28px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  flex: 1;
 }
 
-.ab-mfg-list li {
+.ab-facility-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-family: SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ab-facility-country {
+  color: #7ab929;
+}
+
+.ab-facility-since {
+  color: #999;
+}
+
+.ab-facility-city {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  line-height: 1.2;
+  margin: 0 0 6px;
+}
+
+.ab-facility-size {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ededed;
+}
+
+.ab-facility-desc {
   font-family: Inter, system-ui, sans-serif;
   font-size: 0.92rem;
-  color: #666666;
-  padding-left: 18px;
-  position: relative;
-}
-
-.ab-mfg-list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #7ab929;
+  line-height: 1.65;
+  color: #666;
+  margin: 0;
 }
 
 /* ── Associations ── */
@@ -540,9 +595,25 @@
     padding: 0 32px;
   }
 
-  .ab-mission,
-  .ab-manufacturing {
+  .ab-mission {
     gap: 48px;
+  }
+
+  .ab-facilities {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .ab-facility {
+    display: grid;
+    grid-template-columns: minmax(0, 220px) 1fr;
+  }
+
+  .ab-facility-image {
+    aspect-ratio: auto;
+    height: 100%;
   }
 }
 
@@ -555,18 +626,23 @@
     padding: 0 24px;
   }
 
-  .ab-mission,
-  .ab-manufacturing {
+  .ab-mission {
     grid-template-columns: 1fr;
     gap: 36px;
   }
 
-  .ab-manufacturing {
-    direction: initial;
+  .ab-facility {
+    display: flex;
+    flex-direction: column;
   }
 
-  .ab-manufacturing-image {
-    order: -1;
+  .ab-facility-image {
+    aspect-ratio: 16 / 10;
+    height: auto;
+  }
+
+  .ab-facility-body {
+    padding: 20px 20px 22px;
   }
 
   .ab-stats {
