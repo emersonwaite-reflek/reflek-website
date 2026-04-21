@@ -201,18 +201,28 @@
 
 @media (max-width: 700px) {
   .gm-tooltip {
-    width: 220px;
-    padding: 12px 14px;
+    width: 240px;
+    padding: 14px 16px;
   }
 
-  .gm-tt-city { font-size: 1rem; }
-  .gm-tt-role { font-size: 0.8rem; }
+  .gm-tt-header { gap: 10px; margin-bottom: 10px; }
+  .gm-tt-flag   { font-size: 24px; }
+  .gm-tt-city   { font-size: 1rem; }
+  .gm-tt-type   { font-size: 9px; padding: 3px 8px; margin-bottom: 10px; }
+  .gm-tt-meta   { font-size: 0.75rem; gap: 12px; margin-bottom: 8px; }
+  .gm-tt-role   { font-size: 0.82rem; margin-bottom: 10px; }
+  .gm-tt-cta    { font-size: 0.78rem; padding: 5px 0; }
 
   .gm-legend {
     left: 10px;
     bottom: 10px;
     font-size: 10px;
-    gap: 6px 12px;
-    padding: 8px 10px;
+    gap: 5px 10px;
+    padding: 7px 10px;
+  }
+
+  .gm-legend-dot {
+    width: 8px;
+    height: 8px;
   }
 }

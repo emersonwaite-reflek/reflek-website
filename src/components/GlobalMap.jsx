@@ -121,11 +121,11 @@ const WIDTH = 900
 const HEIGHT = 440
 
 const TT_MARGIN = 12
-const TT_GAP = 22
+const TT_GAP = 16
+const CLOSE_DELAY_MS = 160
 
 export default function GlobalMap() {
   const [hoverId, setHoverId] = useState(null)
-  const [pinnedId, setPinnedId] = useState(null)
   const [countries, setCountries] = useState(null)
   const [frameSize, setFrameSize] = useState({ w: 0, h: 0 })
   const [tipSize, setTipSize] = useState({ w: 0, h: 0 })
@@ -133,6 +133,39 @@ export default function GlobalMap() {
   const frameRef = useRef(null)
   const svgRef = useRef(null)
   const tipRef = useRef(null)
+  const closeTimerRef = useRef(null)
+
+  const cancelClose = useCallback(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+  }, [])
+
+  const scheduleClose = useCallback(() => {
+    cancelClose()
+    closeTimerRef.current = setTimeout(() => setHoverId(null), CLOSE_DELAY_MS)
+  }, [cancelClose])
+
+  const openMarker = useCallback((id) => {
+    cancelClose()
+    setHoverId(id)
+  }, [cancelClose])
+
+  useEffect(() => () => cancelClose(), [cancelClose])
+
+  // Touch/tap outside the marker or tooltip closes the tooltip — matters on
+  // mobile where there's no mouseleave to close it after tap-to-open.
+  useEffect(() => {
+    if (!hoverId) return
+    const onDocDown = (e) => {
+      const inTooltip = tipRef.current?.contains(e.target)
+      const inMarker = e.target.closest?.('.gm-marker-group')
+      if (!inTooltip && !inMarker) setHoverId(null)
+    }
+    document.addEventListener('pointerdown', onDocDown)
+    return () => document.removeEventListener('pointerdown', onDocDown)
+  }, [hoverId])
 
   useEffect(() => {
     let cancelled = false
@@ -190,8 +223,7 @@ export default function GlobalMap() {
     return { x: screen.x - frameRect.left, y: screen.y - frameRect.top }
   }, [project])
 
-  const activeId = hoverId || pinnedId
-  const hoverLoc = LOCATIONS.find((l) => l.id === activeId)
+  const hoverLoc = LOCATIONS.find((l) => l.id === hoverId)
 
   // Depend on frameSize so the tooltip recomputes on resize while a marker is hovered.
   const tipPos = useMemo(() => {
@@ -274,9 +306,9 @@ export default function GlobalMap() {
                 key={loc.id}
                 transform={`translate(${x}, ${y})`}
                 className="gm-marker-group"
-                onMouseEnter={() => setHoverId(loc.id)}
-                onMouseLeave={() => setHoverId(null)}
-                onClick={() => setPinnedId((cur) => (cur === loc.id ? null : loc.id))}
+                onMouseEnter={() => openMarker(loc.id)}
+                onMouseLeave={scheduleClose}
+                onClick={() => openMarker(loc.id)}
               >
                 <circle
                   r={meta.radius + 10}
@@ -311,6 +343,8 @@ export default function GlobalMap() {
               '--gm-arrow-x': `${placement ? placement.arrowX : 140}px`,
             }}
             role="tooltip"
+            onMouseEnter={cancelClose}
+            onMouseLeave={scheduleClose}
           >
             <div className="gm-tt-header">
               <span className="gm-tt-flag" aria-hidden="true">{hoverLoc.flag}</span>

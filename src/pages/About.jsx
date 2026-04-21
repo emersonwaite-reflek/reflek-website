@@ -4,10 +4,10 @@ import GlobalMap from '../components/GlobalMap'
 import './About.css'
 
 const stats = [
-  { value: '30+', label: 'Years in Business' },
   { value: '3', label: 'Global Manufacturing Sites' },
-  { value: '95+', label: 'Countries Served' },
   { value: '6', label: 'Global Distribution Centers' },
+  { value: '30+', label: 'Years in Business' },
+  { value: '95+', label: 'Countries Served' },
 ]
 
 const values = [
@@ -48,10 +48,10 @@ export default function About() {
               four continents — serving partners in 95+ countries.
             </p>
             <div className="ab-hero-chips">
-              <span className="ab-hero-chip"><strong>95+</strong> Countries</span>
               <span className="ab-hero-chip"><strong>3</strong> Factories</span>
               <span className="ab-hero-chip"><strong>6</strong> Distribution Centers</span>
               <span className="ab-hero-chip"><strong>30+</strong> Years</span>
+              <span className="ab-hero-chip"><strong>95+</strong> Countries</span>
             </div>
           </div>
         </div>
