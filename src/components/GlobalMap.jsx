@@ -16,6 +16,7 @@ const LOCATIONS = [
     since: 2003,
     size: '5,600 m²',
     role: 'Head office, US manufacturing, and US & Canada distribution.',
+    image: '/images/facility-chandler.png',
   },
   {
     id: 'okc',
@@ -88,6 +89,7 @@ const LOCATIONS = [
     offset: [-20, 16],
     since: 2025,
     role: 'Clear paint protection film and window film manufacturing.',
+    image: '/images/facility-ganzhou.png',
   },
   {
     id: 'suzhou',
@@ -100,6 +102,7 @@ const LOCATIONS = [
     offset: [24, 6],
     since: 2026,
     role: 'Color paint protection film manufacturing.',
+    image: '/images/facility-suzhou.png',
   },
   {
     id: 'hyd',
@@ -115,17 +118,13 @@ const LOCATIONS = [
 ]
 
 const TYPE_META = {
-  hq:      { label: 'US Headquarters',      color: '#7ab929', radius: 14,                           shape: 'hq' },
-  factory: { label: 'Global Manufacturing', color: '#7ab929', radius: 11,                           shape: 'factory' },
-  do:      { label: 'Distribution Office',  color: '#ffffff', stroke: '#7ab929', radius: 7,          shape: 'circle' },
+  hq:      { label: 'US Headquarters',      color: '#7ab929', radius: 16.5, scale: 1.5, shape: 'factory' },
+  factory: { label: 'Global Manufacturing', color: '#7ab929', radius: 11,   scale: 1,   shape: 'factory' },
+  do:      { label: 'Distribution Office',  color: '#ffffff', stroke: '#7ab929', radius: 7, shape: 'circle' },
 }
 
 // Factory silhouette — sawtooth roof with chimney, centered at (0,0).
 const FACTORY_PATH = 'M -10 7 L -10 0 L -5 -4 L -5 0 L 0 -4 L 0 0 L 5 -4 L 5 -8 L 8 -8 L 8 7 Z'
-
-// Five-point star, centered at (0,0), outer radius ~7.
-const STAR_PATH =
-  'M 0 -7 L 1.7 -2.2 L 6.7 -2.2 L 2.7 0.9 L 4.1 5.7 L 0 2.8 L -4.1 5.7 L -2.7 0.9 L -6.7 -2.2 L -1.7 -2.2 Z'
 
 const WIDTH = 900
 const HEIGHT = 440
@@ -363,21 +362,10 @@ export default function GlobalMap() {
                 {meta.shape === 'factory' ? (
                   <path
                     d={FACTORY_PATH}
+                    transform={meta.scale !== 1 ? `scale(${meta.scale})` : undefined}
                     fill={meta.color}
                     className={`gm-marker ${isActive ? 'is-active' : ''}`}
                   />
-                ) : meta.shape === 'hq' ? (
-                  <g className={`gm-marker ${isActive ? 'is-active' : ''}`}>
-                    <circle
-                      r={meta.radius + 3}
-                      fill="none"
-                      stroke={meta.color}
-                      strokeWidth={1.5}
-                      opacity={0.55}
-                    />
-                    <circle r={meta.radius} fill={meta.color} />
-                    <path d={STAR_PATH} fill="#ffffff" />
-                  </g>
                 ) : (
                   <circle
                     r={meta.radius}
@@ -406,6 +394,11 @@ export default function GlobalMap() {
             onMouseEnter={cancelClose}
             onMouseLeave={scheduleClose}
           >
+            {hoverLoc.image && (
+              <div className="gm-tt-image">
+                <img src={hoverLoc.image} alt={`${hoverLoc.city} facility`} />
+              </div>
+            )}
             <div className="gm-tt-header">
               <span className="gm-tt-flag" aria-hidden="true">{hoverLoc.flag}</span>
               <div>
@@ -436,11 +429,6 @@ export default function GlobalMap() {
             {m.shape === 'factory' ? (
               <svg className="gm-legend-icon" viewBox="-11 -9 22 18" aria-hidden="true">
                 <path d={FACTORY_PATH} fill={m.color} />
-              </svg>
-            ) : m.shape === 'hq' ? (
-              <svg className="gm-legend-icon" viewBox="-9 -9 18 18" aria-hidden="true">
-                <circle r={8} fill={m.color} />
-                <path d={STAR_PATH} fill="#ffffff" />
               </svg>
             ) : (
               <span
