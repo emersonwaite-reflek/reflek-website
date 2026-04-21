@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { geoEqualEarth, geoPath } from 'd3-geo'
 import { feature } from 'topojson-client'
 import './GlobalMap.css'
@@ -121,9 +122,13 @@ const WIDTH = 900
 const HEIGHT = 440
 
 export default function GlobalMap() {
-  const [active, setActive] = useState(LOCATIONS[0].id)
+  const [hoverId, setHoverId] = useState(null)
+  const [pinnedId, setPinnedId] = useState(null)
   const [countries, setCountries] = useState(null)
-  const activeLoc = LOCATIONS.find((l) => l.id === active)
+  const [frameSize, setFrameSize] = useState({ w: 0, h: 0 })
+
+  const frameRef = useRef(null)
+  const svgRef = useRef(null)
 
   useEffect(() => {
     let cancelled = false
@@ -137,120 +142,169 @@ export default function GlobalMap() {
     return () => { cancelled = true }
   }, [])
 
+  // Track the frame's rendered size so we can reposition the tooltip on resize.
+  useLayoutEffect(() => {
+    if (!frameRef.current) return
+    const el = frameRef.current
+    const update = () => {
+      const r = el.getBoundingClientRect()
+      setFrameSize({ w: r.width, h: r.height })
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   const projection = useMemo(
     () => geoEqualEarth()
-      .scale(165)
+      .scale(180)
       .translate([WIDTH / 2, HEIGHT / 2])
       .center([10, 15]),
     []
   )
 
   const pathGen = useMemo(() => geoPath(projection), [projection])
+  const project = useCallback((lonlat) => projection(lonlat) || [0, 0], [projection])
 
-  const project = (lonlat) => projection(lonlat) || [0, 0]
+  /**
+   * Convert a marker's viewBox coordinates to pixel coordinates inside the frame.
+   * Works regardless of preserveAspectRatio (meet / slice) because we use
+   * the SVG's own getScreenCTM to ask the browser where the point actually lives.
+   */
+  const projectToFrame = useCallback((lonlat) => {
+    const svg = svgRef.current
+    const frame = frameRef.current
+    if (!svg || !frame) return null
+    const [vx, vy] = project(lonlat)
+    const pt = svg.createSVGPoint()
+    pt.x = vx; pt.y = vy
+    const ctm = svg.getScreenCTM()
+    if (!ctm) return null
+    const screen = pt.matrixTransform(ctm)
+    const frameRect = frame.getBoundingClientRect()
+    return { x: screen.x - frameRect.left, y: screen.y - frameRect.top }
+  }, [project])
+
+  const activeId = hoverId || pinnedId
+  const hoverLoc = LOCATIONS.find((l) => l.id === activeId)
+
+  // Depend on frameSize so the tooltip recomputes on resize while a marker is hovered.
+  const tipPos = useMemo(() => {
+    if (!hoverLoc) return null
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    frameSize
+    return projectToFrame(hoverLoc.coords)
+  }, [hoverLoc, projectToFrame, frameSize])
+
+  const flipBelow = tipPos && frameSize.h && (tipPos.y / frameSize.h) < 0.3
+  const edgeShift = !tipPos || !frameSize.w
+    ? 'center'
+    : tipPos.x / frameSize.w < 0.18
+      ? 'left'
+      : tipPos.x / frameSize.w > 0.82
+        ? 'right'
+        : 'center'
 
   return (
-    <div className="gm-wrap">
-      <div className="gm-map-col">
-        <div className="gm-map">
-          <svg
-            viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-            style={{ width: '100%', height: 'auto', display: 'block' }}
-            role="img"
-            aria-label="World map showing Reflek's global locations"
-          >
-            {countries?.features.map((f, i) => (
-              <path
-                key={i}
-                d={pathGen(f)}
-                fill="#1a1a1a"
-                stroke="#2a2a2a"
-                strokeWidth={0.5}
-              />
-            ))}
+    <div className="gm-frame" ref={frameRef}>
+      <div className="gm-map-inner">
+        <svg
+          ref={svgRef}
+          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+          preserveAspectRatio="xMidYMid meet"
+          className="gm-svg"
+          role="img"
+          aria-label="World map showing Reflek's global locations"
+        >
+          {countries?.features.map((f, i) => (
+            <path
+              key={i}
+              d={pathGen(f)}
+              fill="#1c1c1c"
+              stroke="#2c2c2c"
+              strokeWidth={0.5}
+            />
+          ))}
 
-            {LOCATIONS.map((loc) => {
-              const meta = TYPE_META[loc.type]
-              const [x, y] = project(loc.coords)
-              const isActive = loc.id === active
-              return (
-                <g
-                  key={loc.id}
-                  transform={`translate(${x}, ${y})`}
-                  className="gm-marker-group"
-                  onClick={() => setActive(loc.id)}
-                  onMouseEnter={() => setActive(loc.id)}
-                >
-                  <circle
-                    r={meta.radius + 6}
-                    fill="#7ab929"
-                    className="gm-marker-halo"
-                    opacity={isActive ? 0.25 : 0.12}
-                  />
-                  <circle
-                    r={meta.radius}
-                    fill={meta.color}
-                    stroke={meta.stroke || meta.color}
-                    strokeWidth={meta.stroke ? 2.5 : 0}
-                    className={`gm-marker ${isActive ? 'is-active' : ''}`}
-                  />
-                </g>
-              )
-            })}
-          </svg>
-
-          <div className="gm-legend">
-            {Object.entries(TYPE_META).map(([key, m]) => (
-              <div key={key} className="gm-legend-item">
-                <span
-                  className="gm-legend-dot"
-                  style={{
-                    background: m.color,
-                    border: m.stroke ? `2px solid ${m.stroke}` : 'none',
-                  }}
+          {LOCATIONS.map((loc) => {
+            const meta = TYPE_META[loc.type]
+            const [x, y] = project(loc.coords)
+            const isActive = loc.id === hoverId
+            return (
+              <g
+                key={loc.id}
+                transform={`translate(${x}, ${y})`}
+                className="gm-marker-group"
+                onMouseEnter={() => setHoverId(loc.id)}
+                onMouseLeave={() => setHoverId(null)}
+                onClick={() => setPinnedId((cur) => (cur === loc.id ? null : loc.id))}
+              >
+                <circle
+                  r={meta.radius + 10}
+                  fill="transparent"
                 />
-                <span>{m.label}</span>
+                <circle
+                  r={meta.radius + 6}
+                  fill="#7ab929"
+                  className="gm-marker-halo"
+                  opacity={isActive ? 0.3 : 0.15}
+                />
+                <circle
+                  r={meta.radius}
+                  fill={meta.color}
+                  stroke={meta.stroke || meta.color}
+                  strokeWidth={meta.stroke ? 2.5 : 0}
+                  className={`gm-marker ${isActive ? 'is-active' : ''}`}
+                />
+              </g>
+            )
+          })}
+        </svg>
+
+        {hoverLoc && tipPos && (
+          <div
+            className={`gm-tooltip ${flipBelow ? 'is-below' : 'is-above'} edge-${edgeShift}`}
+            style={{ left: `${tipPos.x}px`, top: `${tipPos.y}px` }}
+            role="tooltip"
+          >
+            <div className="gm-tt-header">
+              <span className="gm-tt-flag" aria-hidden="true">{hoverLoc.flag}</span>
+              <div>
+                <div className="gm-tt-city">{hoverLoc.city}</div>
+                <div className="gm-tt-country">{hoverLoc.country}</div>
               </div>
-            ))}
+            </div>
+            <div className="gm-tt-type">{hoverLoc.typeLabel}</div>
+            <div className="gm-tt-meta">
+              {hoverLoc.size && <span>{hoverLoc.size}</span>}
+              {hoverLoc.since && <span>Since {hoverLoc.since}</span>}
+            </div>
+            <p className="gm-tt-role">{hoverLoc.role}</p>
+            <Link
+              to={`/contact-us?office=${hoverLoc.id}`}
+              className="gm-tt-cta"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Contact this office →
+            </Link>
           </div>
-        </div>
+        )}
       </div>
 
-      <div className="gm-info-col">
-        <div className="gm-info-card">
-          <div className="gm-info-header">
-            <span className="gm-info-flag" aria-hidden="true">{activeLoc.flag}</span>
-            <div>
-              <div className="gm-info-city">{activeLoc.city}</div>
-              <div className="gm-info-country">{activeLoc.country}</div>
-            </div>
+      <div className="gm-legend">
+        {Object.entries(TYPE_META).map(([key, m]) => (
+          <div key={key} className="gm-legend-item">
+            <span
+              className="gm-legend-dot"
+              style={{
+                background: m.color === '#0a0a0a' ? '#ffffff' : m.color,
+                border: m.stroke ? `2px solid ${m.stroke}` : 'none',
+              }}
+            />
+            <span>{m.label}</span>
           </div>
-          <div className="gm-info-type">{activeLoc.typeLabel}</div>
-          <div className="gm-info-meta">
-            {activeLoc.size && <span>{activeLoc.size}</span>}
-            {activeLoc.since && <span>Since {activeLoc.since}</span>}
-          </div>
-          <p className="gm-info-role">{activeLoc.role}</p>
-        </div>
-
-        <ul className="gm-list" role="list">
-          {LOCATIONS.map((loc) => (
-            <li key={loc.id}>
-              <button
-                type="button"
-                className={`gm-list-item ${loc.id === active ? 'is-active' : ''}`}
-                onClick={() => setActive(loc.id)}
-                onMouseEnter={() => setActive(loc.id)}
-              >
-                <span className="gm-list-flag" aria-hidden="true">{loc.flag}</span>
-                <span className="gm-list-text">
-                  <span className="gm-list-city">{loc.city}</span>
-                  <span className="gm-list-type">{loc.typeLabel}</span>
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
+        ))}
       </div>
     </div>
   )

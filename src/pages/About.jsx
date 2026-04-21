@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { FiZap, FiCheckCircle, FiUsers } from 'react-icons/fi'
-import PageHero from '../components/PageHero'
 import GlobalMap from '../components/GlobalMap'
 import './About.css'
 
@@ -35,11 +34,35 @@ const values = [
 export default function About() {
   return (
     <>
-      <PageHero
-        title="About Us"
-        subtitle="Precision-engineered films and coatings since the 1990s"
-        image="/images/slider-4.jpg"
-      />
+      {/* ── Hero: text above, interactive map below (no overlap) ── */}
+      <section className="ab-hero">
+        <div className="ab-hero-text">
+          <div className="ab-hero-text-inner">
+            <span className="ab-hero-eyebrow">About Reflek</span>
+            <h1 className="ab-hero-title">
+              Global Reach.{' '}
+              <span className="ab-hero-title-accent">Factory-Direct Precision.</span>
+            </h1>
+            <p className="ab-hero-sub">
+              A centrally owned network of manufacturing and distribution hubs across
+              four continents — serving partners in 95+ countries.
+            </p>
+            <div className="ab-hero-chips">
+              <span className="ab-hero-chip"><strong>95+</strong> Countries</span>
+              <span className="ab-hero-chip"><strong>3</strong> Factories</span>
+              <span className="ab-hero-chip"><strong>6</strong> Distribution Centers</span>
+              <span className="ab-hero-chip"><strong>30+</strong> Years</span>
+            </div>
+          </div>
+        </div>
+        <div className="ab-hero-map-wrap">
+          <GlobalMap />
+        </div>
+        <div className="ab-hero-hint" aria-hidden="true">
+          <span className="ab-hero-hint-dot" />
+          Hover or tap any location — click to contact that office
+        </div>
+      </section>
 
       {/* ── Mission ── */}
       <section className="ab-section ab-section--white">
@@ -86,21 +109,6 @@ export default function About() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── Global Footprint ── */}
-      <section className="ab-section ab-section--white">
-        <div className="ab-container">
-          <div className="ab-section-header">
-            <span className="ab-tag">Global Footprint</span>
-            <h2 className="ab-heading">Full-Range Manufacturing Capabilities</h2>
-            <p className="ab-body" style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
-              A strategic network of centrally owned, managed, and operated manufacturing
-              and distribution hubs across four continents — serving partners in 95+ countries.
-            </p>
-          </div>
-          <GlobalMap />
         </div>
       </section>
 
