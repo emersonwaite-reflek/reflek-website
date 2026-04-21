@@ -50,6 +50,7 @@
 .gm-tooltip {
   position: absolute;
   width: 280px;
+  max-width: calc(100% - 24px);
   padding: 16px 18px;
   background: #ffffff;
   border-radius: 10px;
@@ -61,25 +62,12 @@
 }
 
 @keyframes gm-tt-in {
-  from { opacity: 0; transform: translate(var(--gm-tx, -50%), var(--gm-ty, calc(-100% - 22px))) scale(0.96); }
-  to   { opacity: 1; transform: translate(var(--gm-tx, -50%), var(--gm-ty, calc(-100% - 22px))) scale(1); }
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-.gm-tooltip.is-above {
-  --gm-ty: calc(-100% - 22px);
-  transform: translate(var(--gm-tx, -50%), var(--gm-ty));
-}
-
-.gm-tooltip.is-below {
-  --gm-ty: 22px;
-  transform: translate(var(--gm-tx, -50%), var(--gm-ty));
-}
-
-.gm-tooltip.edge-center { --gm-tx: -50%; }
-.gm-tooltip.edge-left   { --gm-tx: -10%; }
-.gm-tooltip.edge-right  { --gm-tx: -90%; }
-
-/* Arrow pointing to the dot */
+/* Arrow pointing to the dot — X is driven by --gm-arrow-x so it stays aligned
+   even when the tooltip is clamped against the edge of the map frame. */
 .gm-tooltip::after {
   content: '';
   position: absolute;
@@ -88,6 +76,8 @@
   background: #ffffff;
   transform: rotate(45deg);
   box-shadow: 0 0 0 1px rgba(122, 185, 41, 0.25);
+  left: var(--gm-arrow-x, 50%);
+  margin-left: -7px;
 }
 
 .gm-tooltip.is-above::after {
@@ -99,10 +89,6 @@
   top: -7px;
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
-
-.gm-tooltip.edge-center::after { left: 50%; margin-left: -7px; }
-.gm-tooltip.edge-left::after   { left: 10%; }
-.gm-tooltip.edge-right::after  { right: 10%; }
 
 .gm-tt-header {
   display: flex;

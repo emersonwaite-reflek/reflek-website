@@ -121,14 +121,19 @@ const TYPE_META = {
 const WIDTH = 900
 const HEIGHT = 440
 
+const TT_MARGIN = 12
+const TT_GAP = 22
+
 export default function GlobalMap() {
   const [hoverId, setHoverId] = useState(null)
   const [pinnedId, setPinnedId] = useState(null)
   const [countries, setCountries] = useState(null)
   const [frameSize, setFrameSize] = useState({ w: 0, h: 0 })
+  const [tipSize, setTipSize] = useState({ w: 0, h: 0 })
 
   const frameRef = useRef(null)
   const svgRef = useRef(null)
+  const tipRef = useRef(null)
 
   useEffect(() => {
     let cancelled = false
@@ -197,14 +202,48 @@ export default function GlobalMap() {
     return projectToFrame(hoverLoc.coords)
   }, [hoverLoc, projectToFrame, frameSize])
 
-  const flipBelow = tipPos && frameSize.h && (tipPos.y / frameSize.h) < 0.3
-  const edgeShift = !tipPos || !frameSize.w
-    ? 'center'
-    : tipPos.x / frameSize.w < 0.18
-      ? 'left'
-      : tipPos.x / frameSize.w > 0.82
-        ? 'right'
-        : 'center'
+  // Measure the tooltip so we can clamp its position inside the frame.
+  useLayoutEffect(() => {
+    if (!tipRef.current) return
+    const el = tipRef.current
+    const update = () => {
+      const r = el.getBoundingClientRect()
+      setTipSize((prev) =>
+        prev.w === r.width && prev.h === r.height ? prev : { w: r.width, h: r.height }
+      )
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [hoverLoc])
+
+  // Compute clamped tooltip placement + arrow offset relative to its own box.
+  const placement = useMemo(() => {
+    if (!tipPos || !frameSize.w || !frameSize.h || !tipSize.w || !tipSize.h) return null
+
+    const spaceAbove = tipPos.y
+    const spaceBelow = frameSize.h - tipPos.y
+    const needed = tipSize.h + TT_GAP + TT_MARGIN
+    const below = spaceAbove < needed && spaceBelow >= needed
+    // If neither side fits cleanly, fall back to the larger one.
+    const forcedBelow = spaceAbove < needed && spaceBelow < needed
+      ? spaceBelow > spaceAbove
+      : below
+
+    const top = forcedBelow
+      ? Math.min(tipPos.y + TT_GAP, frameSize.h - tipSize.h - TT_MARGIN)
+      : Math.max(TT_MARGIN, tipPos.y - TT_GAP - tipSize.h)
+
+    const rawLeft = tipPos.x - tipSize.w / 2
+    const maxLeft = Math.max(TT_MARGIN, frameSize.w - tipSize.w - TT_MARGIN)
+    const left = Math.max(TT_MARGIN, Math.min(rawLeft, maxLeft))
+
+    // Arrow X relative to the tooltip's own left edge — clamped so it stays inside.
+    const arrowX = Math.max(16, Math.min(tipPos.x - left, tipSize.w - 16))
+
+    return { left, top, below: forcedBelow, arrowX }
+  }, [tipPos, frameSize, tipSize])
 
   return (
     <div className="gm-frame" ref={frameRef}>
@@ -264,8 +303,14 @@ export default function GlobalMap() {
 
         {hoverLoc && tipPos && (
           <div
-            className={`gm-tooltip ${flipBelow ? 'is-below' : 'is-above'} edge-${edgeShift}`}
-            style={{ left: `${tipPos.x}px`, top: `${tipPos.y}px` }}
+            ref={tipRef}
+            className={`gm-tooltip ${placement?.below ? 'is-below' : 'is-above'}`}
+            style={{
+              left: `${placement ? placement.left : tipPos.x - 140}px`,
+              top: `${placement ? placement.top : tipPos.y - TT_GAP}px`,
+              visibility: placement ? 'visible' : 'hidden',
+              '--gm-arrow-x': `${placement ? placement.arrowX : 140}px`,
+            }}
             role="tooltip"
           >
             <div className="gm-tt-header">
