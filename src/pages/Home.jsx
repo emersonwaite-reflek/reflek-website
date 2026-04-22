@@ -72,11 +72,21 @@ export default function Home() {
   return (
     <div className="home-page">
 
-      {/* ── HERO ─────────────────────────────────────── */}
+      {/* ── HERO — FULL-WIDTH BANNER ─────────────────── */}
       <section className="home-hero">
-        <div className="home-hero__left">
-          <span className="home-mono-tag">Advanced Surface Technology</span>
+        <div className="home-hero__slides">
+          {slides.map((src, i) => (
+            <div
+              key={i}
+              className={`home-hero__slide${i === currentSlide ? ' home-hero__slide--active' : ''}`}
+              style={{ backgroundImage: `url(${src})` }}
+            />
+          ))}
+          <div className="home-hero__overlay" />
+        </div>
 
+        <div className="home-hero__content">
+          <span className="home-mono-tag home-mono-tag--light">Advanced Surface Technology</span>
           <h1 className="home-hero__headline">
             Advanced Films &amp; Coatings for a Better{' '}
             <span className="home-accent">
@@ -84,47 +94,30 @@ export default function Home() {
               <span className="home-accent__underline" />
             </span>
           </h1>
-
           <p className="home-hero__sub">
             High-performance protective films and precision coatings engineered
             for the construction and transportation industries — made in the USA,
-            distributed worldwide.
+            distributed to 95+ countries worldwide.
           </p>
-
           <div className="home-hero__actions">
             <Link to="/about-us" className="home-btn-primary">
               Discover More
             </Link>
-            <Link to="/products" className="home-btn-text">
+            <Link to="/paint-protection" className="home-btn-text home-btn-text--light">
               View Products <FiArrowRight />
             </Link>
           </div>
         </div>
 
-        <div className="home-hero__right">
-          <div className="home-slider">
-            <div className="home-slider__frame">
-              {slides.map((src, i) => (
-                <div
-                  key={i}
-                  className={`home-slider__slide${i === currentSlide ? ' home-slider__slide--active' : ''}`}
-                >
-                  <img src={src} alt={`Reflek slide ${i + 1}`} />
-                </div>
-              ))}
-            </div>
-
-            <div className="home-slider__dots">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  className={`home-slider__dot${i === currentSlide ? ' home-slider__dot--active' : ''}`}
-                  onClick={() => setCurrentSlide(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
-          </div>
+        <div className="home-hero__dots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`home-hero__dot${i === currentSlide ? ' home-hero__dot--active' : ''}`}
+              onClick={() => setCurrentSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
       </section>
 
@@ -177,7 +170,7 @@ export default function Home() {
             <div className="home-about__left">
               <span className="home-mono-tag">About Reflek</span>
               <h2 className="home-section-title home-section-title--sm">
-                Built in the USA.<br />Distributed Worldwide.
+                Built in the USA.<br />Distributed to 95+ Countries.
               </h2>
               <p className="home-about__text">
                 Reflek Technologies Corporation is a major manufacturer and distributor
@@ -198,7 +191,7 @@ export default function Home() {
                   <span className="home-about__inline-label">Industry Leader</span>
                 </div>
                 <div className="home-about__inline-stat">
-                  <span className="home-about__inline-num">60+</span>
+                  <span className="home-about__inline-num">95+</span>
                   <span className="home-about__inline-label">Countries Served</span>
                 </div>
                 <div className="home-about__inline-stat">
@@ -234,9 +227,11 @@ export default function Home() {
           <div className="home-brands__grid">
             <div className="home-brand-card">
               <div className="home-brand-card__header">
-                <h3 className="home-brand-card__name">
-                  <em>FlexiShield</em>
-                </h3>
+                <img
+                  src="/images/flexishield-logo.png"
+                  alt="FlexiShield"
+                  className="home-brand-card__logo"
+                />
                 <span className="home-brand-card__tag">Paint Protection Film</span>
               </div>
               <p className="home-brand-card__desc">
@@ -252,9 +247,11 @@ export default function Home() {
 
             <div className="home-brand-card">
               <div className="home-brand-card__header">
-                <h3 className="home-brand-card__name">
-                  <em>Luxo Films</em>
-                </h3>
+                <img
+                  src="/images/luxo-logo-trans.png"
+                  alt="Luxo Window Films"
+                  className="home-brand-card__logo home-brand-card__logo--dark"
+                />
                 <span className="home-brand-card__tag">Solar Window Films</span>
               </div>
               <p className="home-brand-card__desc">
@@ -271,19 +268,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── ASSOCIATIONS ─────────────────────────────── */}
-      <section className="home-assoc">
+      {/* ── BRAND PARTNERS ───────────────────────────── */}
+      <section className="home-assoc home-assoc--partners">
         <div className="home-container">
-          <span className="home-mono-tag">Industry Memberships &amp; Partners</span>
+          <span className="home-mono-tag">Brand Partners</span>
+          <div className="home-assoc__logos home-assoc__logos--partners">
+            <div className="home-assoc__partners-left">
+              <div className="home-assoc__logo">
+                <img src="/images/flexishield-logo.png" alt="FlexiShield" />
+              </div>
+              <div className="home-assoc__logo home-assoc__logo--dark-on-light">
+                <img src="/images/luxo-logo-trans.png" alt="Luxo Window Films" />
+              </div>
+            </div>
+            <div className="home-assoc__partners-right">
+              <div className="home-assoc__logo home-assoc__logo--shell">
+                <img src="/images/shell-car-beauty-bk.png" alt="Shell Car Beauty" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CERTIFICATIONS ───────────────────────────── */}
+      <section className="home-assoc home-assoc--certs">
+        <div className="home-container">
+          <span className="home-mono-tag">Certifications</span>
           <div className="home-assoc__logos">
             {[
-              { src: '/images/3.jpg', alt: 'SIMA — Specialty Films Association' },
-              { src: '/images/5.jpg', alt: 'ASID — American Society of Interior Designers' },
-              { src: '/images/6.jpg', alt: 'NGA — National Glass Association' },
-              { src: '/images/1.jpg', alt: 'Luxo Window Films' },
-              { src: '/images/2-1.jpg', alt: 'FlexiShield' },
+              { src: '/images/sima-logo.png', alt: 'SIMA — Specialty Films Association' },
+              { src: '/images/asid-logo.png', alt: 'ASID — American Society of Interior Designers' },
+              { src: '/images/nga-logo.png', alt: 'NGA — National Glass Association' },
             ].map((logo, i) => (
-              <div key={i} className="home-assoc__logo">
+              <div key={i} className="home-assoc__logo home-assoc__logo--dark-on-light">
                 <img src={logo.src} alt={logo.alt} />
               </div>
             ))}

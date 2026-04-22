@@ -21,7 +21,7 @@ export default function Footer() {
               Manufactured in Chandler, Arizona.
             </p>
             <p className="footer-sub">
-              Serving distributors, installers, and OEMs in 60+ countries worldwide.
+              Serving distributors, installers, and OEMs in 95+ countries worldwide.
             </p>
           </div>
 
@@ -43,7 +43,7 @@ export default function Footer() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about-us">About Us</Link></li>
               <li><Link to="/news">News &amp; Updates</Link></li>
-              <li><Link to="/distributors">Distributors</Link></li>
+              <li><Link to="/branches">Branches</Link></li>
               <li><Link to="/contact-us">Contact Us</Link></li>
             </ul>
           </div>

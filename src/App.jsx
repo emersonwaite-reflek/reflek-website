@@ -9,7 +9,7 @@ import SolarFilms from './pages/SolarFilms'
 import CustomCoatings from './pages/CustomCoatings'
 import Electronics from './pages/Electronics'
 import News from './pages/News'
-import Distributors from './pages/Distributors'
+import Branches from './pages/Branches'
 import Contact from './pages/Contact'
 import MockupA from './pages/MockupA'
 import MockupB from './pages/MockupB'
@@ -42,7 +42,8 @@ function App() {
                 <Route path="/custom-coatings" element={<CustomCoatings />} />
                 <Route path="/electronics" element={<Electronics />} />
                 <Route path="/news" element={<News />} />
-                <Route path="/distributors" element={<Distributors />} />
+                <Route path="/branches" element={<Branches />} />
+                <Route path="/distributors" element={<Branches />} />
                 <Route path="/contact-us" element={<Contact />} />
               </Routes>
             </main>

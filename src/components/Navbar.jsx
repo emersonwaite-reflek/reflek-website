@@ -91,8 +91,8 @@ export default function Navbar() {
           <Link to="/news" className={`nav-link${isActive('/news') ? ' active' : ''}`}>
             News
           </Link>
-          <Link to="/distributors" className={`nav-link${isActive('/distributors') ? ' active' : ''}`}>
-            Distributors
+          <Link to="/branches" className={`nav-link${isActive('/branches') ? ' active' : ''}`}>
+            Branches
           </Link>
         </nav>
 
@@ -145,7 +145,7 @@ export default function Navbar() {
           </div>
 
           <Link to="/news" className={`mobile-link${isActive('/news') ? ' active' : ''}`}>News</Link>
-          <Link to="/distributors" className={`mobile-link${isActive('/distributors') ? ' active' : ''}`}>Distributors</Link>
+          <Link to="/branches" className={`mobile-link${isActive('/branches') ? ' active' : ''}`}>Branches</Link>
 
           <Link to="/contact-us" className="nav-cta mobile-cta">Contact</Link>
         </nav>
