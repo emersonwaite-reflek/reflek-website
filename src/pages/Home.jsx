@@ -274,7 +274,7 @@ export default function Home() {
           <span className="home-mono-tag">Brand Partners</span>
           <div className="home-assoc__logos home-assoc__logos--partners">
             <div className="home-assoc__partners-left">
-              <div className="home-assoc__logo">
+              <div className="home-assoc__logo home-assoc__logo--flexishield">
                 <img src="/images/flexishield-logo.png" alt="FlexiShield" />
               </div>
               <div className="home-assoc__logo home-assoc__logo--dark-on-light">
@@ -293,14 +293,19 @@ export default function Home() {
       {/* ── CERTIFICATIONS ───────────────────────────── */}
       <section className="home-assoc home-assoc--certs">
         <div className="home-container">
-          <span className="home-mono-tag">Certifications</span>
-          <div className="home-assoc__logos">
+          <span className="home-mono-tag">Certifications &amp; Associations</span>
+          <div className="home-certs-grid">
             {[
-              { src: '/images/sima-logo.png', alt: 'SIMA — Specialty Films Association' },
-              { src: '/images/asid-logo.png', alt: 'ASID — American Society of Interior Designers' },
-              { src: '/images/nga-logo.png', alt: 'NGA — National Glass Association' },
+              { src: '/images/cert-iso-9001.png', alt: 'ISO 9001' },
+              { src: '/images/cert-sema.png',     alt: 'SEMA' },
+              { src: '/images/cert-sgs.png',      alt: 'SGS' },
+              { src: '/images/cert-intertek.png', alt: 'Intertek' },
+              { src: '/images/cert-iwfa.png',     alt: 'IWFA' },
+              { src: '/images/cert-leed.png',     alt: 'LEED' },
+              { src: '/images/cert-nga.png',      alt: 'NGA' },
+              { src: '/images/cert-asid.png',     alt: 'ASID' },
             ].map((logo, i) => (
-              <div key={i} className="home-assoc__logo home-assoc__logo--dark-on-light">
+              <div key={i} className="home-cert-tile">
                 <img src={logo.src} alt={logo.alt} />
               </div>
             ))}

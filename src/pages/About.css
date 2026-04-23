@@ -486,29 +486,47 @@
 }
 
 .ab-cert-card {
-  background: #ffffff;
-  border: 1px solid #e8e8e8;
-  border-left: 3px solid #7ab929;
-  border-radius: 4px;
-  padding: 22px 20px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  background: #0f0f0f;
+  border: 1px solid #1f1f1f;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-height: 130px;
 }
 
 .ab-cert-card:hover {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
   transform: translateY(-2px);
+  border-color: #7ab929;
 }
 
-.ab-cert-name {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: #0f0f0f;
+.ab-cert-logo-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f0f0f;
+  padding: 22px 18px;
+  min-height: 110px;
+}
+
+.ab-cert-logo {
+  max-height: 72px;
+  max-width: 80%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.ab-cert-meta {
+  background: #ffffff;
+  border-top: 3px solid #7ab929;
+  padding: 12px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .ab-cert-since {
@@ -522,10 +540,9 @@
 
 .ab-cert-desc {
   font-family: 'Inter', sans-serif;
-  font-size: 0.82rem;
-  color: #666;
-  line-height: 1.5;
-  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #555;
+  line-height: 1.45;
 }
 
 .ab-certs-footer {

@@ -124,19 +124,25 @@ export default function About() {
           </div>
           <div className="ab-certs-grid">
             {[
-              { name: 'ISO 9001', since: '2020', desc: 'Quality management — manufacturer & distributor' },
-              { name: 'SEMA', since: '2011', desc: 'Specialty Equipment Market Association' },
-              { name: 'IWFA & EWFA', since: '2025', desc: 'International & European Window Film Associations' },
-              { name: 'LEED', since: '2017', desc: 'US Green Building Council' },
-              { name: 'NGA', since: '2016', desc: 'National Glass Association' },
-              { name: 'ASID', since: '2017', desc: 'American Society of Interior Designers' },
-              { name: 'SGS', since: '—',     desc: 'Third-party laboratory testing reports' },
-              { name: 'Intertek', since: '—',     desc: 'Third-party laboratory testing reports' },
+              { name: 'ISO 9001',    since: '2020', desc: 'Quality management — manufacturer & distributor', logo: '/images/cert-iso-9001.png' },
+              { name: 'SEMA',        since: '2011', desc: 'Specialty Equipment Market Association',          logo: '/images/cert-sema.png' },
+              { name: 'SGS',         since: '—',    desc: 'Third-party laboratory testing reports',          logo: '/images/cert-sgs.png' },
+              { name: 'Intertek',    since: '—',    desc: 'Third-party laboratory testing reports',          logo: '/images/cert-intertek.png' },
+              { name: 'IWFA & EWFA', since: '2025', desc: 'International & European Window Film Associations', logo: '/images/cert-iwfa.png' },
+              { name: 'LEED',        since: '2017', desc: 'US Green Building Council',                        logo: '/images/cert-leed.png' },
+              { name: 'NGA',         since: '2016', desc: 'National Glass Association',                       logo: '/images/cert-nga.png' },
+              { name: 'ASID',        since: '2017', desc: 'American Society of Interior Designers',           logo: '/images/cert-asid.png' },
             ].map((c) => (
               <div key={c.name} className="ab-cert-card">
-                <div className="ab-cert-name">{c.name}</div>
-                <div className="ab-cert-since">{c.since !== '—' ? `Since ${c.since}` : 'Testing partner'}</div>
-                <div className="ab-cert-desc">{c.desc}</div>
+                <div className="ab-cert-logo-wrap">
+                  <img src={c.logo} alt={c.name} className="ab-cert-logo" />
+                </div>
+                <div className="ab-cert-meta">
+                  <span className="ab-cert-since">
+                    {c.since !== '—' ? `Since ${c.since}` : 'Testing partner'}
+                  </span>
+                  <span className="ab-cert-desc">{c.desc}</span>
+                </div>
               </div>
             ))}
           </div>
