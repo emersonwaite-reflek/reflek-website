@@ -230,7 +230,7 @@ export default function Home() {
                 <img
                   src="/images/flexishield-logo.png"
                   alt="FlexiShield"
-                  className="home-brand-card__logo"
+                  className="home-brand-card__logo home-brand-card__logo--flexi"
                 />
                 <span className="home-brand-card__tag">Paint Protection Film</span>
               </div>
