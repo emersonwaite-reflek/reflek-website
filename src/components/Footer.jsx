@@ -25,9 +25,9 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Services */}
+          {/* Column 2: Technologies */}
           <div className="footer-col">
-            <span className="footer-col-label">Services</span>
+            <span className="footer-col-label">Technologies</span>
             <ul className="footer-links">
               <li><Link to="/paint-protection">Paint Protection Film</Link></li>
               <li><Link to="/solar-films">Solar Window Films</Link></li>

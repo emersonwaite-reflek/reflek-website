@@ -70,7 +70,11 @@ export default function PaintProtection() {
           <div className="svc-subbrand-block">
             <div>
               <span className="svc-section-tag">Our Premium PPF Brand</span>
-              <div className="svc-subbrand-wordmark">FlexiShield</div>
+              <img
+                src="/images/flexishield-logo.png"
+                alt="FlexiShield"
+                className="svc-subbrand-logo"
+              />
               <span className="svc-subbrand-tagline">Coverage You Can Count On.</span>
               <p className="svc-desc">
                 FlexiShield is Reflek's flagship paint protection film brand — available in clear PPF, color PPF,

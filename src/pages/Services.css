@@ -295,10 +295,10 @@
 }
 
 .svc-subbrand-logo {
-  height: 48px;
+  height: 96px;
   width: auto;
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .svc-subbrand-logo--pill {

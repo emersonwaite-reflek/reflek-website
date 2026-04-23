@@ -29,6 +29,7 @@ const LOCATIONS = [
     since: 2023,
     size: '5,000 m²',
     role: 'Storage and distribution for US & Canada East Coast.',
+    image: '/images/facility-okc.jpg',
   },
   {
     id: 'mex',
@@ -41,6 +42,7 @@ const LOCATIONS = [
     since: 2025,
     size: '2,000 m²',
     role: 'Office and storage. Latin America & Caribbean distribution and sales management.',
+    image: '/images/facility-mexico.jpg',
   },
   {
     id: 'gouda',
@@ -52,6 +54,7 @@ const LOCATIONS = [
     coords: [4.71, 52.02],
     size: '2,000 m²',
     role: 'Warehouse in one of Europe\'s logistics hubs. Continental Europe, UK, Turkey distribution.',
+    image: '/images/facility-gouda.jpg',
   },
   {
     id: 'dubai',
@@ -64,6 +67,7 @@ const LOCATIONS = [
     since: 2024,
     size: '1,200 m²',
     role: 'Middle East, Africa & Central Asia distribution. Regional partner coordination.',
+    image: '/images/facility-dubai.jpg',
   },
   {
     id: 'nanjing',
@@ -77,6 +81,7 @@ const LOCATIONS = [
     since: 2016,
     size: '9,300 m²',
     role: 'Asia Pacific & China distribution hub. Global supply of Polarie-branded and Reflek Private Labelled products.',
+    image: '/images/facility-nanjing.jpg',
   },
   {
     id: 'ganzhou',
@@ -114,6 +119,7 @@ const LOCATIONS = [
     coords: [78.49, 17.39],
     since: 2024,
     role: 'South Asia-Pacific distribution office.',
+    image: '/images/facility-hyderabad.jpg',
   },
 ]
 
@@ -268,30 +274,33 @@ export default function GlobalMap() {
   }, [hoverLoc])
 
   // Compute clamped tooltip placement + arrow offset relative to its own box.
+  // Tooltip is positioned to the LEFT or RIGHT of the marker (never above/below),
+  // so the cursor that triggered it stays visible.
   const placement = useMemo(() => {
     if (!tipPos || !frameSize.w || !frameSize.h || !tipSize.w || !tipSize.h) return null
 
-    const spaceAbove = tipPos.y
-    const spaceBelow = frameSize.h - tipPos.y
-    const needed = tipSize.h + TT_GAP + TT_MARGIN
-    const below = spaceAbove < needed && spaceBelow >= needed
-    // If neither side fits cleanly, fall back to the larger one.
-    const forcedBelow = spaceAbove < needed && spaceBelow < needed
-      ? spaceBelow > spaceAbove
-      : below
+    const spaceRight = frameSize.w - tipPos.x
+    const spaceLeft = tipPos.x
+    const needed = tipSize.w + TT_GAP + TT_MARGIN
+    // Prefer right side. Flip to left if right can't fit but left can, or if
+    // neither fits and left has more room.
+    const onLeft = spaceRight < needed && spaceLeft >= needed
+    const tooltipOnLeft = spaceRight < needed && spaceLeft < needed
+      ? spaceLeft > spaceRight
+      : onLeft
 
-    const top = forcedBelow
-      ? Math.min(tipPos.y + TT_GAP, frameSize.h - tipSize.h - TT_MARGIN)
-      : Math.max(TT_MARGIN, tipPos.y - TT_GAP - tipSize.h)
+    const left = tooltipOnLeft
+      ? Math.max(TT_MARGIN, tipPos.x - TT_GAP - tipSize.w)
+      : Math.min(tipPos.x + TT_GAP, frameSize.w - tipSize.w - TT_MARGIN)
 
-    const rawLeft = tipPos.x - tipSize.w / 2
-    const maxLeft = Math.max(TT_MARGIN, frameSize.w - tipSize.w - TT_MARGIN)
-    const left = Math.max(TT_MARGIN, Math.min(rawLeft, maxLeft))
+    const rawTop = tipPos.y - tipSize.h / 2
+    const maxTop = Math.max(TT_MARGIN, frameSize.h - tipSize.h - TT_MARGIN)
+    const top = Math.max(TT_MARGIN, Math.min(rawTop, maxTop))
 
-    // Arrow X relative to the tooltip's own left edge — clamped so it stays inside.
-    const arrowX = Math.max(16, Math.min(tipPos.x - left, tipSize.w - 16))
+    // Arrow Y relative to the tooltip's own top edge — clamped so it stays inside.
+    const arrowY = Math.max(16, Math.min(tipPos.y - top, tipSize.h - 16))
 
-    return { left, top, below: forcedBelow, arrowX }
+    return { left, top, tooltipOnLeft, arrowY }
   }, [tipPos, frameSize, tipSize])
 
   return (
@@ -383,12 +392,12 @@ export default function GlobalMap() {
         {hoverLoc && tipPos && (
           <div
             ref={tipRef}
-            className={`gm-tooltip ${placement?.below ? 'is-below' : 'is-above'}`}
+            className={`gm-tooltip ${placement?.tooltipOnLeft ? 'is-left' : 'is-right'}`}
             style={{
-              left: `${placement ? placement.left : tipPos.x - 140}px`,
-              top: `${placement ? placement.top : tipPos.y - TT_GAP}px`,
+              left: `${placement ? placement.left : tipPos.x + TT_GAP}px`,
+              top: `${placement ? placement.top : tipPos.y - 100}px`,
               visibility: placement ? 'visible' : 'hidden',
-              '--gm-arrow-x': `${placement ? placement.arrowX : 140}px`,
+              '--gm-arrow-y': `${placement ? placement.arrowY : 100}px`,
             }}
             role="tooltip"
             onMouseEnter={cancelClose}
@@ -396,7 +405,11 @@ export default function GlobalMap() {
           >
             {hoverLoc.image && (
               <div className="gm-tt-image">
-                <img src={hoverLoc.image} alt={`${hoverLoc.city} facility`} />
+                <img
+                  src={hoverLoc.image}
+                  alt={`${hoverLoc.city} facility`}
+                  onError={(e) => { e.currentTarget.parentElement.style.display = 'none' }}
+                />
               </div>
             )}
             <div className="gm-tt-header">

@@ -69,7 +69,7 @@ export default function Navbar() {
               aria-expanded={servicesOpen}
               onClick={() => setServicesOpen(!servicesOpen)}
             >
-              Services
+              Technologies
               <FiChevronDown size={14} className={`chevron${servicesOpen ? ' open' : ''}`} />
             </button>
             <div className={`dropdown-panel${servicesOpen ? ' open' : ''}`} role="menu">
@@ -127,7 +127,7 @@ export default function Navbar() {
               onClick={() => setServicesOpen(!servicesOpen)}
               aria-expanded={servicesOpen}
             >
-              Services
+              Technologies
               <FiChevronDown size={14} className={`chevron${servicesOpen ? ' open' : ''}`} />
             </button>
             <div className={`mobile-submenu${servicesOpen ? ' open' : ''}`}>

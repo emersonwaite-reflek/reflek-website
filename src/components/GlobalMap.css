@@ -82,7 +82,7 @@
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* Arrow pointing to the dot — X is driven by --gm-arrow-x so it stays aligned
+/* Arrow pointing to the dot — Y is driven by --gm-arrow-y so it stays aligned
    even when the tooltip is clamped against the edge of the map frame. */
 .gm-tooltip::after {
   content: '';
@@ -92,18 +92,20 @@
   background: #ffffff;
   transform: rotate(45deg);
   box-shadow: 0 0 0 1px rgba(122, 185, 41, 0.25);
-  left: var(--gm-arrow-x, 50%);
-  margin-left: -7px;
+  top: var(--gm-arrow-y, 50%);
+  margin-top: -7px;
 }
 
-.gm-tooltip.is-above::after {
-  bottom: -7px;
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+/* Tooltip is on the LEFT of the marker → arrow on RIGHT side, pointing RIGHT */
+.gm-tooltip.is-left::after {
+  right: -7px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
-.gm-tooltip.is-below::after {
-  top: -7px;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
+/* Tooltip is on the RIGHT of the marker → arrow on LEFT side, pointing LEFT */
+.gm-tooltip.is-right::after {
+  left: -7px;
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
 }
 
 .gm-tt-header {

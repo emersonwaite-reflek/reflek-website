@@ -46,14 +46,78 @@
 
 /* Gallery */
 .br-gallery-section {
+  padding: 80px 0;
+}
+
+.br-gallery-section--factories {
   background: #f5f5f5;
-  padding: 80px 0 100px;
+}
+
+.br-gallery-section--offices {
+  background: #ffffff;
+  padding-bottom: 100px;
+}
+
+.br-section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 48px;
+}
+
+.br-section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f0f0f;
+  margin: 0 0 12px;
+  line-height: 1.2;
+}
+
+.br-section-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #666;
+  margin: 0;
 }
 
 .br-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
+}
+
+.br-card-since {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(15, 15, 15, 0.82);
+  color: #ffffff;
+  font-family: SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.br-card-size {
+  font-family: SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7ab929;
+}
+
+.br-card-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  line-height: 1.55;
+  margin: 0 0 6px;
 }
 
 .br-card {

@@ -110,17 +110,51 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Associations ── */}
+      {/* ── Certifications ── */}
+      <section className="ab-section ab-certs-section">
+        <div className="ab-container">
+          <div className="ab-section-header">
+            <span className="ab-tag">Certificates &amp; Associations</span>
+            <h2 className="ab-heading">Independently Verified</h2>
+            <p className="ab-body ab-certs-intro">
+              Reflek is one of only two US-based coatings manufacturers awarded the
+              ISO 9001 quality standard for both manufacturing and distribution — and
+              is a certified member of leading trade organizations and testing bodies.
+            </p>
+          </div>
+          <div className="ab-certs-grid">
+            {[
+              { name: 'ISO 9001', since: '2020', desc: 'Quality management — manufacturer & distributor' },
+              { name: 'SEMA', since: '2011', desc: 'Specialty Equipment Market Association' },
+              { name: 'IWFA & EWFA', since: '2025', desc: 'International & European Window Film Associations' },
+              { name: 'LEED', since: '2017', desc: 'US Green Building Council' },
+              { name: 'NGA', since: '2016', desc: 'National Glass Association' },
+              { name: 'ASID', since: '2017', desc: 'American Society of Interior Designers' },
+              { name: 'SGS', since: '—',     desc: 'Third-party laboratory testing reports' },
+              { name: 'Intertek', since: '—',     desc: 'Third-party laboratory testing reports' },
+            ].map((c) => (
+              <div key={c.name} className="ab-cert-card">
+                <div className="ab-cert-name">{c.name}</div>
+                <div className="ab-cert-since">{c.since !== '—' ? `Since ${c.since}` : 'Testing partner'}</div>
+                <div className="ab-cert-desc">{c.desc}</div>
+              </div>
+            ))}
+          </div>
+          <p className="ab-certs-footer">
+            US Notarized Certificate of Origin available for every shipment. All original
+            certificates can be provided on request.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Partners ── */}
       <section className="ab-section ab-assoc-section">
         <div className="ab-container">
           <div className="ab-assoc-header">
-            <span className="ab-tag">Industry Memberships &amp; Partners</span>
+            <span className="ab-tag">Brand Partners</span>
           </div>
           <div className="ab-assoc-logos">
             {[
-              { src: '/images/3.jpg', alt: 'SIMA — Specialty Films Association' },
-              { src: '/images/5.jpg', alt: 'ASID — American Society of Interior Designers' },
-              { src: '/images/6.jpg', alt: 'NGA — National Glass Association' },
               { src: '/images/1.jpg', alt: 'Luxo Window Films' },
               { src: '/images/2-1.jpg', alt: 'FlexiShield' },
               { src: '/images/shell-logo.svg', alt: 'Shell' },
