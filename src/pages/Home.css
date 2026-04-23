@@ -564,24 +564,11 @@
 }
 
 .home-assoc__logos--partners {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-}
-
-.home-assoc__partners-left {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 56px;
+  justify-content: space-around;
+  gap: 40px;
   flex-wrap: wrap;
-}
-
-.home-assoc__partners-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 .home-assoc__logo {
@@ -622,13 +609,7 @@
 
 @media (max-width: 768px) {
   .home-assoc__logos--partners {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .home-assoc__partners-right {
-    justify-content: center;
-  }
-  .home-assoc__partners-left {
+    gap: 28px;
     justify-content: center;
   }
 }

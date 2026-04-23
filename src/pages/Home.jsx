@@ -4,10 +4,10 @@ import { FiShield, FiSun, FiDroplet, FiCpu, FiArrowRight } from 'react-icons/fi'
 import './Home.css'
 
 const slides = [
+  '/images/slider-4.jpg',
   '/images/slider-1.jpg',
   '/images/slider-2.jpg',
   '/images/slider-3.jpg',
-  '/images/slider-4.jpg',
   '/images/slider-6.jpg',
 ]
 
@@ -273,18 +273,14 @@ export default function Home() {
         <div className="home-container">
           <span className="home-mono-tag">Brand Partners</span>
           <div className="home-assoc__logos home-assoc__logos--partners">
-            <div className="home-assoc__partners-left">
-              <div className="home-assoc__logo home-assoc__logo--flexishield">
-                <img src="/images/flexishield-logo.png" alt="FlexiShield" />
-              </div>
-              <div className="home-assoc__logo home-assoc__logo--dark-on-light">
-                <img src="/images/luxo-logo-trans.png" alt="Luxo Window Films" />
-              </div>
+            <div className="home-assoc__logo home-assoc__logo--flexishield">
+              <img src="/images/flexishield-logo.png" alt="FlexiShield" />
             </div>
-            <div className="home-assoc__partners-right">
-              <div className="home-assoc__logo home-assoc__logo--shell">
-                <img src="/images/shell-car-beauty-bk.png" alt="Shell Car Beauty" />
-              </div>
+            <div className="home-assoc__logo home-assoc__logo--dark-on-light">
+              <img src="/images/luxo-logo-trans.png" alt="Luxo Window Films" />
+            </div>
+            <div className="home-assoc__logo home-assoc__logo--shell">
+              <img src="/images/shell-car-beauty-bk.png" alt="Shell Car Beauty" />
             </div>
           </div>
         </div>

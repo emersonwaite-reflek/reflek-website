@@ -580,8 +580,8 @@
 .ab-assoc-logos {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 48px;
+  justify-content: space-around;
+  gap: 40px;
   flex-wrap: wrap;
 }
 
@@ -589,24 +589,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.ab-assoc-logo:hover {
-  opacity: 1;
+  background: transparent;
 }
 
 .ab-assoc-logo img {
-  height: 44px;
+  height: 48px;
   width: auto;
   object-fit: contain;
-  filter: grayscale(100%);
-  transition: filter 0.2s;
+  display: block;
 }
 
-.ab-assoc-logo:hover img {
-  filter: grayscale(0%);
+/* FlexiShield art has heavy built-in padding — render it at ~2x so the
+   visible wordmark matches the other partners in visual weight. */
+.ab-assoc-logo--flexi img {
+  height: 96px;
+  max-width: 320px;
+}
+
+.ab-assoc-logo--shell img {
+  height: 68px;
+}
+
+@media (max-width: 768px) {
+  .ab-assoc-logos {
+    gap: 28px;
+    justify-content: center;
+  }
 }
 
 /* ── CTA ── */

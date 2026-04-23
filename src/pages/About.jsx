@@ -160,15 +160,15 @@ export default function About() {
             <span className="ab-tag">Brand Partners</span>
           </div>
           <div className="ab-assoc-logos">
-            {[
-              { src: '/images/1.jpg', alt: 'Luxo Window Films' },
-              { src: '/images/2-1.jpg', alt: 'FlexiShield' },
-              { src: '/images/shell-logo.svg', alt: 'Shell' },
-            ].map((logo, i) => (
-              <div key={i} className="ab-assoc-logo">
-                <img src={logo.src} alt={logo.alt} />
-              </div>
-            ))}
+            <div className="ab-assoc-logo ab-assoc-logo--flexi">
+              <img src="/images/flexishield-logo.png" alt="FlexiShield" />
+            </div>
+            <div className="ab-assoc-logo ab-assoc-logo--luxo">
+              <img src="/images/luxo-logo-trans.png" alt="Luxo Window Films" />
+            </div>
+            <div className="ab-assoc-logo ab-assoc-logo--shell">
+              <img src="/images/shell-car-beauty-bk.png" alt="Shell Car Beauty" />
+            </div>
           </div>
         </div>
       </section>
