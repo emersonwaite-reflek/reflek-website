@@ -466,9 +466,16 @@ export default function GlobalGlobe() {
       }
       if (hiddenMid) continue
 
-      const [ax, ay] = projection(a.coords) || []
-      const [bx, by] = projection(b.coords) || []
-      if (ax == null || bx == null || isNaN(ax) || isNaN(bx)) continue
+      // Terminate the arc at the VISIBLE marker position (mx,my), which for
+      // offset locations (Nanjing/Ganzhou/Suzhou) is the standoff dot rather
+      // than the real projection. That way the connection visually hits the
+      // same dot the user clicks. The dashed leader line still bridges back
+      // to the geographic anchor, so geography reads cleanly too.
+      const aState = markerState(a)
+      const bState = markerState(b)
+      const { mx: ax, my: ay } = aState
+      const { mx: bx, my: by } = bState
+      if (isNaN(ax) || isNaN(bx)) continue
 
       const arcLen = geoDistance(a.coords, b.coords)
       const lift = ARC_MAX_LIFT * Math.min(1, arcLen / (Math.PI / 2))
@@ -491,7 +498,7 @@ export default function GlobalGlobe() {
       result.push({ id: `${fromId}-${toId}`, d, arcLen })
     }
     return result
-  }, [projection, rotation, countries])
+  }, [markerState, projection, rotation, countries])
 
   return (
     <div
