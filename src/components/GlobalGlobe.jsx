@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiX } from 'react-icons/fi'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { geoOrthographic, geoPath, geoDistance, geoInterpolate } from 'd3-geo'
 import { feature } from 'topojson-client'
 import './GlobalGlobe.css'
@@ -502,16 +502,12 @@ export default function GlobalGlobe() {
 
   const spherePath = useMemo(() => pathGen({ type: 'Sphere' }), [pathGen])
 
-  /* Build smooth arched connectors between each connected pair as single
-     quadratic Béziers. The control point offsets perpendicular to the
-     chord in the direction away from the globe center, which gives a
-     predictably smooth arc no matter where the two endpoints sit on
-     the sphere — no kinks, no weird bends near the view center.
-
-     Before drawing, we still sample the great circle to make sure no
-     intermediate point is on the back hemisphere; if the great-circle
-     arc would wrap around the back we skip the connector entirely
-     instead of drawing a straight cut across the front. */
+  /* Build an entry for every connection every frame — whether or not it's
+     currently visible. Arcs that are on the back hemisphere (or whose true
+     great-circle path wraps around the back) get visible:false. They stay
+     mounted with a continuously-updated `d`, so when an arc fades out its
+     curve keeps tracking the globe's rotation instead of freezing where it
+     was when it became hidden. */
   const arcs = useMemo(() => {
     if (!countries) return []
     const byId = Object.fromEntries(LOCATIONS.map((l) => [l.id, l]))
@@ -523,53 +519,53 @@ export default function GlobalGlobe() {
       const b = byId[toId]
       if (!a || !b) continue
 
-      // Both endpoints must be on the front hemisphere.
-      if (geoDistance(a.coords, center) >= Math.PI / 2 - 0.01) continue
-      if (geoDistance(b.coords, center) >= Math.PI / 2 - 0.01) continue
+      const aDist = geoDistance(a.coords, center)
+      const bDist = geoDistance(b.coords, center)
+      const aFront = aDist < Math.PI / 2 - 0.01
+      const bFront = bDist < Math.PI / 2 - 0.01
 
-      // Great-circle visibility guard: if any intermediate sample is on
-      // the back hemisphere, the true arc wraps around — don't draw a
-      // straight chord pretending to be it.
-      const interp = geoInterpolate(a.coords, b.coords)
-      let hiddenMid = false
-      for (let i = 1; i < ARC_STEPS; i++) {
-        if (geoDistance(interp(i / ARC_STEPS), center) >= Math.PI / 2 - 0.01) {
-          hiddenMid = true
-          break
+      // Walk the great-circle samples to ensure the route doesn't wrap the
+      // back — only relevant if both endpoints are still on the front,
+      // otherwise it's already hidden.
+      let frontPath = aFront && bFront
+      if (frontPath) {
+        const interp = geoInterpolate(a.coords, b.coords)
+        for (let i = 1; i < ARC_STEPS; i++) {
+          if (geoDistance(interp(i / ARC_STEPS), center) >= Math.PI / 2 - 0.01) {
+            frontPath = false
+            break
+          }
         }
       }
-      if (hiddenMid) continue
 
-      // Terminate the arc at the VISIBLE marker position (mx,my), which for
-      // offset locations (Nanjing/Ganzhou/Suzhou) is the standoff dot rather
-      // than the real projection. That way the connection visually hits the
-      // same dot the user clicks. The dashed leader line still bridges back
-      // to the geographic anchor, so geography reads cleanly too.
       const aState = markerState(a)
       const bState = markerState(b)
       const { mx: ax, my: ay } = aState
       const { mx: bx, my: by } = bState
-      if (isNaN(ax) || isNaN(bx)) continue
 
-      const arcLen = geoDistance(a.coords, b.coords)
-      const lift = ARC_MAX_LIFT * Math.min(1, arcLen / (Math.PI / 2))
+      // Always compute a current `d`. If an endpoint has drifted into the
+      // back hemisphere, its projection may be NaN — fall back to empty
+      // path and let opacity do the hiding.
+      let d = ''
+      if (!isNaN(ax) && !isNaN(bx)) {
+        const arcLen = geoDistance(a.coords, b.coords)
+        const lift = ARC_MAX_LIFT * Math.min(1, arcLen / (Math.PI / 2))
+        const midX = (ax + bx) / 2
+        const midY = (ay + by) / 2
+        const dx = midX - SPHERE_CX
+        const dy = midY - SPHERE_CY
+        const r = Math.sqrt(dx * dx + dy * dy) || 1
+        const controlLift = lift * 2
+        const ctrlX = midX + (dx / r) * controlLift
+        const ctrlY = midY + (dy / r) * controlLift
+        d = `M ${ax.toFixed(2)},${ay.toFixed(2)} Q ${ctrlX.toFixed(2)},${ctrlY.toFixed(2)} ${bx.toFixed(2)},${by.toFixed(2)}`
+      }
 
-      // Midpoint of the chord, then push the control point outward from
-      // the sphere center. This creates a smooth quadratic that always
-      // reads as arching away from the globe.
-      const midX = (ax + bx) / 2
-      const midY = (ay + by) / 2
-      const dx = midX - SPHERE_CX
-      const dy = midY - SPHERE_CY
-      const r = Math.sqrt(dx * dx + dy * dy) || 1
-      // Extra lift factor accounts for the fact that a quadratic Bézier
-      // reaches only half the control-point distance at its apex.
-      const controlLift = lift * 2
-      const ctrlX = midX + (dx / r) * controlLift
-      const ctrlY = midY + (dy / r) * controlLift
-
-      const d = `M ${ax.toFixed(2)},${ay.toFixed(2)} Q ${ctrlX.toFixed(2)},${ctrlY.toFixed(2)} ${bx.toFixed(2)},${by.toFixed(2)}`
-      result.push({ id: `${fromId}-${toId}`, d, arcLen })
+      result.push({
+        id: `${fromId}-${toId}`,
+        d,
+        visible: frontPath && d !== '',
+      })
     }
     return result
   }, [markerState, projection, rotation, countries])
@@ -631,117 +627,132 @@ export default function GlobalGlobe() {
         <path d={spherePath} fill="url(#gg-glint)" pointerEvents="none" />
 
         {/* ── Supply-chain arcs ──
-            AnimatePresence handles the enter/exit opacity transitions:
-            1s fade-in on mount (when both endpoints rotate into view),
-            0.5s fade-out on unmount (when either endpoint rotates away). */}
+            Every arc is always mounted so its path can keep updating
+            frame-by-frame while it fades out — otherwise the curve would
+            freeze at its last rendered position while the globe rotates
+            out from under it. Visibility is driven by the animate target:
+            1s ease-out fade in when arc.visible flips true, 0.5s ease-in
+            fade out when it flips false. The dashed-stroke flow animation
+            on the child paths is CSS, so it keeps running the whole time. */}
         <g className="gg-arcs" clipPath="url(#gg-sphere-clip)" pointerEvents="none">
-          <AnimatePresence>
-            {arcs.map((arc) => (
-              <motion.g
-                key={arc.id}
-                className="gg-arc"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 1,   ease: 'easeOut' } }}
-                exit   ={{ opacity: 0, transition: { duration: 0.5, ease: 'easeIn'  } }}
-              >
-                {/* Faint continuous track — shows the whole route */}
-                <path d={arc.d} className="gg-arc-track" />
-                {/* Two flowing signals moving in opposite directions so the
-                    route reads as bidirectional logistics, not a one-way feed. */}
-                <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
-                <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
-              </motion.g>
-            ))}
-          </AnimatePresence>
+          {arcs.map((arc) => (
+            <motion.g
+              key={arc.id}
+              className="gg-arc"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: arc.visible ? 1 : 0 }}
+              transition={{
+                duration: arc.visible ? 1 : 0.5,
+                ease: arc.visible ? 'easeOut' : 'easeIn',
+              }}
+            >
+              {/* Faint continuous track — shows the whole route */}
+              <path d={arc.d} className="gg-arc-track" />
+              {/* Two flowing signals moving in opposite directions so the
+                  route reads as bidirectional logistics, not a one-way feed. */}
+              <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
+              <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
+            </motion.g>
+          ))}
         </g>
 
-        {/* ── Leader lines + anchor dots for offset markers (rendered before
-            marker groups so markers sit on top). Fade matches their markers. ── */}
-        <AnimatePresence>
-          {LOCATIONS.filter((l) => l.offset).map((loc) => {
-            const { visible, gx, gy, mx, my } = markerState(loc)
-            if (!visible) return null
-            return (
-              <motion.g
-                key={`leader-${loc.id}`}
-                className="gg-leader"
-                pointerEvents="none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 1,   ease: 'easeOut' } }}
-                exit   ={{ opacity: 0, transition: { duration: 0.5, ease: 'easeIn'  } }}
-              >
-                <line
-                  x1={gx} y1={gy} x2={mx} y2={my}
-                  stroke="#7ab929"
-                  strokeWidth={1}
-                  strokeDasharray="2 2"
-                  opacity={0.6}
-                />
-                <circle cx={gx} cy={gy} r={2} fill="#7ab929" />
-              </motion.g>
-            )
-          })}
-        </AnimatePresence>
+        {/* ── Leader lines + anchor dots — always mounted, opacity driven by
+            visibility so the line keeps tracking the globe while fading. ── */}
+        {LOCATIONS.filter((l) => l.offset).map((loc) => {
+          const { visible, gx, gy, mx, my } = markerState(loc)
+          // Skip when endpoints project to NaN (back hemisphere) — otherwise
+          // the line would render undefined coordinates.
+          const validCoords = !isNaN(gx) && !isNaN(mx)
+          return (
+            <motion.g
+              key={`leader-${loc.id}`}
+              className="gg-leader"
+              pointerEvents="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: visible && validCoords ? 1 : 0 }}
+              transition={{
+                duration: visible ? 1 : 0.5,
+                ease: visible ? 'easeOut' : 'easeIn',
+              }}
+            >
+              {validCoords && (
+                <>
+                  <line
+                    x1={gx} y1={gy} x2={mx} y2={my}
+                    stroke="#7ab929"
+                    strokeWidth={1}
+                    strokeDasharray="2 2"
+                    opacity={0.6}
+                  />
+                  <circle cx={gx} cy={gy} r={2} fill="#7ab929" />
+                </>
+              )}
+            </motion.g>
+          )
+        })}
 
-        {/* ── Location markers — fade in/out as they rotate on/off the
-            visible hemisphere so they match the arc transitions. ── */}
-        <AnimatePresence>
-          {LOCATIONS.map((loc) => {
-            const meta = TYPE_META[loc.type]
-            const { visible, mx, my } = markerState(loc)
-            if (!visible) return null
-            const isActive = loc.id === hoverId
-            return (
-              <motion.g
-                key={loc.id}
-                transform={`translate(${mx}, ${my})`}
-                className="gg-marker-group"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 1,   ease: 'easeOut' } }}
-                exit   ={{ opacity: 0, transition: { duration: 0.5, ease: 'easeIn'  } }}
-                onPointerEnter={(e) => {
-                  // Touch synthesizes enter/leave around taps — skip, or the
-                  // card flashes open→close→open between pointerenter, the
-                  // auto pointerleave on lift, and the final click.
-                  if (e.pointerType !== 'mouse') return
-                  if (!dragStartRef.current) openMarker(loc.id)
-                }}
-                onPointerLeave={(e) => {
-                  if (e.pointerType !== 'mouse') return
-                  scheduleClose()
-                }}
-                onClick={(e) => {
-                  if (didDragRef.current) { e.stopPropagation(); return }
-                  openMarker(loc.id)
-                }}
-              >
-                <circle r={meta.radius + 10} fill="transparent" />
-                <circle
-                  r={meta.radius + 6}
-                  fill="#7ab929"
-                  className="gg-marker-halo"
-                  opacity={isActive ? 0.35 : 0.18}
-                />
-                {meta.shape === 'factory' ? (
-                  <path
-                    d={FACTORY_PATH}
-                    transform={`scale(${(meta.scale ?? 1) * 0.75})`}
-                    fill={meta.color}
-                    className={`gg-marker ${isActive ? 'is-active' : ''}`}
-                  />
-                ) : (
+        {/* ── Location markers — always mounted, visibility via opacity so
+            the transform keeps tracking rotation during fade transitions. ── */}
+        {LOCATIONS.map((loc) => {
+          const meta = TYPE_META[loc.type]
+          const { visible, mx, my } = markerState(loc)
+          const validCoords = !isNaN(mx)
+          const isActive = loc.id === hoverId
+          return (
+            <motion.g
+              key={loc.id}
+              transform={validCoords ? `translate(${mx}, ${my})` : undefined}
+              className="gg-marker-group"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: visible && validCoords ? 1 : 0 }}
+              transition={{
+                duration: visible ? 1 : 0.5,
+                ease: visible ? 'easeOut' : 'easeIn',
+              }}
+              style={{ pointerEvents: visible ? 'auto' : 'none' }}
+              onPointerEnter={(e) => {
+                if (e.pointerType !== 'mouse') return
+                if (!dragStartRef.current) openMarker(loc.id)
+              }}
+              onPointerLeave={(e) => {
+                if (e.pointerType !== 'mouse') return
+                scheduleClose()
+              }}
+              onClick={(e) => {
+                if (didDragRef.current) { e.stopPropagation(); return }
+                openMarker(loc.id)
+              }}
+            >
+              {validCoords && (
+                <>
+                  <circle r={meta.radius + 10} fill="transparent" />
                   <circle
-                    r={meta.radius}
-                    fill={meta.color}
-                    stroke={meta.stroke || meta.color}
-                    strokeWidth={meta.stroke ? 2 : 0}
-                    className={`gg-marker ${isActive ? 'is-active' : ''}`}
+                    r={meta.radius + 6}
+                    fill="#7ab929"
+                    className="gg-marker-halo"
+                    opacity={isActive ? 0.35 : 0.18}
                   />
-                )}
-              </motion.g>
-            )
-          })}
-        </AnimatePresence>
+                  {meta.shape === 'factory' ? (
+                    <path
+                      d={FACTORY_PATH}
+                      transform={`scale(${(meta.scale ?? 1) * 0.75})`}
+                      fill={meta.color}
+                      className={`gg-marker ${isActive ? 'is-active' : ''}`}
+                    />
+                  ) : (
+                    <circle
+                      r={meta.radius}
+                      fill={meta.color}
+                      stroke={meta.stroke || meta.color}
+                      strokeWidth={meta.stroke ? 2 : 0}
+                      className={`gg-marker ${isActive ? 'is-active' : ''}`}
+                    />
+                  )}
+                </>
+              )}
+            </motion.g>
+          )
+        })}
       </svg>
 
       {/* Connector overlay SVG — renders above the globe but below the tooltip. */}
