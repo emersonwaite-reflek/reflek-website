@@ -14,9 +14,9 @@ const LOCATIONS = [
   { id: 'mex',     city: 'Mexico City',       country: 'Mexico',      flag: '🇲🇽', type: 'do',      typeLabel: 'LATAM D.O.',                   coords: [-99.13, 19.43],  since: 2025, size: '2,000 m²',  role: 'Office and storage. Latin America & Caribbean distribution and sales management.',                    image: '/images/facility-mexico.jpg' },
   { id: 'gouda',   city: 'Gouda',             country: 'Netherlands', flag: '🇳🇱', type: 'do',      typeLabel: 'Europe / Central Asia D.O.',   coords: [4.71, 52.02],                size: '2,000 m²',  role: "Warehouse in one of Europe's logistics hubs. Continental Europe, UK, Turkey distribution.",           image: '/images/facility-gouda.jpg' },
   { id: 'dubai',   city: 'Dubai',             country: 'UAE',         flag: '🇦🇪', type: 'do',      typeLabel: 'Middle East & Africa D.O.',    coords: [55.27, 25.20],   since: 2024, size: '1,200 m²',  role: 'Middle East, Africa & Central Asia distribution. Regional partner coordination.',                     image: '/images/facility-dubai.jpg' },
-  { id: 'nanjing', city: 'Nanjing',           country: 'China',       flag: '🇨🇳', type: 'do',      typeLabel: 'East Asia D.O.',               coords: [118.80, 32.06],  since: 2016, size: '9,300 m²',  role: 'Asia Pacific & China distribution hub. Global supply of Polarie-branded and Reflek Private Labelled products.', image: '/images/facility-nanjing.jpg' },
-  { id: 'ganzhou', city: 'Ganzhou',           country: 'China',       flag: '🇨🇳', type: 'factory', typeLabel: 'Clear PPF + WF Manufacturing', coords: [114.94, 25.83],  since: 2025,                    role: 'Clear paint protection film and window film manufacturing.',                                           image: '/images/facility-ganzhou.png' },
-  { id: 'suzhou',  city: 'Suzhou',            country: 'China',       flag: '🇨🇳', type: 'factory', typeLabel: 'Color PPF Manufacturing',      coords: [120.58, 31.30],  since: 2026,                    role: 'Color paint protection film manufacturing.',                                                           image: '/images/facility-suzhou.png' },
+  { id: 'nanjing', city: 'Nanjing',           country: 'China',       flag: '🇨🇳', type: 'do',      typeLabel: 'East Asia D.O.',               coords: [118.80, 32.06], offset: [-28, -22], since: 2016, size: '9,300 m²',  role: 'Asia Pacific & China distribution hub. Global supply of Polarie-branded and Reflek Private Labelled products.', image: '/images/facility-nanjing.jpg' },
+  { id: 'ganzhou', city: 'Ganzhou',           country: 'China',       flag: '🇨🇳', type: 'factory', typeLabel: 'Clear PPF + WF Manufacturing', coords: [114.94, 25.83], offset: [-24, 20],  since: 2025,                    role: 'Clear paint protection film and window film manufacturing.',                                           image: '/images/facility-ganzhou.png' },
+  { id: 'suzhou',  city: 'Suzhou',            country: 'China',       flag: '🇨🇳', type: 'factory', typeLabel: 'Color PPF Manufacturing',      coords: [120.58, 31.30], offset: [28, 8],    since: 2026,                    role: 'Color paint protection film manufacturing.',                                                           image: '/images/facility-suzhou.png' },
   { id: 'hyd',     city: 'Hyderabad',         country: 'India',       flag: '🇮🇳', type: 'do',      typeLabel: 'South Asia-Pacific D.O.',      coords: [78.49, 17.39],   since: 2024,                    role: 'South Asia-Pacific distribution office.',                                                              image: '/images/facility-hyderabad.jpg' },
 ]
 
@@ -335,13 +335,18 @@ export default function GlobalGlobe() {
   )
   const pathGen = useMemo(() => geoPath(projection), [projection])
 
-  /* Marker visibility + projected coords. */
+  /* Marker state. For locations that cluster (China trio) we keep two
+     coordinates: the anchor dot on the sphere surface at the real geo
+     position (gx, gy) and the marker itself shifted by a pixel offset
+     (mx, my) so it doesn't overlap its neighbors. A leader line connects
+     the two. Locations without an offset have mx=gx, my=gy. */
   const markerState = useCallback((loc) => {
     const center = [-rotation[0], -rotation[1]]
     const dist = geoDistance(loc.coords, center)
     const visible = dist < Math.PI / 2 - 0.01
-    const [px, py] = projection(loc.coords) || [0, 0]
-    return { visible, px, py, dist }
+    const [gx, gy] = projection(loc.coords) || [0, 0]
+    const [dx, dy] = loc.offset || [0, 0]
+    return { visible, gx, gy, mx: gx + dx, my: gy + dy, dist }
   }, [projection, rotation])
 
   /* Convert viewBox coords to frame pixels for positioning DOM elements. */
@@ -362,8 +367,10 @@ export default function GlobalGlobe() {
 
   const tipPos = useMemo(() => {
     if (!hoverLoc) return null
-    const { px, py } = markerState(hoverLoc)
-    return viewBoxToFrame(px, py)
+    // Tooltip should attach to the marker the user actually sees/clicks,
+    // which is the offset position (mx, my) — not the anchor dot.
+    const { mx, my } = markerState(hoverLoc)
+    return viewBoxToFrame(mx, my)
   }, [hoverLoc, markerState, viewBoxToFrame])
 
   useLayoutEffect(() => {
@@ -537,15 +544,34 @@ export default function GlobalGlobe() {
           ))}
         </g>
 
+        {/* ── Leader lines + anchor dots for offset markers (rendered before
+            marker groups so markers sit on top). ── */}
+        {LOCATIONS.filter((l) => l.offset).map((loc) => {
+          const { visible, gx, gy, mx, my } = markerState(loc)
+          if (!visible) return null
+          return (
+            <g key={`leader-${loc.id}`} className="gg-leader" pointerEvents="none">
+              <line
+                x1={gx} y1={gy} x2={mx} y2={my}
+                stroke="#7ab929"
+                strokeWidth={1}
+                strokeDasharray="2 2"
+                opacity={0.6}
+              />
+              <circle cx={gx} cy={gy} r={2} fill="#7ab929" />
+            </g>
+          )
+        })}
+
         {LOCATIONS.map((loc) => {
           const meta = TYPE_META[loc.type]
-          const { visible, px, py } = markerState(loc)
+          const { visible, mx, my } = markerState(loc)
           if (!visible) return null
           const isActive = loc.id === hoverId
           return (
             <g
               key={loc.id}
-              transform={`translate(${px}, ${py})`}
+              transform={`translate(${mx}, ${my})`}
               className="gg-marker-group"
               onPointerEnter={(e) => {
                 // Touch synthesizes enter/leave around taps — skip, or the
