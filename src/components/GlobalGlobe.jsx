@@ -529,8 +529,10 @@ export default function GlobalGlobe() {
             <g key={arc.id} className="gg-arc">
               {/* Faint continuous track — shows the whole route */}
               <path d={arc.d} className="gg-arc-track" />
-              {/* Flowing signal — dashed stroke animated along the path */}
-              <path d={arc.d} className="gg-arc-flow" />
+              {/* Two flowing signals moving in opposite directions so the
+                  route reads as bidirectional logistics, not a one-way feed. */}
+              <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
+              <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
             </g>
           ))}
         </g>

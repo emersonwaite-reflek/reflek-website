@@ -85,18 +85,33 @@
   /* Short dash + long gap reads as a pulse travelling along the path. */
   stroke-dasharray: 3 26;
   filter: drop-shadow(0 0 3px rgba(122, 185, 41, 0.85));
-  animation: gg-arc-flow 3.2s linear infinite;
 }
 
-@keyframes gg-arc-flow {
-  /* Offset moves the dash pattern along the path. Negative direction so the
-     flow reads as "outbound" (from first endpoint to second). */
+/* Forward flow: offset moves negative so pulses travel A → B. */
+.gg-arc-flow--forward {
+  animation: gg-arc-flow-fwd 3.2s linear infinite;
+}
+
+/* Reverse flow: offset moves positive so pulses travel B → A. A half-cycle
+   initial offset (14.5 = (3+26)/2) interleaves the reverse dots between the
+   forward ones rather than stacking directly on top. */
+.gg-arc-flow--reverse {
+  animation: gg-arc-flow-rev 3.2s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes gg-arc-flow-fwd {
   from { stroke-dashoffset: 0;    }
-  to   { stroke-dashoffset: -116; }  /* 4 × (dash + gap) full cycles of 29 */
+  to   { stroke-dashoffset: -116; }
+}
+
+@keyframes gg-arc-flow-rev {
+  from { stroke-dashoffset: -14.5; }
+  to   { stroke-dashoffset:  101.5; }
 }
 
 /* Stagger each arc's flow by a tiny phase shift so the whole network feels
-   alive instead of perfectly synchronized. */
+   alive instead of perfectly synchronized. Applies to both directions. */
 .gg-arc:nth-child(2n) .gg-arc-flow { animation-delay: -0.9s; }
 .gg-arc:nth-child(3n) .gg-arc-flow { animation-delay: -1.8s; }
 .gg-arc:nth-child(4n) .gg-arc-flow { animation-delay: -2.4s; }
@@ -477,6 +492,8 @@
   .gg-marker-halo,
   .gg-hint-dot,
   .gg-arc-flow,
+  .gg-arc-flow--forward,
+  .gg-arc-flow--reverse,
   .gg-tooltip {
     animation: none !important;
   }
