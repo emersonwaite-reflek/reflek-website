@@ -59,6 +59,13 @@ const CONNECTIONS = [
 
   // Regional cross-DO within Asia/ME
   ['dubai', 'hyd'],
+
+  // Europe ↔ Asia network links — these stay grey (secondary) since
+  // Gouda is a DO, not a factory, so they read as distribution-network
+  // lines rather than product flow. Keeps the "European product from
+  // China" implication off while still showing the global footprint.
+  ['gouda', 'nanjing'],
+  ['gouda', 'hyd'],
 ]
 
 // How far off the sphere surface the arc midpoint lifts, in pixels. Scales
