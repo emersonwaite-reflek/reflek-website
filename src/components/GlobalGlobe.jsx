@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiX } from 'react-icons/fi'
-import { geoOrthographic, geoPath, geoDistance } from 'd3-geo'
+import { geoOrthographic, geoPath, geoDistance, geoInterpolate } from 'd3-geo'
 import { feature } from 'topojson-client'
 import './GlobalGlobe.css'
 
@@ -25,6 +25,30 @@ const TYPE_META = {
   factory: { label: 'Global Manufacturing', color: '#7ab929', radius: 7,  shape: 'factory', scale: 1   },
   do:      { label: 'Distribution Office',  color: '#ffffff', stroke: '#7ab929', radius: 5, shape: 'circle' },
 }
+
+/* Supply-chain flows — each pair is rendered as an arched great-circle
+   route with a flowing green signal. Curated so the graph reads as a
+   manufacturing-to-distribution network without looking crowded. */
+const CONNECTIONS = [
+  // North America — HQ feeds the domestic + LATAM hubs
+  ['phx', 'okc'],
+  ['phx', 'mex'],
+  // Trans-Pacific + Trans-Atlantic backbones
+  ['phx', 'nanjing'],
+  ['phx', 'gouda'],
+  // China factories feed the regional distribution hub
+  ['ganzhou', 'nanjing'],
+  ['suzhou', 'nanjing'],
+  // Nanjing pushes product out through Asia / Middle East / Europe
+  ['nanjing', 'hyd'],
+  ['nanjing', 'dubai'],
+  ['nanjing', 'gouda'],
+]
+
+// How far off the sphere surface the arc midpoint lifts, in pixels. Scales
+// with the arc's great-circle length so long routes arch higher.
+const ARC_MAX_LIFT = 70
+const ARC_STEPS = 36
 
 const FACTORY_PATH = 'M -10 7 L -10 0 L -5 -4 L -5 0 L 0 -4 L 0 0 L 5 -4 L 5 -8 L 8 -8 L 8 7 Z'
 
@@ -387,6 +411,62 @@ export default function GlobalGlobe() {
 
   const spherePath = useMemo(() => pathGen({ type: 'Sphere' }), [pathGen])
 
+  /* Build arched great-circle paths between each connected pair.
+     Samples the great circle at ARC_STEPS, projects each sample, and lifts
+     every intermediate point outward from the globe center so the curve
+     reads as an arch rising off the sphere. The whole arc is skipped if
+     either endpoint is on the back hemisphere. */
+  const arcs = useMemo(() => {
+    if (!countries) return []
+    const byId = Object.fromEntries(LOCATIONS.map((l) => [l.id, l]))
+    const result = []
+
+    for (const [fromId, toId] of CONNECTIONS) {
+      const a = byId[fromId]
+      const b = byId[toId]
+      if (!a || !b) continue
+
+      const aState = markerState(a)
+      const bState = markerState(b)
+      // Only draw the arc when both endpoints are on the visible hemisphere.
+      if (!aState.visible || !bState.visible) continue
+
+      const arcLen = geoDistance(a.coords, b.coords)  // radians, 0..π
+      const lift = ARC_MAX_LIFT * Math.min(1, arcLen / (Math.PI / 2))
+
+      const interp = geoInterpolate(a.coords, b.coords)
+      const pts = []
+      let anyOffSphere = false
+
+      for (let i = 0; i <= ARC_STEPS; i++) {
+        const t = i / ARC_STEPS
+        const [lon, lat] = interp(t)
+        const projected = projection([lon, lat])
+        if (!projected || isNaN(projected[0])) {
+          anyOffSphere = true
+          break
+        }
+        let [px, py] = projected
+        const dx = px - SPHERE_CX
+        const dy = py - SPHERE_CY
+        const r = Math.sqrt(dx * dx + dy * dy)
+        if (r > 0) {
+          const archFactor = Math.sin(Math.PI * t)
+          const outward = (r + lift * archFactor) / r
+          px = SPHERE_CX + dx * outward
+          py = SPHERE_CY + dy * outward
+        }
+        pts.push([px, py])
+      }
+
+      if (anyOffSphere || pts.length < 2) continue
+
+      const d = 'M ' + pts.map((p) => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' L ')
+      result.push({ id: `${fromId}-${toId}`, d, arcLen })
+    }
+    return result
+  }, [markerState, projection, countries])
+
   return (
     <div
       className={`gg-frame ${isDragging ? 'is-dragging' : ''}`}
@@ -442,6 +522,18 @@ export default function GlobalGlobe() {
 
         <path d={spherePath} fill="url(#gg-rim)" pointerEvents="none" />
         <path d={spherePath} fill="url(#gg-glint)" pointerEvents="none" />
+
+        {/* ── Supply-chain arcs ── */}
+        <g className="gg-arcs" clipPath="url(#gg-sphere-clip)" pointerEvents="none">
+          {arcs.map((arc) => (
+            <g key={arc.id} className="gg-arc">
+              {/* Faint continuous track — shows the whole route */}
+              <path d={arc.d} className="gg-arc-track" />
+              {/* Flowing signal — dashed stroke animated along the path */}
+              <path d={arc.d} className="gg-arc-flow" />
+            </g>
+          ))}
+        </g>
 
         {LOCATIONS.map((loc) => {
           const meta = TYPE_META[loc.type]
