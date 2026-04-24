@@ -561,9 +561,16 @@ export default function GlobalGlobe() {
         d = `M ${ax.toFixed(2)},${ay.toFixed(2)} Q ${ctrlX.toFixed(2)},${ctrlY.toFixed(2)} ${bx.toFixed(2)},${by.toFixed(2)}`
       }
 
+      // Factory-involving arcs get the animated green flow; DO↔DO arcs
+      // are secondary network lines, light grey and static.
+      const aFactory = a.type === 'factory' || a.type === 'hq'
+      const bFactory = b.type === 'factory' || b.type === 'hq'
+      const kind = aFactory || bFactory ? 'factory' : 'secondary'
+
       result.push({
         id: `${fromId}-${toId}`,
         d,
+        kind,
         visible: frontPath && d !== '',
       })
     }
@@ -638,7 +645,7 @@ export default function GlobalGlobe() {
           {arcs.map((arc) => (
             <motion.g
               key={arc.id}
-              className="gg-arc"
+              className={`gg-arc gg-arc--${arc.kind}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: arc.visible ? 1 : 0 }}
               transition={{
@@ -646,12 +653,17 @@ export default function GlobalGlobe() {
                 ease: arc.visible ? 'easeOut' : 'easeIn',
               }}
             >
-              {/* Faint continuous track — shows the whole route */}
+              {/* Continuous track — every arc gets one. Colour + weight
+                  vary by kind via CSS. */}
               <path d={arc.d} className="gg-arc-track" />
-              {/* Two flowing signals moving in opposite directions so the
-                  route reads as bidirectional logistics, not a one-way feed. */}
-              <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
-              <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
+              {/* Bidirectional flowing signal — ONLY on factory-involving
+                  routes (product flow). DO↔DO arcs stay static. */}
+              {arc.kind === 'factory' && (
+                <>
+                  <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
+                  <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
+                </>
+              )}
             </motion.g>
           ))}
         </g>

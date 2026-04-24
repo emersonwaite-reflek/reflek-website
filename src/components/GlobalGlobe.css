@@ -70,14 +70,26 @@
 }
 
 /* ── Supply-chain arcs ──
-   Enter (1s) + exit (0.5s) opacity transitions are owned by framer-motion's
-   AnimatePresence in the JSX — don't add CSS opacity animations here or
-   they'll conflict with the inline motion values. */
+   Enter (1s) + exit (0.5s) opacity transitions are driven by framer-motion
+   inline values in the JSX — don't add CSS opacity animations here or
+   they'll conflict.
+
+   Two kinds:
+     .gg-arc--factory   — factory/HQ involved → animated green product flow
+     .gg-arc--secondary — DO↔DO network link → static light-grey line */
 .gg-arc-track {
   fill: none;
-  stroke: rgba(122, 185, 41, 0.32);
   stroke-width: 1.25;
   stroke-linecap: round;
+}
+
+.gg-arc--factory .gg-arc-track {
+  stroke: rgba(122, 185, 41, 0.32);
+}
+
+.gg-arc--secondary .gg-arc-track {
+  stroke: rgba(130, 130, 130, 0.55);
+  stroke-width: 1;
 }
 
 .gg-arc-flow {
