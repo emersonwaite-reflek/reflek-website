@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiX } from 'react-icons/fi'
-import { motion } from 'framer-motion'
 import { geoOrthographic, geoPath, geoDistance, geoInterpolate } from 'd3-geo'
 import { feature } from 'topojson-client'
 import './GlobalGlobe.css'
@@ -59,6 +58,12 @@ const CONNECTIONS = [
 
   // Regional cross-DO within Asia/ME
   ['dubai', 'hyd'],
+
+  // India can also pull from the China factories — these land in the
+  // animated green tier since ganzhou/suzhou are factories, which
+  // represents real product flow (China makes it, India ships it).
+  ['hyd', 'ganzhou'],
+  ['hyd', 'suzhou'],
 
   // Europe ↔ Asia network links — these stay grey (secondary) since
   // Gouda is a DO, not a factory, so they read as distribution-network
@@ -426,18 +431,27 @@ export default function GlobalGlobe() {
   )
   const pathGen = useMemo(() => geoPath(projection), [projection])
 
-  /* Marker state. For locations that cluster (China trio) we keep two
-     coordinates: the anchor dot on the sphere surface at the real geo
-     position (gx, gy) and the marker itself shifted by a pixel offset
-     (mx, my) so it doesn't overlap its neighbors. A leader line connects
-     the two. Locations without an offset have mx=gx, my=gy. */
+  /* Marker state. Three flags drive rendering:
+       - `onFront`  — strict front-hemisphere check. Used for interaction
+         (pointer-events) and to decide whether to render contents at all,
+         because D3 orthographic still returns *some* pixel for back-side
+         points (clipAngle only affects its stream pipeline, not the raw
+         projection call — that's why a projected-null check never fired).
+       - `visible`  — buffered version (0.15 rad ≈ 8.6° inside the limb)
+         used as the opacity-animation target. Fade-out starts early so
+         it can finish before the marker truly crosses the limb.
+       - `hasCoords` — pure NaN guard on the projection output (should be
+         true for every front-hemisphere point with a real rotation). */
   const markerState = useCallback((loc) => {
     const center = [-rotation[0], -rotation[1]]
     const dist = geoDistance(loc.coords, center)
-    const visible = dist < Math.PI / 2 - 0.01
-    const [gx, gy] = projection(loc.coords) || [0, 0]
+    const onFront = dist < Math.PI / 2
+    const visible = dist < Math.PI / 2 - 0.15
+    const projected = projection(loc.coords)
+    const hasCoords = projected != null && !isNaN(projected[0]) && onFront
+    const [gx, gy] = hasCoords ? projected : [0, 0]
     const [dx, dy] = loc.offset || [0, 0]
-    return { visible, gx, gy, mx: gx + dx, my: gy + dy, dist }
+    return { visible, hasCoords, gx, gy, mx: gx + dx, my: gy + dy, dist }
   }, [projection, rotation])
 
   /* Convert viewBox coords to frame pixels for positioning DOM elements. */
@@ -650,15 +664,9 @@ export default function GlobalGlobe() {
             on the child paths is CSS, so it keeps running the whole time. */}
         <g className="gg-arcs" clipPath="url(#gg-sphere-clip)" pointerEvents="none">
           {arcs.map((arc) => (
-            <motion.g
+            <g
               key={arc.id}
-              className={`gg-arc gg-arc--${arc.kind}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: arc.visible ? 1 : 0 }}
-              transition={{
-                duration: arc.visible ? 1 : 0.5,
-                ease: arc.visible ? 'easeOut' : 'easeIn',
-              }}
+              className={`gg-arc gg-arc--${arc.kind}${arc.visible ? ' is-visible' : ''}`}
             >
               {/* Continuous track — every arc gets one. Colour + weight
                   vary by kind via CSS. */}
@@ -671,30 +679,21 @@ export default function GlobalGlobe() {
                   <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
                 </>
               )}
-            </motion.g>
+            </g>
           ))}
         </g>
 
         {/* ── Leader lines + anchor dots — always mounted, opacity driven by
             visibility so the line keeps tracking the globe while fading. ── */}
         {LOCATIONS.filter((l) => l.offset).map((loc) => {
-          const { visible, gx, gy, mx, my } = markerState(loc)
-          // Skip when endpoints project to NaN (back hemisphere) — otherwise
-          // the line would render undefined coordinates.
-          const validCoords = !isNaN(gx) && !isNaN(mx)
+          const { visible, hasCoords, gx, gy, mx, my } = markerState(loc)
           return (
-            <motion.g
+            <g
               key={`leader-${loc.id}`}
-              className="gg-leader"
+              className={`gg-leader${visible && hasCoords ? ' is-visible' : ''}`}
               pointerEvents="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: visible && validCoords ? 1 : 0 }}
-              transition={{
-                duration: visible ? 1 : 0.5,
-                ease: visible ? 'easeOut' : 'easeIn',
-              }}
             >
-              {validCoords && (
+              {hasCoords && (
                 <>
                   <line
                     x1={gx} y1={gy} x2={mx} y2={my}
@@ -706,7 +705,7 @@ export default function GlobalGlobe() {
                   <circle cx={gx} cy={gy} r={2} fill="#7ab929" />
                 </>
               )}
-            </motion.g>
+            </g>
           )
         })}
 
@@ -714,21 +713,18 @@ export default function GlobalGlobe() {
             the transform keeps tracking rotation during fade transitions. ── */}
         {LOCATIONS.map((loc) => {
           const meta = TYPE_META[loc.type]
-          const { visible, mx, my } = markerState(loc)
-          const validCoords = !isNaN(mx)
+          const { visible, hasCoords, mx, my } = markerState(loc)
           const isActive = loc.id === hoverId
           return (
-            <motion.g
+            <g
               key={loc.id}
-              transform={validCoords ? `translate(${mx}, ${my})` : undefined}
-              className="gg-marker-group"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: visible && validCoords ? 1 : 0 }}
-              transition={{
-                duration: visible ? 1 : 0.5,
-                ease: visible ? 'easeOut' : 'easeIn',
-              }}
-              style={{ pointerEvents: visible ? 'auto' : 'none' }}
+              data-id={loc.id}
+              transform={hasCoords ? `translate(${mx}, ${my})` : undefined}
+              className={`gg-marker-group${visible && hasCoords ? ' is-visible' : ''}`}
+              /* Interaction is tied to projectability, NOT the discrete
+                 visibility flag, so markers stay clickable through the
+                 entire 0.5s fade-out period. */
+              style={{ pointerEvents: hasCoords ? 'auto' : 'none' }}
               onPointerEnter={(e) => {
                 if (e.pointerType !== 'mouse') return
                 if (!dragStartRef.current) openMarker(loc.id)
@@ -742,7 +738,7 @@ export default function GlobalGlobe() {
                 openMarker(loc.id)
               }}
             >
-              {validCoords && (
+              {hasCoords && (
                 <>
                   <circle r={meta.radius + 10} fill="transparent" />
                   <circle
@@ -769,7 +765,7 @@ export default function GlobalGlobe() {
                   )}
                 </>
               )}
-            </motion.g>
+            </g>
           )
         })}
       </svg>
