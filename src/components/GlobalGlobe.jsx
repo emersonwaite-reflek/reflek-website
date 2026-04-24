@@ -27,23 +27,38 @@ const TYPE_META = {
   do:      { label: 'Distribution Office',  color: '#ffffff', stroke: '#7ab929', radius: 5, shape: 'circle' },
 }
 
-/* Supply-chain flows — each pair is rendered as an arched great-circle
-   route with a flowing green signal. Curated so the graph reads as a
-   manufacturing-to-distribution network without looking crowded. */
+/* Curated logistics graph between ALL distribution / factory sites, but
+   respecting the actual supply chain — Europe's Gouda hub is deliberately
+   NOT connected to any China location because we don't want the globe to
+   imply European product comes out of a Chinese factory. */
 const CONNECTIONS = [
-  // North America — HQ feeds the domestic + LATAM hubs
+  // North America — Phoenix HQ hub + cross-domestic
   ['phx', 'okc'],
   ['phx', 'mex'],
-  // Trans-Pacific + Trans-Atlantic backbones
-  ['phx', 'nanjing'],
+  ['okc', 'mex'],
+
+  // Trans-Atlantic supply — Europe gets product from USA only
   ['phx', 'gouda'],
-  // China factories feed the regional distribution hub
+  ['okc', 'gouda'],
+
+  // Trans-Pacific backbone
+  ['phx', 'nanjing'],
+
+  // USA → Middle East / India (primary supply from US factory)
+  ['phx', 'dubai'],
+  ['phx', 'hyd'],
+
+  // China manufacturing cluster (factories ↔ regional distribution hub)
   ['ganzhou', 'nanjing'],
   ['suzhou', 'nanjing'],
-  // Nanjing pushes product out through Asia / Middle East / Europe
-  ['nanjing', 'hyd'],
+  ['ganzhou', 'suzhou'],
+
+  // Asian distribution fans out from Nanjing
   ['nanjing', 'dubai'],
-  ['nanjing', 'gouda'],
+  ['nanjing', 'hyd'],
+
+  // Regional cross-DO within Asia/ME
+  ['dubai', 'hyd'],
 ]
 
 // How far off the sphere surface the arc midpoint lifts, in pixels. Scales
@@ -63,8 +78,20 @@ const TT_MARGIN = 12
 const TT_GAP = 28    // leave room for the connector line
 const CLOSE_DELAY_MS = 180
 
-const INITIAL_ROTATION = [-18, -18, 0]
+// Start centered on the Atlantic so both the USA and Europe are in view.
+// rotate=[lambda, phi] in D3 orthographic is the *negated* center, so
+// [45, -35] centers on (-45°E, 35°N) — North Atlantic, upper-northern.
+const INITIAL_ROTATION = [45, -35, 0]
 const IDLE_DEG_PER_S = 4.5            // passive spin speed
+
+// Zoom factor multiplies the base sphere radius. Default 1.2 brings the
+// globe ~20% closer than the raw frame math would give you. Wheel and
+// pinch gestures update this in real time.
+const INITIAL_ZOOM = 1.2
+const MIN_ZOOM = 0.6
+const MAX_ZOOM = 3.0
+// How aggressively the wheel changes zoom per scroll tick.
+const WHEEL_ZOOM_STEP = 0.0015
 
 // Drag: pixel → degree conversion, plus a small threshold that gates clicks.
 const DRAG_DEG_PER_PX = 0.4
@@ -90,6 +117,7 @@ export default function GlobalGlobe() {
   const [tipSize, setTipSize] = useState({ w: 0, h: 0 })
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
   const [isDragging, setIsDragging] = useState(false)
+  const [zoom, setZoom] = useState(INITIAL_ZOOM)
 
   const frameRef = useRef(null)
   const svgRef = useRef(null)
@@ -112,6 +140,11 @@ export default function GlobalGlobe() {
   // Was the first move predominantly horizontal? If not, we release the drag
   // and let the page scroll take over (prevents trap on mobile).
   const dragAxisLockedRef = useRef(null)  // null | 'x' | 'y-reject'
+  // Active pointers for multi-touch pinch. Map<pointerId, {x,y}>.
+  const pointersRef = useRef(new Map())
+  // Pinch-zoom baseline — set on the second pointer's down and used to
+  // compute the zoom ratio from the two fingers' changing distance.
+  const pinchStartRef = useRef(null)
 
   /* ----------------------------------------------------------------
    * Tooltip open/close.
@@ -235,9 +268,22 @@ export default function GlobalGlobe() {
    * ---------------------------------------------------------------- */
   const onPointerDown = useCallback((e) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return
-    // Don't capture pointer immediately on touch — wait until we've decided
-    // this is actually a horizontal drag (not a vertical page scroll).
-    // For mouse, capture right away since touch-action doesn't restrict.
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+    // Second pointer → start pinch, cancel any ongoing drag.
+    if (pointersRef.current.size === 2) {
+      const [p1, p2] = Array.from(pointersRef.current.values())
+      pinchStartRef.current = {
+        distance: Math.hypot(p1.x - p2.x, p1.y - p2.y) || 1,
+        zoom,
+      }
+      dragStartRef.current = null
+      dragAxisLockedRef.current = null
+      setIsDragging(false)
+      return
+    }
+
+    // First pointer — fall through to drag-rotate setup.
     if (e.pointerType === 'mouse') {
       frameRef.current?.setPointerCapture?.(e.pointerId)
     }
@@ -252,23 +298,34 @@ export default function GlobalGlobe() {
     didDragRef.current = false
     dragAxisLockedRef.current = e.pointerType === 'mouse' ? 'x' : null
     dragHistoryRef.current = [{ t: e.timeStamp, x: e.clientX, y: e.clientY }]
-    // Stop any ongoing inertia on a new press.
     inertiaRef.current = { lon: 0, lat: 0 }
     setIsDragging(true)
-  }, [])
+  }, [zoom])
 
   const onPointerMove = useCallback((e) => {
+    // Update the cached position for this pointer if we're tracking it.
+    if (pointersRef.current.has(e.pointerId)) {
+      pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    }
+
+    // Two-finger pinch — scale zoom by the ratio of current / start distance.
+    if (pointersRef.current.size === 2 && pinchStartRef.current) {
+      const [p1, p2] = Array.from(pointersRef.current.values())
+      const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y) || 1
+      const ratio = distance / pinchStartRef.current.distance
+      const next = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchStartRef.current.zoom * ratio))
+      setZoom(next)
+      return
+    }
+
     const ds = dragStartRef.current
     if (!ds || ds.pointerId !== e.pointerId) return
     const dx = e.clientX - ds.x
     const dy = e.clientY - ds.y
 
-    // For touch: decide on first real move whether this is a horizontal drag
-    // or a vertical scroll. If vertical, bail and let the browser scroll.
     if (dragAxisLockedRef.current === null) {
       if (Math.abs(dx) + Math.abs(dy) < DRAG_THRESHOLD_PX) return
       if (Math.abs(dy) > Math.abs(dx) * 1.3) {
-        // Mostly vertical → the browser should handle this as a scroll.
         dragAxisLockedRef.current = 'y-reject'
         dragStartRef.current = null
         setIsDragging(false)
@@ -284,7 +341,6 @@ export default function GlobalGlobe() {
 
     if (didDragRef.current) {
       baseRotationRef.current[0] = ds.lon + dx * DRAG_DEG_PER_PX
-      // On touch we only rotate longitude (vertical gesture is for scroll).
       if (ds.pointerType === 'mouse') {
         baseRotationRef.current[1] = Math.max(
           -LAT_MAX,
@@ -293,7 +349,6 @@ export default function GlobalGlobe() {
       }
     }
 
-    // Track recent samples so we can compute release velocity for inertia.
     const h = dragHistoryRef.current
     h.push({ t: e.timeStamp, x: e.clientX, y: e.clientY })
     const cutoff = e.timeStamp - VELOCITY_SAMPLE_MS
@@ -301,13 +356,17 @@ export default function GlobalGlobe() {
   }, [])
 
   const onPointerUp = useCallback((e) => {
+    pointersRef.current.delete(e.pointerId)
+    // Drop pinch state once we're back below two pointers.
+    if (pointersRef.current.size < 2) pinchStartRef.current = null
+
     const ds = dragStartRef.current
-    if (!ds || ds.pointerId !== e.pointerId) return
+    if (!ds || ds.pointerId !== e.pointerId) {
+      frameRef.current?.releasePointerCapture?.(e.pointerId)
+      return
+    }
 
     const h = dragHistoryRef.current
-    // Only coast if the user actually dragged AND the pointer was still in
-    // motion at the moment of release. If they held still (no new samples
-    // for ≥ STATIONARY_MS_BEFORE_RELEASE) before letting go, velocity is 0.
     const lastSampleAge = h.length ? e.timeStamp - h[h.length - 1].t : Infinity
     const shouldFling = didDragRef.current
       && h.length >= 2
@@ -333,15 +392,30 @@ export default function GlobalGlobe() {
     setIsDragging(false)
   }, [])
 
-  /* Projection rebuilds on every rotation tick. */
+  /* Wheel → zoom. preventDefault so the page doesn't scroll while the
+     pointer is inside the globe frame. */
+  useEffect(() => {
+    const frame = frameRef.current
+    if (!frame) return
+    const onWheel = (e) => {
+      e.preventDefault()
+      const factor = Math.exp(-e.deltaY * WHEEL_ZOOM_STEP)
+      setZoom((z) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z * factor)))
+    }
+    frame.addEventListener('wheel', onWheel, { passive: false })
+    return () => frame.removeEventListener('wheel', onWheel)
+  }, [])
+
+  /* Projection rebuilds on every rotation tick. Scale is SPHERE_R × zoom
+     so wheel/pinch zoom both flow through here. */
   const projection = useMemo(
     () =>
       geoOrthographic()
         .translate([SPHERE_CX, SPHERE_CY])
-        .scale(SPHERE_R)
+        .scale(SPHERE_R * zoom)
         .rotate(rotation)
         .clipAngle(90),
-    [rotation]
+    [rotation, zoom]
   )
   const pathGen = useMemo(() => geoPath(projection), [projection])
 
@@ -787,7 +861,7 @@ export default function GlobalGlobe() {
 
       <div className="gg-hint" aria-hidden="true">
         <span className="gg-hint-dot" />
-        Click & drag to spin — tap a location for details
+        Drag to spin • scroll / pinch to zoom
       </div>
     </div>
   )
