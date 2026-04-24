@@ -248,8 +248,8 @@ export default function Home() {
             <div className="home-brand-card">
               <div className="home-brand-card__header">
                 <img
-                  src="/images/luxo-logo-trans.png"
-                  alt="Luxo Window Films"
+                  src="/images/luxo-logo-black.png"
+                  alt="Luxo Performance Films"
                   className="home-brand-card__logo home-brand-card__logo--dark"
                 />
                 <span className="home-brand-card__tag">Solar Window Films</span>
@@ -276,8 +276,11 @@ export default function Home() {
             <div className="home-assoc__logo home-assoc__logo--flexishield">
               <img src="/images/flexishield-logo.png" alt="FlexiShield" />
             </div>
+            <div className="home-assoc__logo home-assoc__logo--polarie">
+              <img src="/images/polarie-logo.png" alt="Polarie Paint Protection Film" />
+            </div>
             <div className="home-assoc__logo home-assoc__logo--dark-on-light">
-              <img src="/images/luxo-logo-trans.png" alt="Luxo Window Films" />
+              <img src="/images/luxo-logo-black.png" alt="Luxo Performance Films" />
             </div>
             <div className="home-assoc__logo home-assoc__logo--shell">
               <img src="/images/shell-car-beauty-bk.png" alt="Shell Car Beauty" />

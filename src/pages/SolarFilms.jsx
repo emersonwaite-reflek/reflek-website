@@ -70,7 +70,7 @@ export default function SolarFilms() {
             <div>
               <span className="svc-section-tag">Our Premium Window Film Brand</span>
               <img
-                src="/images/luxo-logo.png"
+                src="/images/luxo-logo-white.png"
                 alt="Luxo Performance Films"
                 className="svc-subbrand-logo svc-subbrand-logo--pill"
               />

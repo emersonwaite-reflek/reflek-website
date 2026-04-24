@@ -163,8 +163,11 @@ export default function About() {
             <div className="ab-assoc-logo ab-assoc-logo--flexi">
               <img src="/images/flexishield-logo.png" alt="FlexiShield" />
             </div>
+            <div className="ab-assoc-logo ab-assoc-logo--polarie">
+              <img src="/images/polarie-logo.png" alt="Polarie Paint Protection Film" />
+            </div>
             <div className="ab-assoc-logo ab-assoc-logo--luxo">
-              <img src="/images/luxo-logo-trans.png" alt="Luxo Window Films" />
+              <img src="/images/luxo-logo-black.png" alt="Luxo Performance Films" />
             </div>
             <div className="ab-assoc-logo ab-assoc-logo--shell">
               <img src="/images/shell-car-beauty-bk.png" alt="Shell Car Beauty" />
