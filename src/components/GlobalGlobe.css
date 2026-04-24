@@ -1,0 +1,450 @@
+/* ---------------------------------------------------------------------------
+   Global Globe — 3D-ish orthographic sphere with drag-to-rotate + idle spin
+   Prefix: .gg-*
+   --------------------------------------------------------------------------- */
+
+.gg-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: grab;
+  /* pan-y lets the page scroll vertically through the globe on mobile while
+     still handing horizontal swipes to our JS for longitude rotation. */
+  touch-action: pan-y;
+  user-select: none;
+  perspective: 1200px;   /* gives the tooltip depth when tilted */
+  perspective-origin: 50% 40%;
+}
+
+.gg-frame.is-dragging { cursor: grabbing; }
+
+/* ── Atmospheric halo behind the sphere, subtle breathing. ── */
+.gg-atmosphere {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(88%, 560px);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center,
+      rgba(122, 185, 41, 0.35) 0%,
+      rgba(122, 185, 41, 0.18) 28%,
+      rgba(122, 185, 41, 0.06) 55%,
+      transparent 75%);
+  filter: blur(22px);
+  pointer-events: none;
+  animation: gg-breathe 6.5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes gg-breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);     opacity: 0.9; }
+  50%      { transform: translate(-50%, -50%) scale(1.035); opacity: 1;   }
+}
+
+.gg-svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display: block;
+  z-index: 1;
+  animation: gg-float 11s ease-in-out infinite;
+  filter: drop-shadow(0 24px 48px rgba(20, 40, 10, 0.18));
+}
+
+@keyframes gg-float {
+  0%, 100% { transform: translateY(0);     }
+  50%      { transform: translateY(-6px);  }
+}
+
+.gg-country {
+  transition: fill 0.2s ease;
+}
+
+.gg-marker-group {
+  cursor: pointer;
+}
+
+.gg-marker {
+  transition: filter 0.2s ease, transform 0.2s ease;
+  filter: drop-shadow(0 0 4px rgba(122, 185, 41, 0.75));
+}
+
+.gg-marker.is-active {
+  filter: drop-shadow(0 0 12px rgba(122, 185, 41, 1));
+}
+
+.gg-marker-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gg-pulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gg-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.22; }
+  50%      { transform: scale(1.85); opacity: 0;    }
+}
+
+/* ── Connector line from marker → card ── */
+.gg-connector {
+  position: absolute;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+/* ── Tooltip: rendered in 3D with a subtle perspective tilt ──
+   The parent (.gg-frame) supplies perspective; each side of the tooltip
+   tilts slightly toward the marker so the card feels like it's floating
+   off the globe. */
+.gg-tooltip {
+  position: absolute;
+  width: 280px;
+  max-width: calc(100% - 24px);
+  pointer-events: auto;
+  z-index: 3;
+  font-family: Inter, system-ui, sans-serif;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  animation: gg-tt-in 0.26s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.gg-tooltip.is-right {
+  transform: rotateY(-8deg) rotateX(3deg);
+  transform-origin: left center;
+}
+
+.gg-tooltip.is-left {
+  transform: rotateY(8deg) rotateX(3deg);
+  transform-origin: right center;
+}
+
+.gg-tt-inner {
+  position: relative;
+  padding: 16px 18px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  /* Layered shadow — one sharp for the edge, one soft for depth, and an
+     inset green line to match the brand. */
+  box-shadow:
+    0 0 0 1px rgba(122, 185, 41, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 18px 40px rgba(20, 40, 10, 0.22),
+    0 40px 60px rgba(20, 40, 10, 0.12);
+}
+
+/* The shine strip along the top makes the card look like polished glass. */
+.gg-tt-inner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7ab929, #9ed84c, #7ab929);
+  opacity: 0.9;
+}
+
+@keyframes gg-tt-in {
+  from { opacity: 0; transform: scale(0.92) translateY(8px) rotateX(6deg); }
+  to   { opacity: 1; transform: scale(1)    translateY(0)   rotateX(3deg); }
+}
+
+.gg-tooltip.is-right { animation-name: gg-tt-in-right; }
+.gg-tooltip.is-left  { animation-name: gg-tt-in-left;  }
+
+@keyframes gg-tt-in-right {
+  from { opacity: 0; transform: scale(0.9)  rotateY(-18deg) rotateX(6deg); }
+  to   { opacity: 1; transform: scale(1)    rotateY(-8deg)  rotateX(3deg); }
+}
+
+@keyframes gg-tt-in-left {
+  from { opacity: 0; transform: scale(0.9) rotateY(18deg) rotateX(6deg); }
+  to   { opacity: 1; transform: scale(1)   rotateY(8deg)  rotateX(3deg); }
+}
+
+.gg-tt-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #333;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  z-index: 4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.gg-tt-close:hover {
+  background: #ffffff;
+  color: #7ab929;
+  transform: scale(1.05);
+}
+
+.gg-tt-close:active {
+  transform: scale(0.94);
+}
+
+.gg-tt-image {
+  margin: -16px -18px 14px;
+  aspect-ratio: 16 / 9;
+  background: #f5f5f5;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(122, 185, 41, 0.2);
+}
+
+.gg-tt-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gg-tt-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.gg-tt-flag {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.gg-tt-city {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  line-height: 1.2;
+}
+
+.gg-tt-country {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.gg-tt-type {
+  display: inline-block;
+  font-family: SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7ab929;
+  background: rgba(122, 185, 41, 0.1);
+  padding: 4px 9px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.gg-tt-meta {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: #555;
+  font-weight: 600;
+}
+
+.gg-tt-role {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #555;
+  margin: 0 0 12px;
+}
+
+.gg-tt-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #7ab929;
+  text-decoration: none;
+  padding: 6px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin-top: 4px;
+  width: 100%;
+  transition: color 0.15s ease, gap 0.15s ease;
+}
+
+.gg-tt-cta:hover {
+  color: #5d9120;
+  gap: 10px;
+}
+
+/* ── Legend ── */
+.gg-legend {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 11px;
+  color: #333333;
+  z-index: 2;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+.gg-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gg-legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+.gg-legend-icon {
+  width: 16px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── Hint line ── */
+.gg-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(15, 15, 15, 0.78);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 2;
+  backdrop-filter: blur(6px);
+}
+
+.gg-hint-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7ab929;
+  animation: gg-hint-blink 2s ease-in-out infinite;
+}
+
+@keyframes gg-hint-blink {
+  0%, 100% { opacity: 1;   transform: scale(1);   }
+  50%      { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 820px) {
+  .gg-tooltip {
+    width: 240px;
+  }
+  .gg-tt-inner { padding: 14px 16px; }
+  .gg-tt-header { gap: 10px; margin-bottom: 10px; }
+  .gg-tt-flag   { font-size: 24px; }
+  .gg-tt-city   { font-size: 1rem; }
+  .gg-tt-type   { font-size: 9px; padding: 3px 8px; margin-bottom: 10px; }
+  .gg-tt-meta   { font-size: 0.75rem; gap: 12px; margin-bottom: 8px; }
+  .gg-tt-role   { font-size: 0.82rem; margin-bottom: 10px; }
+  .gg-tt-cta    { font-size: 0.78rem; padding: 5px 0; }
+
+  .gg-legend {
+    bottom: 10px;
+    left: 10px;
+    font-size: 10px;
+    gap: 5px 10px;
+    padding: 7px 10px;
+  }
+
+  .gg-legend-dot { width: 9px; height: 9px; }
+
+  .gg-hint {
+    bottom: 10px;
+    right: 10px;
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* On narrow phones the card pins to the bottom as a sheet. Connector line
+     is hidden because it would have to go half the screen. */
+  .gg-tooltip {
+    left: 12px !important;
+    right: 12px !important;
+    top: auto !important;
+    bottom: 12px;
+    width: auto !important;
+    max-width: none;
+    transform: none !important;
+    animation: gg-tt-sheet-in 0.22s ease-out;
+  }
+
+  @keyframes gg-tt-sheet-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  /* Bigger hit target + higher contrast on touch. */
+  .gg-tt-close {
+    width: 34px;
+    height: 34px;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    background: rgba(15, 15, 15, 0.85);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .gg-tt-close:hover {
+    background: #0f0f0f;
+    color: #7ab929;
+  }
+
+  .gg-hint { display: none; }
+  .gg-connector { display: none; }
+}
+
+/* Respect reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .gg-atmosphere,
+  .gg-svg,
+  .gg-marker-halo,
+  .gg-hint-dot,
+  .gg-tooltip {
+    animation: none !important;
+  }
+}

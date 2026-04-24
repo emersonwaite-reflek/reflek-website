@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FiZap, FiCheckCircle, FiUsers } from 'react-icons/fi'
-import GlobalMap from '../components/GlobalMap'
+import GlobalMap from '../components/GlobalGlobe'
 import './About.css'
 
 const stats = [
