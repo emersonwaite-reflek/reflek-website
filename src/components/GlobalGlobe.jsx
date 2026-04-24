@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiX } from 'react-icons/fi'
+import { AnimatePresence, motion } from 'framer-motion'
 import { geoOrthographic, geoPath, geoDistance, geoInterpolate } from 'd3-geo'
 import { feature } from 'topojson-client'
 import './GlobalGlobe.css'
@@ -77,6 +78,10 @@ const INERTIA_FRICTION = 0.94
 const INERTIA_EPSILON = 0.015
 // Sample this many ms of pointer history to compute release velocity.
 const VELOCITY_SAMPLE_MS = 90
+// If the pointer was stationary for longer than this before release, treat
+// it as a deliberate stop and do NOT apply any fling inertia. Matches the
+// feel of holding a real object still before letting go.
+const STATIONARY_MS_BEFORE_RELEASE = 60
 
 export default function GlobalGlobe() {
   const [hoverId, setHoverId] = useState(null)
@@ -299,14 +304,19 @@ export default function GlobalGlobe() {
     const ds = dragStartRef.current
     if (!ds || ds.pointerId !== e.pointerId) return
 
-    // Compute fling velocity from the tail of the sample history, then let
-    // the main tick loop coast with exponential decay.
     const h = dragHistoryRef.current
-    if (didDragRef.current && h.length >= 2) {
+    // Only coast if the user actually dragged AND the pointer was still in
+    // motion at the moment of release. If they held still (no new samples
+    // for ≥ STATIONARY_MS_BEFORE_RELEASE) before letting go, velocity is 0.
+    const lastSampleAge = h.length ? e.timeStamp - h[h.length - 1].t : Infinity
+    const shouldFling = didDragRef.current
+      && h.length >= 2
+      && lastSampleAge < STATIONARY_MS_BEFORE_RELEASE
+
+    if (shouldFling) {
       const first = h[0]
       const last = h[h.length - 1]
       const dtMs = Math.max(1, last.t - first.t)
-      // Degrees per frame at 60fps → pixels per ms * (1000/60) * DEG_PER_PX.
       const framesPerMs = 60 / 1000
       const velX = ((last.x - first.x) / dtMs) * DRAG_DEG_PER_PX / framesPerMs
       const velY = ((last.y - first.y) / dtMs) * DRAG_DEG_PER_PX / framesPerMs
@@ -539,91 +549,118 @@ export default function GlobalGlobe() {
         <path d={spherePath} fill="url(#gg-rim)" pointerEvents="none" />
         <path d={spherePath} fill="url(#gg-glint)" pointerEvents="none" />
 
-        {/* ── Supply-chain arcs ── */}
+        {/* ── Supply-chain arcs ──
+            AnimatePresence handles the enter/exit opacity transitions:
+            1s fade-in on mount (when both endpoints rotate into view),
+            0.5s fade-out on unmount (when either endpoint rotates away). */}
         <g className="gg-arcs" clipPath="url(#gg-sphere-clip)" pointerEvents="none">
-          {arcs.map((arc) => (
-            <g key={arc.id} className="gg-arc">
-              {/* Faint continuous track — shows the whole route */}
-              <path d={arc.d} className="gg-arc-track" />
-              {/* Two flowing signals moving in opposite directions so the
-                  route reads as bidirectional logistics, not a one-way feed. */}
-              <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
-              <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
-            </g>
-          ))}
+          <AnimatePresence>
+            {arcs.map((arc) => (
+              <motion.g
+                key={arc.id}
+                className="gg-arc"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 1,   ease: 'easeOut' } }}
+                exit   ={{ opacity: 0, transition: { duration: 0.5, ease: 'easeIn'  } }}
+              >
+                {/* Faint continuous track — shows the whole route */}
+                <path d={arc.d} className="gg-arc-track" />
+                {/* Two flowing signals moving in opposite directions so the
+                    route reads as bidirectional logistics, not a one-way feed. */}
+                <path d={arc.d} className="gg-arc-flow gg-arc-flow--forward" />
+                <path d={arc.d} className="gg-arc-flow gg-arc-flow--reverse" />
+              </motion.g>
+            ))}
+          </AnimatePresence>
         </g>
 
         {/* ── Leader lines + anchor dots for offset markers (rendered before
-            marker groups so markers sit on top). ── */}
-        {LOCATIONS.filter((l) => l.offset).map((loc) => {
-          const { visible, gx, gy, mx, my } = markerState(loc)
-          if (!visible) return null
-          return (
-            <g key={`leader-${loc.id}`} className="gg-leader" pointerEvents="none">
-              <line
-                x1={gx} y1={gy} x2={mx} y2={my}
-                stroke="#7ab929"
-                strokeWidth={1}
-                strokeDasharray="2 2"
-                opacity={0.6}
-              />
-              <circle cx={gx} cy={gy} r={2} fill="#7ab929" />
-            </g>
-          )
-        })}
+            marker groups so markers sit on top). Fade matches their markers. ── */}
+        <AnimatePresence>
+          {LOCATIONS.filter((l) => l.offset).map((loc) => {
+            const { visible, gx, gy, mx, my } = markerState(loc)
+            if (!visible) return null
+            return (
+              <motion.g
+                key={`leader-${loc.id}`}
+                className="gg-leader"
+                pointerEvents="none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 1,   ease: 'easeOut' } }}
+                exit   ={{ opacity: 0, transition: { duration: 0.5, ease: 'easeIn'  } }}
+              >
+                <line
+                  x1={gx} y1={gy} x2={mx} y2={my}
+                  stroke="#7ab929"
+                  strokeWidth={1}
+                  strokeDasharray="2 2"
+                  opacity={0.6}
+                />
+                <circle cx={gx} cy={gy} r={2} fill="#7ab929" />
+              </motion.g>
+            )
+          })}
+        </AnimatePresence>
 
-        {LOCATIONS.map((loc) => {
-          const meta = TYPE_META[loc.type]
-          const { visible, mx, my } = markerState(loc)
-          if (!visible) return null
-          const isActive = loc.id === hoverId
-          return (
-            <g
-              key={loc.id}
-              transform={`translate(${mx}, ${my})`}
-              className="gg-marker-group"
-              onPointerEnter={(e) => {
-                // Touch synthesizes enter/leave around taps — skip, or the
-                // card flashes open→close→open between pointerenter, the
-                // auto pointerleave on lift, and the final click.
-                if (e.pointerType !== 'mouse') return
-                if (!dragStartRef.current) openMarker(loc.id)
-              }}
-              onPointerLeave={(e) => {
-                if (e.pointerType !== 'mouse') return
-                scheduleClose()
-              }}
-              onClick={(e) => {
-                if (didDragRef.current) { e.stopPropagation(); return }
-                openMarker(loc.id)
-              }}
-            >
-              <circle r={meta.radius + 10} fill="transparent" />
-              <circle
-                r={meta.radius + 6}
-                fill="#7ab929"
-                className="gg-marker-halo"
-                opacity={isActive ? 0.35 : 0.18}
-              />
-              {meta.shape === 'factory' ? (
-                <path
-                  d={FACTORY_PATH}
-                  transform={`scale(${(meta.scale ?? 1) * 0.75})`}
-                  fill={meta.color}
-                  className={`gg-marker ${isActive ? 'is-active' : ''}`}
-                />
-              ) : (
+        {/* ── Location markers — fade in/out as they rotate on/off the
+            visible hemisphere so they match the arc transitions. ── */}
+        <AnimatePresence>
+          {LOCATIONS.map((loc) => {
+            const meta = TYPE_META[loc.type]
+            const { visible, mx, my } = markerState(loc)
+            if (!visible) return null
+            const isActive = loc.id === hoverId
+            return (
+              <motion.g
+                key={loc.id}
+                transform={`translate(${mx}, ${my})`}
+                className="gg-marker-group"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 1,   ease: 'easeOut' } }}
+                exit   ={{ opacity: 0, transition: { duration: 0.5, ease: 'easeIn'  } }}
+                onPointerEnter={(e) => {
+                  // Touch synthesizes enter/leave around taps — skip, or the
+                  // card flashes open→close→open between pointerenter, the
+                  // auto pointerleave on lift, and the final click.
+                  if (e.pointerType !== 'mouse') return
+                  if (!dragStartRef.current) openMarker(loc.id)
+                }}
+                onPointerLeave={(e) => {
+                  if (e.pointerType !== 'mouse') return
+                  scheduleClose()
+                }}
+                onClick={(e) => {
+                  if (didDragRef.current) { e.stopPropagation(); return }
+                  openMarker(loc.id)
+                }}
+              >
+                <circle r={meta.radius + 10} fill="transparent" />
                 <circle
-                  r={meta.radius}
-                  fill={meta.color}
-                  stroke={meta.stroke || meta.color}
-                  strokeWidth={meta.stroke ? 2 : 0}
-                  className={`gg-marker ${isActive ? 'is-active' : ''}`}
+                  r={meta.radius + 6}
+                  fill="#7ab929"
+                  className="gg-marker-halo"
+                  opacity={isActive ? 0.35 : 0.18}
                 />
-              )}
-            </g>
-          )
-        })}
+                {meta.shape === 'factory' ? (
+                  <path
+                    d={FACTORY_PATH}
+                    transform={`scale(${(meta.scale ?? 1) * 0.75})`}
+                    fill={meta.color}
+                    className={`gg-marker ${isActive ? 'is-active' : ''}`}
+                  />
+                ) : (
+                  <circle
+                    r={meta.radius}
+                    fill={meta.color}
+                    stroke={meta.stroke || meta.color}
+                    strokeWidth={meta.stroke ? 2 : 0}
+                    className={`gg-marker ${isActive ? 'is-active' : ''}`}
+                  />
+                )}
+              </motion.g>
+            )
+          })}
+        </AnimatePresence>
       </svg>
 
       {/* Connector overlay SVG — renders above the globe but below the tooltip. */}
