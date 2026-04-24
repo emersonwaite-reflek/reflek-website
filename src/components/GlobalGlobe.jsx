@@ -418,61 +418,70 @@ export default function GlobalGlobe() {
 
   const spherePath = useMemo(() => pathGen({ type: 'Sphere' }), [pathGen])
 
-  /* Build arched great-circle paths between each connected pair.
-     Samples the great circle at ARC_STEPS, projects each sample, and lifts
-     every intermediate point outward from the globe center so the curve
-     reads as an arch rising off the sphere. The whole arc is skipped if
-     either endpoint is on the back hemisphere. */
+  /* Build smooth arched connectors between each connected pair as single
+     quadratic Béziers. The control point offsets perpendicular to the
+     chord in the direction away from the globe center, which gives a
+     predictably smooth arc no matter where the two endpoints sit on
+     the sphere — no kinks, no weird bends near the view center.
+
+     Before drawing, we still sample the great circle to make sure no
+     intermediate point is on the back hemisphere; if the great-circle
+     arc would wrap around the back we skip the connector entirely
+     instead of drawing a straight cut across the front. */
   const arcs = useMemo(() => {
     if (!countries) return []
     const byId = Object.fromEntries(LOCATIONS.map((l) => [l.id, l]))
     const result = []
+    const center = [-rotation[0], -rotation[1]]
 
     for (const [fromId, toId] of CONNECTIONS) {
       const a = byId[fromId]
       const b = byId[toId]
       if (!a || !b) continue
 
-      const aState = markerState(a)
-      const bState = markerState(b)
-      // Only draw the arc when both endpoints are on the visible hemisphere.
-      if (!aState.visible || !bState.visible) continue
+      // Both endpoints must be on the front hemisphere.
+      if (geoDistance(a.coords, center) >= Math.PI / 2 - 0.01) continue
+      if (geoDistance(b.coords, center) >= Math.PI / 2 - 0.01) continue
 
-      const arcLen = geoDistance(a.coords, b.coords)  // radians, 0..π
-      const lift = ARC_MAX_LIFT * Math.min(1, arcLen / (Math.PI / 2))
-
+      // Great-circle visibility guard: if any intermediate sample is on
+      // the back hemisphere, the true arc wraps around — don't draw a
+      // straight chord pretending to be it.
       const interp = geoInterpolate(a.coords, b.coords)
-      const pts = []
-      let anyOffSphere = false
-
-      for (let i = 0; i <= ARC_STEPS; i++) {
-        const t = i / ARC_STEPS
-        const [lon, lat] = interp(t)
-        const projected = projection([lon, lat])
-        if (!projected || isNaN(projected[0])) {
-          anyOffSphere = true
+      let hiddenMid = false
+      for (let i = 1; i < ARC_STEPS; i++) {
+        if (geoDistance(interp(i / ARC_STEPS), center) >= Math.PI / 2 - 0.01) {
+          hiddenMid = true
           break
         }
-        let [px, py] = projected
-        const dx = px - SPHERE_CX
-        const dy = py - SPHERE_CY
-        const r = Math.sqrt(dx * dx + dy * dy)
-        if (r > 0) {
-          const archFactor = Math.sin(Math.PI * t)
-          const outward = (r + lift * archFactor) / r
-          px = SPHERE_CX + dx * outward
-          py = SPHERE_CY + dy * outward
-        }
-        pts.push([px, py])
       }
+      if (hiddenMid) continue
 
-      if (anyOffSphere || pts.length < 2) continue
+      const [ax, ay] = projection(a.coords) || []
+      const [bx, by] = projection(b.coords) || []
+      if (ax == null || bx == null || isNaN(ax) || isNaN(bx)) continue
 
-      const d = 'M ' + pts.map((p) => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' L ')
+      const arcLen = geoDistance(a.coords, b.coords)
+      const lift = ARC_MAX_LIFT * Math.min(1, arcLen / (Math.PI / 2))
+
+      // Midpoint of the chord, then push the control point outward from
+      // the sphere center. This creates a smooth quadratic that always
+      // reads as arching away from the globe.
+      const midX = (ax + bx) / 2
+      const midY = (ay + by) / 2
+      const dx = midX - SPHERE_CX
+      const dy = midY - SPHERE_CY
+      const r = Math.sqrt(dx * dx + dy * dy) || 1
+      // Extra lift factor accounts for the fact that a quadratic Bézier
+      // reaches only half the control-point distance at its apex.
+      const controlLift = lift * 2
+      const ctrlX = midX + (dx / r) * controlLift
+      const ctrlY = midY + (dy / r) * controlLift
+
+      const d = `M ${ax.toFixed(2)},${ay.toFixed(2)} Q ${ctrlX.toFixed(2)},${ctrlY.toFixed(2)} ${bx.toFixed(2)},${by.toFixed(2)}`
       result.push({ id: `${fromId}-${toId}`, d, arcLen })
     }
     return result
-  }, [markerState, projection, countries])
+  }, [projection, rotation, countries])
 
   return (
     <div
