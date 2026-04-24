@@ -545,6 +545,9 @@
   font-size: 0.78rem;
   color: #555;
   line-height: 1.45;
+  /* Reserve 2 lines so tiles with 1-line descriptions stay the same height
+     as tiles with 2-line descriptions. */
+  min-height: 2.9em;
 }
 
 .ab-certs-footer {
