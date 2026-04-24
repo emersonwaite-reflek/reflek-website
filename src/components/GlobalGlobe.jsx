@@ -453,8 +453,17 @@ export default function GlobalGlobe() {
               key={loc.id}
               transform={`translate(${px}, ${py})`}
               className="gg-marker-group"
-              onPointerEnter={() => { if (!dragStartRef.current) openMarker(loc.id) }}
-              onPointerLeave={scheduleClose}
+              onPointerEnter={(e) => {
+                // Touch synthesizes enter/leave around taps — skip, or the
+                // card flashes open→close→open between pointerenter, the
+                // auto pointerleave on lift, and the final click.
+                if (e.pointerType !== 'mouse') return
+                if (!dragStartRef.current) openMarker(loc.id)
+              }}
+              onPointerLeave={(e) => {
+                if (e.pointerType !== 'mouse') return
+                scheduleClose()
+              }}
               onClick={(e) => {
                 if (didDragRef.current) { e.stopPropagation(); return }
                 openMarker(loc.id)
@@ -537,8 +546,8 @@ export default function GlobalGlobe() {
             visibility: placement ? 'visible' : 'hidden',
           }}
           role="tooltip"
-          onPointerEnter={cancelClose}
-          onPointerLeave={scheduleClose}
+          onPointerEnter={(e) => { if (e.pointerType === 'mouse') cancelClose() }}
+          onPointerLeave={(e) => { if (e.pointerType === 'mouse') scheduleClose() }}
         >
           <div className="gg-tt-inner">
             <button
