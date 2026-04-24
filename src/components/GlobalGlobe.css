@@ -69,7 +69,21 @@
   transition: fill 0.2s ease;
 }
 
-/* ── Supply-chain arcs ── */
+/* ── Supply-chain arcs ──
+   Each arc is conditionally rendered — it mounts when both endpoints
+   rotate onto the visible hemisphere. A 1s opacity fade on mount keeps
+   the arc from popping into existence jarringly. React keys are stable
+   per connection, so the enter animation only fires on the actual
+   visibility transition, not on every frame-level rotation re-render. */
+.gg-arc {
+  animation: gg-arc-enter 1s ease-out both;
+}
+
+@keyframes gg-arc-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .gg-arc-track {
   fill: none;
   stroke: rgba(122, 185, 41, 0.32);
@@ -491,6 +505,7 @@
   .gg-svg,
   .gg-marker-halo,
   .gg-hint-dot,
+  .gg-arc,
   .gg-arc-flow,
   .gg-arc-flow--forward,
   .gg-arc-flow--reverse,
