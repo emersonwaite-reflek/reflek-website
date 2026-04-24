@@ -511,10 +511,12 @@
   min-height: 128px;
 }
 
+/* Cert images are pre-rendered onto a uniform 320x120 transparent canvas
+   with the logo itself always 100px tall, so a single width constraint
+   gives identical visual heights across all 8 tiles. */
 .ab-cert-logo {
-  max-height: 72px;
-  max-width: 82%;
-  width: auto;
+  width: 90%;
+  max-width: 200px;
   height: auto;
   object-fit: contain;
   display: block;
